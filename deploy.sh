@@ -1,33 +1,37 @@
 #!/usr/bin/env bash
 
-# This script does the required work to set up your personal GitHub Pages
-# repository for deployment using Hugo. Run this script only once -- when the
-# setup has been done, run the `deploy.sh` script to deploy changes and update
-# your website. See
+# This script allows you to easily and quickly generate and deploy your website
+# using Hugo to your personal GitHub Pages repository. This script requires a
+# certain configuration, run the `setup.sh` script to configure this. See
 # https://hjdskes.github.io/blog/update-deploying-hugo-on-personal-github-pages/
 # for more information.
 
-# Name of the branch containing the Hugo source files.
-SOURCE=sources
+# Set the English locale for the `date` command.
+export LC_TIME=en_US.UTF-8
+
+# The commit message.
+MESSAGE="Site rebuild $(date)"
 
 msg() {
     printf "\033[1;32m :: %s\n\033[0m" "$1"
 }
 
-msg "Adding the \`public\` folder to .gitignore"
-echo "public" >> .gitignore
+if [[ $(git status -s) ]]; then
+    msg "The working directory is dirty, please commit or stash any pending changes"
+    exit 1;
+fi
 
-msg "Deleting the \`master\` branch"
-git branch -D master
-git push origin --delete master
+msg "Removing the old website"
+pushd public
+git rm -rf *
+popd
 
-msg "Creating an empty, orphaned \`master\` branch"
-git checkout --orphan master
-git reset --hard
-git commit --allow-empty -m "Initial commit on master branch"
+msg "Building the website"
+hugo
+
+msg "Pushing the updated \`public\` folder to the \`master\` branch"
+pushd public
+git add *
+git commit -m "$MESSAGE"
+popd
 git push origin master
-git checkout $SOURCE
-
-msg "Adding the master branch into the \`public\` folder"
-rm -rf public
-git worktree add -B master public origin/master
