@@ -1,0 +1,833 @@
+
+<meta charset='utf-8' />
+<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/5.15.0/d3.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js'></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/scrollama/2.2.0/scrollama.js'></script>
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css'
+        integrity='sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq' crossorigin='anonymous'>
+          <script defer src='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js'
+        integrity='sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz'
+        crossorigin='anonymous'></script>
+          <script defer src='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js'
+        integrity='sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI' crossorigin='anonymous'
+        onload='renderMathInElement(document.body);'></script>
+          <meta name='viewport' content='width=device-width, initial-scale=1' />
+          
+
+<main>
+
+<section id='scrolly'>
+<article>
+<div class='step' data-step='1'>
+<p style="font-size: 0.9rem; line-height: 130%; text-align: left;">
+  An adjacency matrix of a graph is a data structure that encodes the relationship between
+  the vertices and edges of the graph. For a graph with n vertices, the adjacency matrix has
+  n rows and n columns. The vertices must be put in an (arbitrary) order from 1 to n; 
+  each row and column of the matrix then represents a distinct vertex. 
+  If two vertices <i style="font-family: serif;">i</i> and 
+  <i style="font-family: serif;">j</i> have an edge between them, the 
+  <i style="font-family: serif;">i,j</i> th entry of the matrix is 1. 
+  If they don't, <i style="font-family: serif;">i,j</i> th entry of the matrix is 0.
+  It is convenient to think of the adjacency
+  matrix as encoding not edges, but the neighbor relationship between two vertices.
+  <br>
+  <br>
+  Formally, the adjacency matrix G with vertices v ∈ V(G) and edges e ∈ E(G) 
+  is given by:
+   
+  <br>
+  $$a_{ij} = \begin{cases} 
+  1 & \text{if } v_i v_j \in E(G) \\
+  0 & \text{if } v_i v_j \notin E(G) \\
+  \end{cases}$$
+  <br>
+  For the example graph G on the right, the adjacency matrix is:
+  $$ A_G = \left[ {\begin{array}{cccccc}
+  0 & 1 & 1 & 1 & 0 & 0 \\
+  1 & 0 & 1 & 0 & 1 & 0 \\
+  1 & 1 & 0 & 1 & 1 & 1 \\
+  1 & 0 & 1 & 0 & 0 & 1 \\
+  0 & 1 & 1 & 0 & 0 & 1 \\
+  0 & 0 & 1 & 1 & 1 & 0
+  \end{array} } \right] $$
+</p>
+
+
+
+
+</div>
+<div class='step' data-step='2'>
+  <p style="font-size: 0.9rem; line-height: 130%; text-align: center;">
+    <br>
+    <br>
+    <br>
+    Now let's define a walk. A walk is an finite way of getting from one vertex to another
+     (or back to the same vertex). You are allowed to repeat edges and vertices. A walk
+      can even be no edges at all. The length of a walk is the number of edges traversed
+     during the walk, counting revisits.
+  </p>
+
+  <p style="font-size: 0.9rem; line-height: 130%; text-align: center;">
+    An an example, there is a walk of length 4 from node <font color='#EE5A63'> B</font> to node <font color='#EE5A63'> D</font>.
+  </p>
+
+</div>
+
+
+
+<div class='step' data-step='3'>
+  <p style="font-size: 0.9rem; line-height: 130%; text-align: center;">
+    Because the existence of a walk of length 1 between two vertices is the same as
+    the neighbor relationship between two vertices, the adjacency matrix also encodes 
+    all the walks of length 1 in a graph. With this in mind, let us ask the following
+    question:
+  <br>
+  <br>
+
+    What does the adjecency matrix squared encode?
+    $$ A^2 = \left[ {\begin{array}{cccccc}
+    3 & 1 & 2 & 1 & 2 & 2 \\
+    1 & 3 & 2 & 2 & 1 & 2 \\
+    2 & 2 & 5 & 2 & 2 & 2 \\
+    1 & 2 & 2 & 3 & 2 & 1 \\
+    2 & 1 & 2 & 2 & 3 & 1 \\
+    2 & 2 & 2 & 1 & 1 & 0
+    \end{array} } \right] $$
+
+    <br>
+
+    Let's examine the entry $$A_{3,2} = A_{C,B} = 2$$
+    Matrix multiplication here is the product is obtained by multiplying term-by-term 
+    the entries of the 3rd row and the 2nd column and summing those products. Its the dot product.
+
+    $$
+    \begin{pmatrix} 1 \\ 1 \\ 0 \\ 1 \\ 1 \\ 1 \end{pmatrix} \cdot 
+    \begin{pmatrix} 1 \\ 0 \\ 1 \\ 0 \\ 1 \\ 0 \end{pmatrix} =
+    \begin{pmatrix} 1 + 0 + 0 + 0 + 1 + 0 \end{pmatrix} = 2
+    $$
+    
+  </p>
+</div>
+
+
+
+<div class='step' data-step='4'>
+  <p style="font-size: 0.9rem; line-height: 130%; text-align: center;">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    The left vector above represents the neighbors of <font color='#6693FF'> C</font>.
+    The right vector above represents the neighbors of <font color='#6693FF'> B</font>.
+    By taking the dot product, only entries where both are not zero are represented in the sum.
+    Therefore, this dot product represents the number of common neighbors between  <font color='#6693FF'> B</font>
+    and <font color='#6693FF'> C</font>. Since two vertices have a common neighbor if
+    and only if a 2-walk exists between them,  
+    this matrix entry is also the number of 2-walks between <font color='#6693FF'> B</font>
+    and <font color='#6693FF'> C</font>. 
+    Now that we know that A<sup>2</sup>
+    encodes the number of 2-walks betwwen any two vertices in a graph, it is natural
+    to ask if A<sup>3</sup>
+    encodes 3-walks and if A<sup>n</sup> encodes n-walks.
+    <script src="https://gist.github.com/sbirbrower/acef5730841d383d9329853b3870609e.js"></script>
+
+  </p>
+  
+</div>
+
+
+<div class='step' data-step='5'>
+<p style="font-size: 1.4rem; line-height: 130%; text-align: center;">
+  Theorem: <br>
+  <font color='#898989'>
+    The <i style="font-family: serif;">i,j</i> th entry of the kth power of the adjacency matrix of a graph G is the number of different 
+    walks of length k in G between nodes <i style="font-family: serif;">i</i> and <i style="font-family: serif;">j</i>.
+  </font>
+</p>
+</div>
+
+
+
+
+<div class='step' data-step='6'>
+  <b style="font-size: 0.9rem; line-height: 130%; text-align: center;">Proof by Induction:</b>
+
+  <p style="font-size: 0.9rem; line-height: 130%; text-align: left;">
+    Our base case here is <i style="font-family: serif;">k=0</i>, or the matrix of walks of length one. This is the adjacency matrix 
+    by definition. 
+    <br>
+    <br>
+    Now we need to prove that if our theorem is true for <i style="font-family: serif;">k</i>, then it must always be true for <i style="font-family: serif;">k+1</i>.
+    <br>
+    <br>
+
+    Let's split a <i style="font-family: serif;">k</i>-length walk from <i style="font-family: serif;">i</i> to <i style="font-family: serif;">j</i> up into a walk of length one 
+    from <i style="font-family: serif;"> i</i> to one of its neighbors <i style="font-family: serif;">l</i> and a walk of length <i style="font-family: serif;">k-1</i> 
+    from <i style="font-family: serif;">l</i> to <i style="font-family: serif;">j</i>. Assuming our theorum is correct for <i style="font-family: serif;">k-1</i>, this number 
+    of <i style="font-family: serif;">k</i>-walks from <i style="font-family: serif;"> i</i> to <i style="font-family: serif;"> j</i> would be:
+
+    $$
+    \sum_{\{v_i, v_l\} \in E} a_{lj}^{k-1} = \sum_{l=1}^n a_{il} a_{lj}^{k-1} = a_{ij}
+    $$
+
+    We are summing all the possible <i style="font-family: serif;">k-1</i>-walks associated with each neighbor
+    across all neighbors to get all possible <i style="font-family: serif;">k</i>-walks from the starting node.
+
+    This last summations give us matrix multiplication. 
+    Intuitively, we can think of it as finding common nodes between the path of length one and 
+    the <i style="font-family: serif;">k-1</i> path.
+    Therefore, <i style="font-family: serif;">k-1</i> being true
+    implies its successors <i style="font-family: serif;">k</i>, <i style="font-family: serif;">k+1</i>, etc. and the proof 
+    by induction is complete.
+
+
+  </p>
+</div>
+
+
+
+
+<div class='step' data-step='7'>
+<p style="font-size: 1rem; line-height: 130%; text-align: center;"">
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  The adjacency matrix and its squares of the graph to the right are as follows:
+</p>
+<p style="font-size: 0.7rem; line-height: 130%; text-align: center;">
+  $$ A = \left[ {\begin{array}{cccccc}
+  0 & 0 & 1 & 1 & 1 & 1 \\
+  0 & 0 & 1 & 1 & 0 & 0 \\
+  1 & 1 & 0 & 0 & 0 & 0 \\
+  1 & 1 & 0 & 0 & 1 & 0 \\
+  1 & 0 & 0 & 1 & 0 & 0 \\
+  1 & 0 & 0 & 0 & 0 & 0
+  \end{array} } \right] 
+
+  A^2 = \left[ {\begin{array}{cccccc}
+  4 & 2 & 0 & 1 & 1 & 0 \\
+  2 & 2 & 0 & 0 & 1 & 0 \\
+  0 & 0 & 2 & 2 & 1 & 1 \\
+  1 & 0 & 2 & 3 & 1 & 1 \\
+  1 & 1 & 1 & 1 & 2 & 1 \\
+  0 & 0 & 1 & 1 & 1 & 1
+  \end{array} } \right]
+
+  A^3 = \left[ {\begin{array}{cccccc}
+  2 & 1 & 6 & 7 & 5 & 4 \\
+  1 & 0 & 4 & 5 & 2 & 2 \\
+  6 & 4 & 0 & 1 & 2 & 0 \\
+  7 & 5 & 1 & 2 & 4 & 1 \\
+  5 & 2 & 2 & 4 & 2 & 1 \\
+  4 & 2 & 0 & 1 & 1 & 0
+  \end{array} } \right]
+  $$
+</p>
+
+</div>
+
+
+
+
+
+<!-- <div class='step' data-step='8'>
+</div>
+<div class='step' data-step='9'>
+</div>
+<div class='step' data-step='10'>
+</div>
+<div class='step' data-step='11'>
+</div>
+<div class='step' data-step='12'>
+</div>
+
+<div class='step' data-step='13'>
+</div>
+
+<div class='step' data-step='15'>
+</div> -->
+
+</article>
+
+<figure></figure>
+
+</section>
+
+<section id='outro'>
+  </section>
+
+</main>
+
+<style>
+  table, caption, tbody, tfoot, thead, tr, th, td {
+    padding: 3px;
+    border: 0;
+    outline: 0;
+    font-size: 6px;
+    background: transparent;
+    color: black;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+
+.node circle {
+  stroke: black;
+  stroke-width: 2px;
+  color: black;
+}
+
+.node text {
+  font-family: sans-serif;
+  text-anchor: middle;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.link {
+  stroke-width: 4px;
+}
+
+
+text {
+  font: 18px sans-serif;
+  pointer-events: none;
+}
+
+#end-arrow {
+fill: #88A;
+  }
+
+#scrolly {
+position: relative;
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+padding: 1rem;
+}
+
+#scrolly>* {
+-webkit-box-flex: 1;
+-ms-flex: 1;
+flex: 1;
+}
+
+.article-style {
+overflow-x: visible;
+}
+
+.article-container {
+max-width: 1260px;
+}
+
+figure {
+position: -webkit-sticky;
+position: sticky;
+width: 100%;
+margin: 0;
+-webkit-transform: translate3d(0, 0, 0);
+-moz-transform: translate3d(0, 0, 0);
+transform: translate3d(0, 0, 0);
+z-index: 0;
+}
+
+figure p {
+text-align: center;
+padding: 1rem;
+position: absolute;
+top: 50%;
+left: 50%;
+-moz-transform: translate(-50%, -50%);
+-webkit-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+font-size: 8rem;
+font-weight: 900;
+}
+
+.step {
+margin: 0 auto 2rem auto;
+color: #C0C0C0;
+}
+
+.step:last-child {
+margin-bottom: 0;
+}
+
+.step.is-active {
+color: #3b3b3b;
+}
+
+.step p {
+text-align: center;
+padding: 1rem;
+font-size: 1.5rem;
+line-height: 90%;
+}
+
+body {
+font-size: 10px;
+font-family: 'Open Sans', sans-serif;
+font-weight: 400;
+text-align: center;
+}
+
+h1 {
+font-size: 50px;
+}
+
+table>thead>tr>th, 
+table>tbody>tr>th, 
+table>tfoot>tr>th, 
+table>thead>tr>td, 
+table>tbody>tr>td, 
+table>tfoot>tr>td { 
+background-color: transparent;
+border-top: transparent;
+color: black;
+padding: 3px;
+}
+
+table>tbody>tr:nth-child(odd)>td, table>tbody>tr:nth-child(odd)>th {
+background-color: transparent;
+color: black;
+}
+
+th {
+color: black;
+padding: 3px;
+}
+
+td {
+color: black;
+padding: 3px;
+}
+
+.author-card .avatar {
+  visibility: hidden;
+}
+
+</style>
+
+
+
+<script>
+  // I figured this could be a good way to organize the data 
+  // when reponse.index < 4 use all_links[0] otherwise use all_links[1]
+
+  // use color + response.index to color the links
+
+  // using d3 for convenience
+  var main = d3.select('main');
+  var scrolly = main.select('#scrolly');
+var figure = scrolly.select('figure');
+var article = scrolly.select('article');
+var step = article.selectAll('.step');
+
+margin = {
+top: 30,
+right: 80,
+bottom: 30,
+left: 30
+}
+
+width = 590
+height = 340
+
+var simulation = d3.forceSimulation()
+.force('link', d3.forceLink().id(function (d) { return d.id; }))
+//.force('charge', d3.forceManyBody().strength(-200))
+.force('charge', d3.forceManyBody()
+     .strength(-1000)
+     .distanceMax(200)
+)
+.force('center', d3.forceCenter(width / 2, height / 2));
+
+var svg = figure.append('svg').attr('height', 600).attr('width', 600)
+
+
+const dataset = {
+nodes: [
+  // graph 1 and 2
+  { name: "A", id: 0, color0: 'white', color1: '#f6a4a9', color2: '#C4D5FF', color3: '#C4D5FF', color4: 'white', color5: 'white', color6: 'white', color7: '#EE5A63', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: 'white', color14: '#5ba860' },
+  { name: "B", id: 1, color0: 'white', color1: '#EE5A63', color2: '#6693FF', color3: '#6693FF', color4: 'white', color5: 'white', color6: 'white', color7: '#5ba860', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: '#EE5A63', color14: 'white' },
+  { name: "C", id: 2, color0: 'white', color1: '#f6a4a9', color2: '#6693FF', color3: '#6693FF', color4: 'white', color5: 'white', color6: 'white', color7: '#EE5A63', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: '#EE5A63', color14: 'white' },
+  { name: "D", id: 3, color0: 'white', color1: '#EE5A63', color2: '#C4D5FF', color3: 'white', color4: 'white', color5: 'white', color6: 'white', color7: '#EE5A63', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: '#EE5A63', color14: 'white' },
+  { name: "E", id: 4, color0: 'white', color1: '#f6a4a9', color2: '#C4D5FF', color3: '#C4D5FF', color4: 'white', color5: 'white', color6: 'white', color7: 'white', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: 'white', color14: '#5ba860' },
+  { name: "F", id: 5, color0: 'white', color1: 'white', color2: '#C4D5FF', color3: 'white', color4: 'white', color5: 'white', color6: 'white', color7: 'white', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: 'white', color14: '#5ba860' },
+  { name: "G", id: 6, color0: 'white', color1: 'white', color2: '#C4D5FF', color3: 'white', color4: 'white', color5: 'white', color6: 'white', color7: 'white', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: '#EE5A63', color14: 'white' }
+  ],
+links: [
+  // graph 1
+  { id: 1, source: 0, target: 1, color0: 'black', color1: 'black', color2: '#6693FF', color3: '#6693FF', type: ''},
+  { id: 2, source: 0, target: 3, color0: 'black', color1: '#EE5A63', color2: 'black', color3: 'black', type: '' },
+  { id: 3, source: 0, target: 2, color0: 'black', color1: '#EE5A63', color2: '#6693FF', color3: '#6693FF', type: '' },
+  { id: 4, source: 1, target: 2, color0: 'black', color1: 'black', color2: '#6693FF', color3: 'black', type: '' },
+  { id: 5, source: 1, target: 4, color0: 'black', color1: '#EE5A63', color2: '#6693FF', color3: '#6693FF', type: '' },
+  { id: 6, source: 3, target: 5, color0: 'black', color1: 'black', color2: 'black', color3: 'black', type: '' },
+  { id: 7, source: 5, target: 4, color0: 'black', color1: 'black', color2: 'black', color3: 'black', type: '' },
+  
+
+  { id: 8, source: 2, target: 4, color0: 'black', color1: '#EE5A63', color2: '#6693FF', color3: '#6693FF', type: '' },
+  { id: 9, source: 2, target: 5, color0: 'black', color1: 'black', color2: '#6693FF', color3: 'black', type: '' },
+  { id: 10, source: 3, target: 2, color0: 'black', color1: 'black', color2: '#6693FF', color3: 'black', type: '' },
+
+  // graph 2
+
+  { id: 11, source: 0, target: 5, color4: 'black', color5: 'black', color6: 'black', color7: 'black', type: '' },
+  { id: 12, source: 0, target: 2, color4: 'black', color5: 'black', color6: 'black', color7: 'black', type: '' },
+  { id: 13, source: 2, target: 1, color4: 'black', color5: 'black', color6: 'black', color7: 'black', type: '' },
+  { id: 14, source: 3, target: 1, color4: 'black', color5: 'black', color6: 'black', color7: 'black', type: '' },
+  { id: 15, source: 0, target: 3, color4: 'black', color5: 'black', color6: 'black', color7: 'black', type: '' },
+  { id: 16, source: 4, target: 3, color4: 'black', color5: 'black', color6: 'black', color7: 'black', type: '' },
+  { id: 17, source: 0, target: 4, color4: 'black', color5: 'black', color6: 'black', color7: 'black', type: '' },
+
+
+  // graph 3-8
+  // { id: 17, source: 0, target: 1, color8: 'black', color10: 'black', type: ''},
+  { id: 18, source: 0, target: 2, color8: 'black', color10: 'black', type: ''},
+  { id: 19, source: 0, target: 4, color8: 'black', color10: 'black', type: ''},
+  { id: 20, source: 0, target: 5, color8: 'black', color10: 'black', type: ''},
+  { id: 21, source: 1, target: 2, color8: 'black', color10: 'black', type: ''},
+  { id: 22, source: 2, target: 5, color8: 'black', color10: 'black', type: ''},
+  { id: 23, source: 4, target: 5, color8: 'black', color10: 'black', type: ''},
+  { id: 24, source: 4, target: 3, color8: 'black', color10: 'black', type: ''},
+  { id: 25, source: 4, target: 6, color8: 'black', color10: 'black', type: ''},
+  
+  // graph 3-9
+  { id: 26, source: 0, target: 1, color9: 'black', type: '1'},
+  { id: 27, source: 0, target: 2, color9: 'black', type: '2'},
+  { id: 28, source: 0, target: 4, color9: 'black', type: '3'},
+  { id: 29, source: 0, target: 5, color9: 'black', type: '4'},
+  { id: 30, source: 1, target: 2, color9: 'black', type: '5'},
+  { id: 31, source: 2, target: 5, color9: 'black', type: '6'},
+  { id: 32, source: 4, target: 5, color9: 'black', type: '7'},
+  { id: 33, source: 4, target: 3, color9: 'black', type: '8'},
+  { id: 34, source: 4, target: 6, color9: 'black', type: '9'},
+  
+  // graph 3-10
+  { id: 53, source: 0, target: 1, color10: 'black', type: ''},
+  { id: 54, source: 0, target: 2, color10: 'black', type: ''},
+  { id: 55, source: 0, target: 4, color10: 'black', type: ''},
+  { id: 56, source: 0, target: 5, color10: 'black', type: ''},
+  { id: 57, source: 1, target: 2, color10: 'black', type: ''},
+  { id: 58, source: 2, target: 5, color10: 'black', type: ''},
+  { id: 59, source: 4, target: 5, color10: 'black', type: ''},
+  { id: 60, source: 4, target: 3, color10: 'black', type: ''},
+  { id: 61, source: 4, target: 6, color10: 'black', type: ''},
+  
+  // graph 3-11
+  { id: 35, source: 0, target: 1, color11: '#EE5A63',  type: '1'},
+  { id: 36, source: 0, target: 2, color11: '#EE5A63',  type: '1'},
+  { id: 37, source: 0, target: 4, color11: '#EE5A63',  type: '1'},
+  { id: 38, source: 0, target: 5, color11: '#EE5A63',  type: '1'},
+  { id: 39, source: 1, target: 2, color11: 'black', type: ''},
+  { id: 40, source: 2, target: 5, color11: 'black', type: ''},
+  { id: 41, source: 4, target: 5, color11: 'black', type: ''},
+  { id: 42, source: 4, target: 3, color11: '#5ba860', type: '2'},
+  { id: 43, source: 4, target: 6, color11: '#5ba860', type: '2'},
+  
+  // graph 3-11
+  { id: 44, source: 0, target: 1, color12: '#EE5A63', color13: 'black', color14: 'black', type: ''},
+  { id: 45, source: 0, target: 2, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  { id: 46, source: 0, target: 4, color12: '#EE5A63', color13: 'black', color14: 'black', type: ''},
+  { id: 47, source: 0, target: 5, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  { id: 48, source: 1, target: 2, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  { id: 49, source: 2, target: 5, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  { id: 50, source: 4, target: 5, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  { id: 51, source: 4, target: 3, color12: '#EE5A63', color13: 'black', color14: 'black', type: ''},
+  { id: 52, source: 4, target: 6, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  ]
+};
+
+
+console.log('dataset is ...', dataset);
+
+// Initialize the links
+let link = svg.append('g')
+.attr('class', 'links')
+.selectAll('line');
+
+// Initialize the nodes
+let node = svg.append('g')
+.attr('class', 'nodes')
+.selectAll('circle');
+// .enter().append('circle')
+
+// Text to nodes
+let text = svg.append('g')
+.attr('class', 'text')
+.selectAll('text')
+
+// Edge paths for the labels
+let edgepaths = svg.append("g")
+.selectAll(".links-path");
+
+// Labels for edges
+let edgelabels = svg.append("g")
+.selectAll(".links-text");
+
+//Listen for tick events to render the nodes as they update in your Canvas or SVG.
+simulation
+.nodes(dataset.nodes)//sets the simulation’s nodes to the specified array of objects, initializing their positions and velocities, and then re-initializes any bound forces;
+.on('tick', ticked);//use simulation.on to listen for tick events as the simulation runs.
+// After this, Each node must be an object. The following properties are assigned by the simulation:
+// index - the node’s zero-based index into nodes
+// x - the node’s current x-position
+// y - the node’s current y-position
+// vx - the node’s current x-velocity
+// vy - the node’s current y-velocity
+
+simulation.force('link')
+.links(dataset.links);//sets the array of links associated with this force, recomputes the distance and strength parameters for each link, and returns this force.
+// After this, Each link is an object with the following properties:
+// source - the link’s source node; 
+// target - the link’s target node; 
+// index - the zero-based index into links, assigned by this method
+
+
+// This function is run at each iteration of the force algorithm, updating the nodes position (the nodes data array is directly manipulated).
+function ticked() {
+link.attr('x1', d => d.source.x)
+.attr('y1', d => d.source.y)
+.attr('x2', d => d.target.x)
+.attr('y2', d => d.target.y);
+
+node.attr('cx', d => d.x)
+.attr('cy', d => d.y);
+
+text.attr('x', d => d.x - 5) //position of the lower left point of the text
+.attr('y', d => d.y + 5); //position of the lower left point of the text
+
+edgepaths.attr('d', function (d) {
+  var path = 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
+  //console.log(d)
+  return path
+});
+
+edgelabels.attr('transform', function (d, i) {
+  if (d.target.x < d.source.x) {
+    let bbox = this.getBBox();
+    let rx = bbox.x + bbox.width / 2;
+    let ry = bbox.y + bbox.height / 2;
+    return 'rotate(180 ' + rx + ' ' + ry + ')';
+  }
+  else {
+    return 'rotate(0)';
+  }
+});
+}
+
+//When the drag gesture starts, the targeted node is fixed to the pointer
+//The simulation is temporarily “heated” during interaction by setting the target alpha to a non-zero value.
+function dragstarted(d) {
+if (!d3.event.active) simulation.alphaTarget(0.3).restart();//sets the current target alpha to the specified number in the range [0,1].
+d.fy = d.y; //fx - the node’s fixed x-position. Original is null.
+d.fx = d.x; //fy - the node’s fixed y-position. Original is null.
+}
+
+//When the drag gesture starts, the targeted node is fixed to the pointer
+function dragged(d) {
+d.fx = d3.event.x;
+d.fy = d3.event.y;
+}
+
+//the targeted node is released when the gesture ends
+function dragended(d) {
+if (!d3.event.active) simulation.alphaTarget(0);
+d.fx = null;
+d.fy = null;
+
+console.log('dataset after dragged is ...', dataset);
+}
+
+
+//////////////////////////////////////////////////////////////
+/// Scrollytelling: Update node color and links
+//////////////////////////////////////////////////////////////
+
+
+// initialize the scrollama
+var scroller = scrollama();
+
+// generic window resize listener event
+function handleResize() {
+// 1. update height of step elements
+var stepH = Math.floor(window.innerHeight * 0.75);
+step.style('height', stepH + 'px');
+
+var figureHeight = window.innerHeight / 2;
+var figureMarginTop = (window.innerHeight - figureHeight) / 2;
+
+figure
+.style('height', figureHeight + 'px')
+.style('top', figureMarginTop + 'px')
+
+// 3. tell scrollama to update new element dimensions
+scroller.resize();
+}
+
+// scrollama event handlers
+function handleStepEnter(response) {
+
+// response = { element, direction, index }
+// add color to current step only
+step.classed('is-active', function (d, i) {
+  return i === response.index;
+});
+
+console.log(response.index)
+
+colors = 'd.color' + response.index
+edge_text = 'd.type' + response.index
+
+// if you're at the first graph, don't use the last node [A-F]
+// and only use the first 8 edges [this works]
+if (response.index < 4) {
+    nodes = dataset.nodes.filter(function (d) { return d.id < 6 })
+    links = dataset.links.filter(function (d) { return d.id < 11 });
+    restart()
+  // if you're at graph 2 
+      // use nodes A-F and links 8-16
+    } else if (response.index > 3 && response.index < 8) {
+      nodes = dataset.nodes.filter(function (d) { return d.id < 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });
+      restart()
+    } else if (response.index === 8) {
+      // if you're at graph 3 with labels (9)
+      nodes = dataset.nodes.filter(function (d) { return d.id < 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });
+      restart();
+    } else if (response.index === 9) {
+  // if you're at graph 3 with labels (9)
+      nodes = dataset.nodes.filter(function (d) { return d.id < 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });      
+      restart();
+    } else if (response.index === 10) {
+      // if you're at graph 3 with labels (9)
+      nodes = dataset.nodes.filter(function (d) { return d.id < 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });      
+      restart();
+    } else if (response.index === 11) {
+  // if you're at graph 3 with labels (10)
+      nodes = dataset.nodes.filter(function (d) { return d.id < 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });      
+      restart();
+    } else {
+      // if you're at graph 3 use node G and the last edges
+      nodes = dataset.nodes.filter(function (d) { return d.id < 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });
+      restart();
+}
+
+node.attr('fill', function (d) { return eval(colors) })
+link.style('stroke', function (d) { return eval(colors) })
+
+
+}
+
+function setupStickyfill() {
+d3.selectAll('.sticky').each(function () {
+  Stickyfill.add(this);
+});
+}
+
+function init() {
+setupStickyfill();
+
+// 1. force a resize on load to ensure proper dimensions are sent to scrollama
+handleResize();
+
+// 2. setup the scroller passing options
+// 	   this will also initialize trigger observations
+// 3. bind scrollama event handlers (this can be chained like below)
+scroller
+.setup({
+  step: '#scrolly article .step',
+  offset: 0.5,
+  debug: false
+})
+.onStepEnter(handleStepEnter);
+
+// setup resize event
+window.addEventListener('resize', handleResize);
+}
+
+// kick things off
+init();
+
+function restart() {
+if (simulation) simulation.stop();
+
+// Apply the general update pattern to the nodes.
+node = node.data(nodes);
+node.exit().remove();
+
+node = node.enter().append('circle')
+.attr('r', 15)
+.style('stroke', '#777')
+.style('stroke-width', 2)
+.merge(node)
+.call(d3.drag()  //sets the event listener for the specified typenames and returns the drag behavior.
+      .on('start', dragstarted) //start - after a new pointer becomes active (on mousedown or touchstart).
+      .on('drag', dragged)      //drag - after an active pointer moves (on mousemove or touchmove).
+      .on('end', dragended)     //end - after an active pointer becomes inactive (on mouseup, touchend or touchcancel).
+)
+
+// Apply the general update pattern to the links.
+link = link.data(links, d => d.id);
+link.exit().remove();
+link = link.enter().append('line')
+.style('stroke-width', 4)
+.merge(link);
+
+text = text.data(nodes)
+text.exit().remove();
+text = text.enter().append('text').text(function (d) { return d.name; }).merge(text)
+
+edgepaths = edgepaths.data(links, d => d.source + "-" + d.target);
+edgepaths.exit().remove();
+edgepaths = edgepaths.enter().append('path')
+.attr('class', 'links-path')
+.attr('fill-opacity', 0)
+.attr('stroke-opacity', 0)
+.attr('d', function (d) { return 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y })
+.attr('id', function (d, i) { return 'edgepath' + d.source.id + "-" + d.target.id })
+.merge(edgepaths);
+
+// if I rewrite this as
+// edgelabels = edgelabels.data(links)
+// and put the svg.selectAll portion as a let statement outside of this function
+// it doesn't work at all? 
+    edgelabels = edgelabels.data(links, d => d.id);
+    edgelabels.exit().remove();
+    edgelabels = edgelabels.enter().append('text')
+      .attr('class', 'links-text')
+      .attr('dx', 40)
+      .attr('dy', 5)
+      .attr('font-size', 3)
+      .attr('fill', 'black')
+      .merge(edgelabels);
+
+    edgelabels.append('textPath')
+      .attr('xlink:href', d => {
+        return "#edgepath" + d.source.id + "-" + d.target.id;
+      })
+      .text(function (d) { return d.type }).merge(edgelabels);
+
+    // Update and restart the simulation.
+    simulation.nodes(nodes);
+    simulation.force("link").links(links);
+    simulation.alphaTarget(.1); // "Reheat the simulation"
+    simulation.restart();
+  }
+
+</script>
