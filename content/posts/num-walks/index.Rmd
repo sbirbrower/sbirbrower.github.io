@@ -1,0 +1,24 @@
+---
+title: Adjacency Matrices
+author: Sydney Birbrower
+date: '2020-10-09'
+slug: adjacency-matrices
+categories:
+  - Graph Theory
+tags:
+  - Graph Theory
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-09-09T12:35:23-07:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+```{r, echo=FALSE}
+htmltools::htmlTemplate(filename = "d3network.html")
+```
