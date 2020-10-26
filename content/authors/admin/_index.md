@@ -13,7 +13,7 @@ superuser: true
 role: Aspiring Developer/ Data Scientist
 
 # Short bio (displayed in user profile at end of posts)
-bio: I'm a mission-driven developer who interests include big data and disruptive technologies
+bio: 
 
 interests:
 - Machine Learning
