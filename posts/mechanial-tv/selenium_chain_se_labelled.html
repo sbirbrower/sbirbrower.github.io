@@ -1,0 +1,41 @@
+<div style="padding:0.5rem 0;">
+<h2 class="sr-only">Selenium's structure as a zig-zag chain with the bonds drawn behind the atoms and each atom labelled Se.</h2>
+<style>.at{font:12px var(--font-sans,sans-serif);fill:var(--color-text-secondary);text-anchor:middle}</style>
+<svg id="se" width="100%" viewBox="0 0 680 250" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Selenium chain</title>
+  <desc>A zig-zag chain of selenium atoms labelled Se, each bonded to two neighbours with two lone pairs, bonds drawn behind the atoms.</desc>
+  <g id="bondsG"></g>
+  <g id="lpG"></g>
+  <g id="atomsG"></g>
+</svg>
+</div>
+<script>
+(function(){
+  var NS="http://www.w3.org/2000/svg";
+  function mk(tag,a){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  var bondsG=document.getElementById('bondsG'),lpG=document.getElementById('lpG'),atomsG=document.getElementById('atomsG');
+  var UP=105, DN=157;
+  var atoms=[[90,DN],[175,UP],[260,DN],[345,UP],[430,DN],[515,UP],[600,DN]];
+
+  // continuation stubs + backbone bonds (behind atoms)
+  bondsG.appendChild(mk('line',{x1:90,y1:DN,x2:54,y2:182,stroke:'var(--color-border-secondary)','stroke-width':1.6,'stroke-dasharray':'3 4'}));
+  bondsG.appendChild(mk('line',{x1:600,y1:DN,x2:636,y2:182,stroke:'var(--color-border-secondary)','stroke-width':1.6,'stroke-dasharray':'3 4'}));
+  for(var i=0;i<atoms.length-1;i++){ bondsG.appendChild(mk('line',{x1:atoms[i][0],y1:atoms[i][1],x2:atoms[i+1][0],y2:atoms[i+1][1],stroke:'var(--color-text-secondary)','stroke-width':2.2})); }
+
+  // lone pairs
+  atoms.forEach(function(a){
+    var up=a[1]<130, ly=up?a[1]-22:a[1]+22;
+    [-13,13].forEach(function(ox){
+      lpG.appendChild(mk('circle',{cx:a[0]+ox-3,cy:ly,r:3,fill:'#1D9E75'}));
+      lpG.appendChild(mk('circle',{cx:a[0]+ox+3,cy:ly,r:3,fill:'#1D9E75'}));
+    });
+  });
+
+  // opaque atoms on top, with Se labels
+  atoms.forEach(function(a){
+    atomsG.appendChild(mk('circle',{cx:a[0],cy:a[1],r:16,fill:'var(--color-background-primary)'}));
+    atomsG.appendChild(mk('circle',{cx:a[0],cy:a[1],r:16,fill:'#EF9F27','fill-opacity':0.24,stroke:'var(--color-border-secondary)','stroke-width':0.9}));
+    var t=mk('text',{x:a[0],y:a[1]+4,'class':'at'});t.textContent='Se';atomsG.appendChild(t);
+  });
+})();
+</script>

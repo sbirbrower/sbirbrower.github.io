@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sydney Birbrower</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="site-title" href="index.html">Sydney Birbrower</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="blog.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="about">
+      <img
+        class="profile-photo"
+        src="images/profile.jpg"
+        alt="Photo of Sydney Birbrower"
+        onerror="this.onerror=null; this.src='images/profile-placeholder.svg';"
+      />
+      <div class="about-text">
+        <h1>Hi, I'm Sydney</h1>
+        <p>
+          <!-- TODO: replace this with a couple of sentences about yourself --
+               what you do, what you're into, etc. -->
+          I'm interested in graph theory, math, and visualization. This site
+          is where I write about ideas I find interesting, usually with some
+          interactive diagrams along the way.
+        </p>
+        <div class="social-links">
+          <a href="https://github.com/sbirbrower" target="_blank" rel="noopener">GitHub</a>
+          <!-- TODO: add more links, e.g. -->
+          <!-- <a href="mailto:you@example.com">Email</a> -->
+          <!-- <a href="https://linkedin.com/in/yourname" target="_blank" rel="noopener">LinkedIn</a> -->
+        </div>
+      </div>
+    </section>
+
+    <section class="posts-section">
+      <h2>Latest Posts</h2>
+      <ul class="post-list">
+        <li class="post-item">
+          <a class="post-title" href="posts/num-walks/index.html">Counting Walks with Adjacency Matrices</a>
+          <span class="post-meta">October 9, 2020 &middot; Graph Theory</span>
+          <p class="post-summary">
+            How powers of a graph's adjacency matrix encode the number of walks
+            between vertices &mdash; with an interactive walkthrough and a proof
+            by induction.
+          </p>
+        </li>
+        <li class="post-item">
+          <a class="post-title" href="posts/graph-score/index.html">Degree Sequences and Graphical Scores</a>
+          <span class="post-meta">October 6, 2020 &middot; Graph Theory</span>
+          <p class="post-summary">
+            What makes a sequence of integers the degree sequence of some graph?
+            An interactive look at graphical sequences and how to test them.
+          </p>
+        </li>
+      </ul>
+      <p class="see-all"><a href="blog.html">See all posts &rarr;</a></p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      &copy; 2026 Sydney Birbrower
+    </div>
+  </footer>
+
+</body>
+</html>

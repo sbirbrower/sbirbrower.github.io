@@ -1,0 +1,119 @@
+<div style="padding: 0.5rem 0;">
+<h2 class="sr-only">A passive two-branch network — a straight-through resistor path and a capacitor derivative path summing into a load resistor — drawn beside the four waveforms it produces, colour-matched branch to panel.</h2>
+<svg id="nw" width="100%" viewBox="0 0 680 440" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Passive derivative-adding network and its four waveforms</title>
+  <desc>The selenium cell drives two parallel branches: a resistor carrying the straight current and a capacitor carrying the derivative; they sum across a load resistor to give the corrected total, shown against the four colour-matched panels.</desc>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- light -->
+  <circle cx="44" cy="60" r="7" fill="none" stroke="var(--color-text-secondary)" stroke-width="1.3"/>
+  <line x1="44" y1="46" x2="44" y2="40" stroke="var(--color-text-secondary)" stroke-width="1.3"/>
+  <line x1="31" y1="60" x2="25" y2="60" stroke="var(--color-text-secondary)" stroke-width="1.3"/>
+  <line x1="34" y1="50" x2="30" y2="46" stroke="var(--color-text-secondary)" stroke-width="1.3"/>
+  <text class="ts" x="44" y="30" text-anchor="middle">light</text>
+  <line x1="58" y1="74" x2="92" y2="108" stroke="var(--color-text-secondary)" stroke-width="1.3" marker-end="url(#ah)"/>
+  <line x1="46" y1="86" x2="80" y2="118" stroke="var(--color-text-secondary)" stroke-width="1.3" marker-end="url(#ah)"/>
+
+  <!-- selenium cell -->
+  <rect x="92" y="110" width="54" height="40" rx="2" fill="var(--color-background-secondary)" stroke="#5B8DEF" stroke-width="1.4"/>
+  <path d="M101 130 l6 -6 l6 12 l6 -12 l6 12 l6 -6" fill="none" stroke="#5B8DEF" stroke-width="1.3"/>
+  <text class="ts" x="119" y="166" text-anchor="middle">selenium cell</text>
+
+  <line x1="146" y1="130" x2="182" y2="130" stroke="#5B8DEF" stroke-width="1.6"/>
+  <line x1="182" y1="100" x2="182" y2="164" stroke="var(--color-text-primary)" stroke-width="1.4"/>
+
+  <!-- top branch: resistor R1 (straight, current) -->
+  <line x1="182" y1="100" x2="200" y2="100" stroke="#5B8DEF" stroke-width="1.6"/>
+  <path d="M200 100 l5 -7 l6 14 l6 -14 l6 14 l6 -14 l5 7" fill="none" stroke="#5B8DEF" stroke-width="1.6"/>
+  <line x1="234" y1="100" x2="258" y2="100" stroke="#5B8DEF" stroke-width="1.6"/>
+  <text class="ts" x="217" y="88" text-anchor="middle" fill="#5B8DEF">R₁ · straight</text>
+
+  <!-- bottom branch: capacitor (derivative) -->
+  <g id="capBranch">
+    <line x1="182" y1="164" x2="212" y2="164" stroke="#C06AC0" stroke-width="1.6"/>
+    <line x1="212" y1="153" x2="212" y2="175" stroke="#C06AC0" stroke-width="1.8"/>
+    <line x1="222" y1="153" x2="222" y2="175" stroke="#C06AC0" stroke-width="1.8"/>
+    <line x1="222" y1="164" x2="258" y2="164" stroke="#C06AC0" stroke-width="1.6"/>
+    <text class="ts" x="217" y="190" text-anchor="middle" fill="#C06AC0">C · derivative</text>
+  </g>
+
+  <!-- sum node + output + load R2 -->
+  <line x1="258" y1="100" x2="258" y2="164" stroke="var(--color-text-primary)" stroke-width="1.4"/>
+  <line x1="258" y1="130" x2="320" y2="130" stroke="#EF9F27" stroke-width="1.8"/>
+  <line x1="320" y1="130" x2="340" y2="130" stroke="#EF9F27" stroke-width="1.8" marker-end="url(#ah)"/>
+  <text class="ts" x="318" y="120" text-anchor="middle" fill="#EF9F27">to amp</text>
+  <line x1="258" y1="164" x2="258" y2="182" stroke="#EF9F27" stroke-width="1.6"/>
+  <path d="M258 182 l-7 5 l14 6 l-14 6 l14 6 l-7 5" fill="none" stroke="#EF9F27" stroke-width="1.6"/>
+  <line x1="258" y1="210" x2="258" y2="220" stroke="#EF9F27" stroke-width="1.6"/>
+  <line x1="246" y1="220" x2="270" y2="220" stroke="var(--color-text-secondary)" stroke-width="1.4"/>
+  <line x1="250" y1="225" x2="266" y2="225" stroke="var(--color-text-secondary)" stroke-width="1.4"/>
+  <line x1="254" y1="230" x2="262" y2="230" stroke="var(--color-text-secondary)" stroke-width="1.4"/>
+  <text class="ts" x="276" y="200" text-anchor="start" fill="#EF9F27">R₂</text>
+  <text class="ts" x="222" y="252" text-anchor="middle">sum across R₂ = I + k·dV/dt</text>
+
+  <!-- leaders -->
+  <line x1="240" y1="100" x2="358" y2="146" stroke="#5B8DEF" stroke-width="1" stroke-dasharray="3 4" opacity="0.7"/>
+  <line x1="222" y1="172" x2="358" y2="246" stroke="#C06AC0" stroke-width="1" stroke-dasharray="3 4" opacity="0.7"/>
+  <line x1="332" y1="130" x2="358" y2="352" stroke="#EF9F27" stroke-width="1" stroke-dasharray="3 4" opacity="0.7"/>
+
+  <!-- panels -->
+  <text class="ts" x="346" y="64" text-anchor="middle" transform="rotate(-90 346 64)">light</text>
+  <line x1="360" y1="44" x2="360" y2="84" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <line x1="360" y1="84" x2="660" y2="84" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <polyline id="pL" points="" fill="none" stroke="var(--color-text-secondary)" stroke-width="1.8"/>
+
+  <text class="ts" x="346" y="148" text-anchor="middle" transform="rotate(-90 346 148)" fill="#5B8DEF">cell current</text>
+  <line x1="360" y1="128" x2="360" y2="168" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <line x1="360" y1="168" x2="660" y2="168" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <polyline id="pI" points="" fill="none" stroke="#5B8DEF" stroke-width="1.8"/>
+
+  <text class="ts" x="346" y="246" text-anchor="middle" transform="rotate(-90 346 246)" fill="#C06AC0">derivative</text>
+  <line x1="360" y1="222" x2="360" y2="270" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <line x1="360" y1="246" x2="660" y2="246" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <polyline id="pD" points="" fill="none" stroke="#C06AC0" stroke-width="1.8"/>
+
+  <text class="ts" x="346" y="352" text-anchor="middle" transform="rotate(-90 346 352)" fill="#EF9F27">total</text>
+  <line x1="360" y1="332" x2="360" y2="372" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <line x1="360" y1="372" x2="660" y2="372" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <polyline id="pLo" points="" fill="none" stroke="var(--color-text-tertiary)" stroke-width="1.1" stroke-dasharray="4 4"/>
+  <polyline id="pT" points="" fill="none" stroke="#EF9F27" stroke-width="2"/>
+</svg>
+
+<div style="margin-top:14px; display:flex; align-items:center; gap:14px; font-size:13px; color:var(--color-text-secondary);">
+  <span style="min-width:150px;">Capacitor branch strength</span>
+  <input id="k" type="range" min="0" max="1.1" step="0.01" value="0.88" style="flex:1;">
+  <span id="kv" style="min-width:42px; text-align:right;">0.88</span>
+</div>
+<div style="margin-top:8px; font-size:13px; color:var(--color-text-secondary);">Dashed grey on the total = the original light, for comparison. Turn the capacitor branch to zero and the total falls back onto the laggy current.</div>
+</div>
+
+<script>
+(function(){
+  var N=500, tau=0.022, dt=1/(N-1);
+  var pulses=[[0.10,0.27,0.55],[0.40,0.50,0.32],[0.62,0.84,0.80]];
+  function Lf(tf){ var v=0; for(var p=0;p<pulses.length;p++){ if(tf>=pulses[p][0]&&tf<pulses[p][1]) v=pulses[p][2]; } return v; }
+  var L=[],I=[],D=[],Iv=0;
+  for(var i=0;i<N;i++){ var tf=i/(N-1), Lv=Lf(tf); var d=(Lv-Iv)/tau; L.push(Lv); D.push(d); I.push(Iv); Iv+=d*dt; }
+  var Dmax=0; for(var k=0;k<N;k++){ if(Math.abs(D[k])>Dmax) Dmax=Math.abs(D[k]); }
+  function mx(i){ return 360+(i/(N-1))*300; }
+  function build(fy){ var s=""; for(var i=0;i<N;i++){ s+=mx(i).toFixed(1)+","+fy(i).toFixed(1)+" "; } return s; }
+
+  document.getElementById('pL').setAttribute('points', build(function(i){return 84-L[i]*40;}));
+  document.getElementById('pI').setAttribute('points', build(function(i){return 168-I[i]*40;}));
+  document.getElementById('pD').setAttribute('points', build(function(i){return 246-(D[i]/Dmax)*24;}));
+  document.getElementById('pLo').setAttribute('points', build(function(i){return 372-L[i]*40;}));
+
+  var kEl=document.getElementById('k'), kv=document.getElementById('kv'), pT=document.getElementById('pT'), cap=document.getElementById('capBranch');
+  function redraw(){
+    var k=parseFloat(kEl.value); kv.textContent=k.toFixed(2);
+    pT.setAttribute('points', build(function(i){ var tot=I[i]+k*(L[i]-I[i]); return 372-tot*40; }));
+    cap.setAttribute('opacity', (0.22+0.78*Math.min(k/1.0,1)).toFixed(2));
+  }
+  kEl.addEventListener('input',redraw);
+  redraw();
+})();
+</script>

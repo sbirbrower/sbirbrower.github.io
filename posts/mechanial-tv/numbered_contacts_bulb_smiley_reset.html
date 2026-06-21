@@ -1,0 +1,101 @@
+<div style="padding:0.5rem 0;">
+<h2 class="sr-only">A brush steps round a ring of 36 numbered contacts, flashing each live contact's matching round bulb amber on a 6-by-6 mosaic; unlit bulbs are light grey. A reset button blanks all the bulbs and sends the brush back to contact 0 to rebuild the face.</h2>
+<svg id="sc" width="100%" viewBox="0 0 680 412" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Numbered contacts flashing a grey/amber bulb smiley, with reset</title>
+  <desc>A brush steps round a numbered ring flashing matching bulbs amber while unlit bulbs stay grey; a reset button rebuilds the face.</desc>
+  <g id="ring"></g>
+  <g id="brush"></g>
+  <circle id="btip" r="5" fill="#FCDE5A" fill-opacity="0"/>
+  <text id="offlab" x="0" y="0" style="font:10px var(--font-sans,sans-serif);fill:var(--color-text-tertiary)" opacity="0">off</text>
+  <circle id="halo" r="13" fill="#FCDE5A" opacity="0"/>
+  <g id="bulbs"></g>
+  <circle id="statDot" cx="206" cy="300" r="6" fill="none"/>
+  <text id="readout" x="222" y="304" style="font:12px var(--font-sans,sans-serif);fill:var(--color-text-primary);font-weight:500">contact 0</text>
+  <text x="60" y="328" style="font:11px var(--font-sans,sans-serif);fill:var(--color-text-secondary)">input signal — high across the face, dips at the eyes and mouth</text>
+  <polyline id="sig" points="" fill="none" stroke="#EF9F27" stroke-width="1.8"/>
+  <line id="cursor" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <circle id="valdot" r="3.5" fill="#FCDE5A"/>
+</svg>
+</div>
+<div style="margin-top:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+  <button id="reset">Reset</button>
+  <span style="font-size:14px;color:var(--color-text-secondary);">The brush flashes each live contact's matching bulb amber; off contacts stay cold grey. Reset blanks the bulbs and rebuilds the face from contact 0.</span>
+</div>
+<script>
+(function(){
+  var NS="http://www.w3.org/2000/svg";
+  function mk(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  var dark={7:1,10:1,19:1,22:1,25:1,26:1,27:1,28:1};
+  var N=36, CX=160, CY=168, R=108;
+
+  var ring=document.getElementById('ring'), dots=[];
+  for(var i=0;i<N;i++){ var th=(-90+i*360/N)*Math.PI/180, x=CX+R*Math.cos(th), y=CY+R*Math.sin(th);
+    var d=mk('circle',{cx:x,cy:y,r:4,fill:'var(--color-text-tertiary)'}); ring.appendChild(d); dots.push({el:d,x:x,y:y});
+    var nx=CX+(R+13)*Math.cos(th), ny=CY+(R+13)*Math.sin(th);
+    var t=mk('text',{x:nx,y:ny+3,'text-anchor':'middle',style:'font:8px var(--font-sans,sans-serif);fill:var(--color-text-tertiary)'}); t.textContent=i; ring.appendChild(t); }
+  var brushG=document.getElementById('brush');
+  var bline=mk('line',{x1:CX,y1:CY,x2:CX,y2:CY-R,stroke:'var(--color-text-secondary)','stroke-width':2}); brushG.appendChild(bline);
+  brushG.appendChild(mk('circle',{cx:CX,cy:CY,r:5,fill:'var(--color-text-secondary)'}));
+  var btip=document.getElementById('btip'), offlab=document.getElementById('offlab'), halo=document.getElementById('halo');
+
+  var bulbsG=document.getElementById('bulbs'), GX=404, GY=72, SP=34, BR=13, glow=[], bpos=[], lit=new Array(N).fill(false), bf=new Array(N).fill(0);
+  for(var r=0;r<6;r++)for(var c=0;c<6;c++){ var idx=r*6+c, x=GX+c*SP, y=GY+r*SP; bpos[idx]={x:x,y:y};
+    bulbsG.appendChild(mk('circle',{cx:x,cy:y,r:BR,fill:'#ccd1d7',stroke:'var(--color-border-secondary)','stroke-width':0.6}));
+    glow[idx]=mk('circle',{cx:x,cy:y,r:BR,fill:'#EF9F27',opacity:0}); bulbsG.appendChild(glow[idx]);
+    var t=mk('text',{x:x,y:y+3,'text-anchor':'middle',style:'font:8px var(--font-sans,sans-serif);fill:#6b7078'}); t.textContent=idx; bulbsG.appendChild(t); }
+
+  var SX=60, SW=560, top=352, base=384;
+  function yOf(i){ return dark[i]?base:top; }
+  var sig=document.getElementById('sig'), pts="";
+  for(var i=0;i<N;i++){ var x0=SX+i/N*SW, x1=SX+(i+1)/N*SW, y=yOf(i); pts+=x0.toFixed(1)+","+y+" "+x1.toFixed(1)+","+y+" "; }
+  sig.setAttribute('points',pts);
+  var cursor=document.getElementById('cursor'), valdot=document.getElementById('valdot'), readout=document.getElementById('readout'), statDot=document.getElementById('statDot');
+
+  var ci=0, prev=-1, stepT=0, flash=0, last=null, DWELL=0.34;
+  function land(){
+    if(prev>=0){ dots[prev].el.setAttribute('r',4); dots[prev].el.setAttribute('fill','var(--color-text-tertiary)'); dots[prev].el.setAttribute('fill-opacity',1); }
+    prev=ci;
+    if(!dark[ci]){ flash=1; bf[ci]=1; lit[ci]=true;
+      statDot.setAttribute('fill','#FCDE5A'); statDot.setAttribute('stroke','none');
+      readout.setAttribute('fill','var(--color-text-primary)'); readout.textContent='contact '+ci+' — ON, bulb '+ci+' flashes';
+    } else { flash=0;
+      statDot.setAttribute('fill','none'); statDot.setAttribute('stroke','#9aa0a6'); statDot.setAttribute('stroke-width','2.4');
+      readout.setAttribute('fill','var(--color-text-secondary)'); readout.textContent='contact '+ci+' — OFF, bulb '+ci+' stays grey';
+    }
+    var cx=SX+(ci+0.5)/N*SW; cursor.setAttribute('x1',cx); cursor.setAttribute('y1',top-6); cursor.setAttribute('x2',cx); cursor.setAttribute('y2',base);
+    valdot.setAttribute('cx',cx); valdot.setAttribute('cy',yOf(ci));
+  }
+  land();
+
+  document.getElementById('reset').addEventListener('click',function(){
+    for(var k=0;k<N;k++){ lit[k]=false; bf[k]=0; glow[k].setAttribute('opacity',0); dots[k].el.setAttribute('r',4); dots[k].el.setAttribute('fill','var(--color-text-tertiary)'); dots[k].el.setAttribute('fill-opacity',1); }
+    btip.setAttribute('fill-opacity',0); offlab.setAttribute('opacity',0); halo.setAttribute('opacity',0);
+    ci=0; prev=-1; stepT=0; flash=0; land();
+  });
+
+  function frame(ts){
+    if(last===null)last=ts; var dt=Math.min((ts-last)/1000,0.05); last=ts;
+    stepT+=dt; if(stepT>=DWELL){ stepT-=DWELL; ci=(ci+1)%N; land(); }
+    flash*=Math.pow(0.5,dt/0.16);
+    var p=dots[ci]; bline.setAttribute('x2',p.x); bline.setAttribute('y2',p.y); btip.setAttribute('cx',p.x); btip.setAttribute('cy',p.y);
+
+    if(!dark[ci]){
+      p.el.setAttribute('r',5); p.el.setAttribute('fill','#FCDE5A'); p.el.setAttribute('fill-opacity',1);
+      btip.setAttribute('fill','#FCDE5A'); btip.setAttribute('stroke','none'); btip.setAttribute('r',(5+flash*6).toFixed(1)); btip.setAttribute('fill-opacity',(0.55+flash*0.45).toFixed(2));
+      offlab.setAttribute('opacity',0);
+    } else {
+      p.el.setAttribute('r',4); p.el.setAttribute('fill','var(--color-text-tertiary)'); p.el.setAttribute('fill-opacity',1);
+      btip.setAttribute('fill','none'); btip.setAttribute('stroke','#9aa0a6'); btip.setAttribute('stroke-width','2.6'); btip.setAttribute('r',8); btip.setAttribute('fill-opacity',1);
+      offlab.setAttribute('x',p.x+11); offlab.setAttribute('y',p.y+4); offlab.setAttribute('opacity',1);
+    }
+
+    var fd=Math.pow(0.5,dt/0.22);
+    for(var k=0;k<N;k++){ bf[k]*=fd; glow[k].setAttribute('opacity',Math.min(1,(lit[k]?0.82:0)+bf[k]*0.18).toFixed(3)); }
+    if(!dark[ci] && bf[ci]>0.02){ halo.setAttribute('cx',bpos[ci].x); halo.setAttribute('cy',bpos[ci].y); halo.setAttribute('r',(BR+bf[ci]*9).toFixed(1)); halo.setAttribute('opacity',(bf[ci]*0.34).toFixed(2)); }
+    else halo.setAttribute('opacity',0);
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>

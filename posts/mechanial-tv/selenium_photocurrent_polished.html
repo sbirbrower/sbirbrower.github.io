@@ -1,0 +1,146 @@
+<div style="padding:0.5rem 0;">
+<h2 class="sr-only">Selenium photocurrent circuit: light frees teal lone-pair electrons into lighter-green mobile conduction electrons that drift and drive a conventional current from the battery's positive terminal around through the chain and lamp back to negative, lighting the lamp more brightly with more light.</h2>
+<style>.lbl{font:12px var(--font-sans,sans-serif);fill:var(--color-text-secondary)}.lbls{font:10.5px var(--font-sans,sans-serif);fill:var(--color-text-tertiary)}.at{font:10px var(--font-sans,sans-serif);fill:var(--color-text-secondary);text-anchor:middle}</style>
+<svg id="pc" width="100%" viewBox="0 0 680 408" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Selenium photocurrent circuit</title>
+  <desc>A selenium chain in a circuit with a correctly labelled battery and a lamp; light frees lone-pair electrons into mobile carriers that drive a conventional current.</desc>
+
+  <polygon id="beam" points="330,42 350,42 474,128 206,128" fill="#EF9F27" fill-opacity="0.10"/>
+  <g id="sun"><circle cx="340" cy="34" r="13" fill="#EF9F27" fill-opacity="0.9"/>
+    <g stroke="#EF9F27" stroke-width="2" stroke-linecap="round"><line x1="340" y1="14" x2="340" y2="7"/><line x1="340" y1="54" x2="340" y2="61"/><line x1="320" y1="34" x2="313" y2="34"/><line x1="360" y1="34" x2="367" y2="34"/><line x1="326" y1="20" x2="321" y2="15"/><line x1="354" y1="20" x2="359" y2="15"/><line x1="326" y1="48" x2="321" y2="53"/><line x1="354" y1="48" x2="359" y2="53"/></g></g>
+  <text class="lbls" x="392" y="38">light in</text>
+
+  <line x1="150" y1="138" x2="150" y2="236" stroke="var(--color-text-secondary)" stroke-width="1.6"/>
+  <line x1="150" y1="244" x2="150" y2="348" stroke="var(--color-text-secondary)" stroke-width="1.6"/>
+  <line x1="150" y1="348" x2="530" y2="348" stroke="var(--color-text-secondary)" stroke-width="1.6"/>
+  <line x1="530" y1="138" x2="530" y2="227" stroke="var(--color-text-secondary)" stroke-width="1.6"/>
+  <line x1="530" y1="259" x2="530" y2="348" stroke="var(--color-text-secondary)" stroke-width="1.6"/>
+
+  <line x1="135" y1="236" x2="165" y2="236" stroke="var(--color-text-secondary)" stroke-width="1.2"/>
+  <line x1="143" y1="244" x2="157" y2="244" stroke="var(--color-text-secondary)" stroke-width="4.2"/>
+  <text class="lbls" x="132" y="240" text-anchor="end">+</text>
+  <text class="lbls" x="132" y="249" text-anchor="end">−</text>
+  <text class="lbl" x="110" y="244" text-anchor="end">battery</text>
+
+  <g id="curr"></g>
+
+  <circle id="lamp" cx="530" cy="243" r="16" fill="#EF9F27" fill-opacity="0.10" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <g id="lrays" stroke="#EF9F27" stroke-width="1.6" stroke-linecap="round" style="opacity:0">
+    <line x1="550" y1="243" x2="558" y2="243"/><line x1="544.1" y1="257.1" x2="549.8" y2="262.8"/>
+    <line x1="515.9" y1="257.1" x2="510.2" y2="262.8"/><line x1="510" y1="243" x2="502" y2="243"/>
+    <line x1="515.9" y1="228.9" x2="510.2" y2="223.2"/><line x1="544.1" y1="228.9" x2="549.8" y2="223.2"/>
+  </g>
+  <text class="lbl" x="563" y="247">lamp</text>
+
+  <g id="bondsG"></g>
+  <g id="atomsG"></g>
+  <g id="holeG"></g>
+  <g id="eG"></g>
+  <text class="lbl" x="340" y="202" text-anchor="middle">selenium chain</text>
+
+  <g id="phot"></g>
+</svg>
+
+<div style="margin-top:14px;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--color-text-secondary);flex-wrap:wrap;">
+  <span>Light on the chain</span>
+  <input id="light" type="range" min="0" max="100" step="1" value="0" style="flex:1;min-width:150px;">
+  <span id="lv" style="min-width:56px;">dark</span>
+</div>
+<div style="margin-top:10px;font-size:13px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;color:var(--color-text-secondary);">
+  <span><span style="display:inline-block;width:11px;height:11px;background:#1D9E75;border-radius:50%;vertical-align:-1px;"></span> bound electron</span>
+  <span><span style="display:inline-block;width:11px;height:11px;background:#8FD14F;border-radius:50%;vertical-align:-1px;"></span> free electron</span>
+  <span><span style="display:inline-block;width:11px;height:11px;border:2px solid #E24B4A;border-radius:50%;box-sizing:border-box;vertical-align:-1px;"></span> hole</span>
+  <span><span style="display:inline-block;width:11px;height:11px;background:#EF9F27;border-radius:50%;vertical-align:-1px;"></span> conventional current</span>
+</div>
+<div id="cap" style="margin-top:8px;font-size:14px;font-weight:500;color:var(--color-text-primary);">In the dark every electron stays bound in the chain — no carriers, no current, lamp dark. Raise the light.</div>
+</div>
+
+<script>
+(function(){
+  var NS="http://www.w3.org/2000/svg";
+  function mk(tag,a){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  var atoms=[[160,138],[220,124],[280,152],[340,124],[400,152],[460,124],[520,138]];
+  var bondsG=document.getElementById('bondsG'),atomsG=document.getElementById('atomsG'),eG=document.getElementById('eG'),holeG=document.getElementById('holeG');
+
+  for(var i=0;i<atoms.length-1;i++){ bondsG.appendChild(mk('line',{x1:atoms[i][0],y1:atoms[i][1],x2:atoms[i+1][0],y2:atoms[i+1][1],stroke:'var(--color-text-secondary)','stroke-width':2})); }
+
+  var electrons=[];
+  atoms.forEach(function(a){
+    atomsG.appendChild(mk('circle',{cx:a[0],cy:a[1],r:14,fill:'#EF9F27','fill-opacity':0.22,stroke:'var(--color-border-secondary)','stroke-width':0.8}));
+    var t=mk('text',{x:a[0],y:a[1]+3,'class':'at'});t.textContent='Se';atomsG.appendChild(t);
+    var up=a[1]<138, ly=up?a[1]-13:a[1]+13;
+    [-4,4].forEach(function(dx){
+      var c=mk('circle',{cx:a[0]+dx,cy:ly,r:2.6,fill:'#1D9E75'}); eG.appendChild(c);
+      electrons.push({el:c,homeX:a[0]+dx,homeY:ly,atomX:a[0],state:'bound',x:a[0]+dx,y:ly,hole:null});
+    });
+  });
+
+  var curG=document.getElementById('curr'), CN=14, cdots=[];
+  for(var c=0;c<CN;c++){ var d=mk('circle',{r:3.2,fill:'#EF9F27'}); d.style.opacity='0'; curG.appendChild(d); cdots.push(d); }
+  function ptAt(s){
+    var segs=[[150,236,150,138],[150,138,530,138],[530,138,530,348],[530,348,150,348],[150,348,150,244]];
+    var lens=segs.map(function(g){return Math.hypot(g[2]-g[0],g[3]-g[1]);});
+    var total=lens.reduce(function(a,b){return a+b;},0);
+    var d=((s%total)+total)%total;
+    for(var i=0;i<segs.length;i++){ if(d<=lens[i]){ var t=d/lens[i],g=segs[i]; return [g[0]+(g[2]-g[0])*t, g[1]+(g[3]-g[1])*t]; } d-=lens[i]; }
+    return [150,236];
+  }
+  var PER=(function(){var segs=[[150,236,150,138],[150,138,530,138],[530,138,530,348],[530,348,150,348],[150,348,150,244]];return segs.reduce(function(s,g){return s+Math.hypot(g[2]-g[0],g[3]-g[1]);},0);})();
+
+  var photG=document.getElementById('phot'), photons=[], PN=8, pEl=[];
+  for(var j=0;j<PN;j++){ var p=mk('circle',{r:4,fill:'#EF9F27'}); p.style.opacity='0'; photG.appendChild(p); pEl.push(p); photons.push({active:false}); }
+  function spawnPhoton(){ for(var k=0;k<PN;k++){ if(!photons[k].active){ var ai=(Math.random()*atoms.length)|0; photons[k]={active:true,x:340,y:44,tx:atoms[ai][0],ty:atoms[ai][1]}; return; } } }
+
+  function excite(atomX){
+    var pool=electrons.filter(function(e){return e.state==='bound'&&e.atomX===atomX;});
+    if(!pool.length) pool=electrons.filter(function(e){return e.state==='bound';});
+    if(!pool.length) return;
+    var e=pool[(Math.random()*pool.length)|0];
+    e.state='free'; e.x=e.homeX; e.y=e.homeY;
+    e.el.setAttribute('fill','#8FD14F'); e.el.setAttribute('r',5);
+    e.hole=mk('circle',{cx:atomX,cy:165,r:5,fill:'none',stroke:'#E24B4A','stroke-width':2}); holeG.appendChild(e.hole);
+    e.hx=atomX;
+  }
+  function relax(e){
+    e.state='bound'; e.x=e.homeX; e.y=e.homeY;
+    e.el.setAttribute('fill','#1D9E75'); e.el.setAttribute('r',2.6); e.el.setAttribute('cx',e.homeX); e.el.setAttribute('cy',e.homeY);
+    if(e.hole){ holeG.removeChild(e.hole); e.hole=null; }
+  }
+
+  var light=document.getElementById('light'),lv=document.getElementById('lv'),cap=document.getElementById('cap'),
+      lamp=document.getElementById('lamp'),lrays=document.getElementById('lrays'),beam=document.getElementById('beam'),sun=document.getElementById('sun');
+  var genAcc=0, phase=0, last=null;
+  function frame(ts){
+    if(last===null)last=ts; var dt=Math.min((ts-last)/1000,0.05); last=ts;
+    var I=parseFloat(light.value)/100;
+    beam.setAttribute('fill-opacity',(0.04+I*0.20).toFixed(3)); sun.style.opacity=(0.35+I*0.65).toFixed(2);
+
+    genAcc += I*7*dt;
+    while(genAcc>=1){ genAcc-=1; spawnPhoton(); }
+    for(var k=0;k<PN;k++){ var ph=photons[k]; if(ph.active){ var dx=ph.tx-ph.x,dy=ph.ty-ph.y,d=Math.hypot(dx,dy);
+      if(d<6){ excite(ph.tx); ph.active=false; pEl[k].style.opacity='0'; }
+      else { var sp=360*dt/d; ph.x+=dx*sp; ph.y+=dy*sp; pEl[k].setAttribute('cx',ph.x); pEl[k].setAttribute('cy',ph.y); pEl[k].style.opacity='0.95'; } } }
+
+    var free=0;
+    electrons.forEach(function(e){ if(e.state==='free'){ free++;
+      e.x+=60*dt; e.y+=(128-e.y)*0.2; e.el.setAttribute('cx',e.x); e.el.setAttribute('cy',e.y);
+      e.hx-=45*dt; e.hole.setAttribute('cx',e.hx);
+      if(e.x>530 || e.hx<150 || Math.random()<0.15*dt){ relax(e); }
+    }});
+
+    var Irel=Math.min(free/8,1);
+    phase += Irel*230*dt;
+    for(var c=0;c<CN;c++){ var pt=ptAt(c/CN*PER - phase); cdots[c].setAttribute('cx',pt[0]); cdots[c].setAttribute('cy',pt[1]); cdots[c].style.opacity=(Irel*0.95).toFixed(2); }
+    lamp.setAttribute('fill-opacity',(0.10+Irel*0.85).toFixed(2)); lrays.style.opacity=(Irel*0.9).toFixed(2);
+
+    var v=parseFloat(light.value);
+    lv.textContent=v<5?'dark':(v<35?'dim':(v<70?'bright':'full sun'));
+    cap.textContent = v<5
+      ? "In the dark every electron stays bound in the chain — no carriers, no current, lamp dark. Raise the light."
+      : (v<35 ? "A photon knocks a lone-pair electron loose (teal → green); it drifts off leaving a hole, a little current loops round, and the lamp glows."
+      : "Bright light frees lone-pair electrons faster than they return: many carriers drift, strong current flows, and the lamp lights up.");
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>

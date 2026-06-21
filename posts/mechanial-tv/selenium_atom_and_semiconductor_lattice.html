@@ -1,0 +1,76 @@
+<div style="padding:0.5rem 0;">
+<h2 class="sr-only">Two static diagrams: left, the Bohr shell structure of a selenium atom (shells of 2, 8, 18, 6 electrons, with 6 valence electrons in the outer shell); right, the typical semiconductor covalent-bond lattice (silicon shown) where atoms share electron pairs, with one bond broken to free an electron and leave a hole.</h2>
+<style>
+  .lbl{font:12px var(--font-sans,sans-serif);fill:var(--color-text-secondary)}
+  .lbls{font:10.5px var(--font-sans,sans-serif);fill:var(--color-text-tertiary)}
+  .lblb{font:13px var(--font-sans,sans-serif);font-weight:600;fill:var(--color-text-primary)}
+  .at{font:11px var(--font-sans,sans-serif);fill:var(--color-text-secondary);text-anchor:middle}
+  .sign{font:9px var(--font-sans,sans-serif);font-weight:700;text-anchor:middle}
+</style>
+<svg id="sa" width="100%" viewBox="0 0 680 452" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Selenium atom and a semiconductor lattice</title>
+  <desc>Bohr model of selenium with four shells, and a silicon covalent lattice with shared electron pairs and one broken bond.</desc>
+
+  <text class="lblb" x="168" y="32" text-anchor="middle">Selenium atom (Z = 34)</text>
+  <g id="bohr"></g>
+  <text class="lbl" x="168" y="362" text-anchor="middle">shells K, L, M, N  =  2, 8, 18, 6</text>
+  <text class="lbls" x="168" y="378" text-anchor="middle">[Ar] 3d¹⁰ 4s² 4p⁴</text>
+  <text class="lbl" x="168" y="398" text-anchor="middle" style="fill:#BA7517">outer shell: 6 valence electrons</text>
+
+  <line x1="340" y1="56" x2="340" y2="412" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+
+  <text class="lblb" x="512" y="32" text-anchor="middle">Typical semiconductor lattice (silicon)</text>
+  <g id="bonds"></g>
+  <g id="atoms"></g>
+
+  <line x1="510" y1="195" x2="600" y2="195" stroke="var(--color-text-tertiary)" stroke-width="1.3" stroke-dasharray="3 4"/>
+  <circle cx="566" cy="195" r="7" fill="none" stroke="#E24B4A" stroke-width="2"/>
+  <text class="sign" x="566" y="198" style="fill:#E24B4A">+</text>
+  <circle cx="560" cy="150" r="6" fill="#378ADD"/>
+  <text class="sign" x="560" y="153" style="fill:#fff">–</text>
+  <line x1="566" y1="186" x2="561" y2="159" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <polygon points="561,159 565,167 557,166" fill="var(--color-text-secondary)"/>
+  <text class="lbls" x="612" y="140">freed electron</text>
+  <text class="lbls" x="600" y="214">hole left behind</text>
+
+  <line x1="445" y1="152" x2="468" y2="120" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text class="lbls" x="402" y="150">shared pair</text>
+
+  <text class="lbl" x="512" y="362" text-anchor="middle">each atom shares 4 pairs — every electron locked in a bond</text>
+  <text class="lbls" x="512" y="378" text-anchor="middle">all bonds intact = full valence band, no conduction</text>
+  <text class="lbl" x="512" y="398" text-anchor="middle" style="fill:var(--color-text-primary)">break a bond (heat / light) → free electron (–) + hole (+)</text>
+</svg>
+</div>
+
+<script>
+(function(){
+  var NS="http://www.w3.org/2000/svg";
+  function C(parent,x,y,r,fill,stroke,sw){var c=document.createElementNS(NS,'circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',r);c.setAttribute('fill',fill||'none');if(stroke){c.setAttribute('stroke',stroke);c.setAttribute('stroke-width',sw||1);}parent.appendChild(c);return c;}
+  function T(parent,x,y,str,cls){var t=document.createElementNS(NS,'text');t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('class',cls||'at');t.textContent=str;parent.appendChild(t);return t;}
+
+  // --- Bohr selenium ---
+  var bg=document.getElementById('bohr'), cx=168, cy=210;
+  var shells=[[40,2,'#6b7785',3.2],[70,8,'#6b7785',3.2],[100,18,'#6b7785',3.2],[130,6,'#EF9F27',4.4]];
+  shells.forEach(function(s){ C(bg,cx,cy,s[0],'none','var(--color-border-secondary)',0.7); });
+  C(bg,cx,cy,17,'#EF9F27','var(--color-border-secondary)',0.6).setAttribute('fill-opacity','0.30');
+  T(bg,cx,cy+4,'Se','at');
+  shells.forEach(function(s){ var r=s[0],n=s[1],col=s[2],rad=s[3]; for(var i=0;i<n;i++){ var a=(-90+i*360/n)*Math.PI/180; C(bg,cx+r*Math.cos(a),cy+r*Math.sin(a),rad,col); } });
+
+  // --- silicon lattice ---
+  var ab=document.getElementById('atoms'), bb=document.getElementById('bonds');
+  var cols=[420,510,600], rows=[110,195,280];
+  function bond(x0,y0,x1,y1){ var l=document.createElementNS(NS,'line');l.setAttribute('x1',x0);l.setAttribute('y1',y0);l.setAttribute('x2',x1);l.setAttribute('y2',y1);l.setAttribute('stroke','var(--color-text-tertiary)');l.setAttribute('stroke-width',1);bb.appendChild(l);
+    var mx=(x0+x1)/2,my=(y0+y1)/2,dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy),px=-dy/L,py=dx/L;
+    C(bb,mx+5*px,my+5*py,3.3,'#378ADD'); C(bb,mx-5*px,my-5*py,3.3,'#378ADD'); }
+  // horizontal bonds (skip centre-right, which is broken)
+  rows.forEach(function(y){ bond(cols[0],y,cols[1],y); if(!(y===195)) bond(cols[1],y,cols[2],y); });
+  // vertical bonds
+  cols.forEach(function(x){ bond(x,rows[0],x,rows[1]); bond(x,rows[1],x,rows[2]); });
+  // edge stubs (lattice continues)
+  function stub(x0,y0,x1,y1){ var l=document.createElementNS(NS,'line');l.setAttribute('x1',x0);l.setAttribute('y1',y0);l.setAttribute('x2',x1);l.setAttribute('y2',y1);l.setAttribute('stroke','var(--color-border-secondary)');l.setAttribute('stroke-width',1);l.setAttribute('stroke-dasharray','2 3');bb.appendChild(l);}
+  cols.forEach(function(x){ stub(x,rows[0],x,82); stub(x,rows[2],x,308); });
+  rows.forEach(function(y){ stub(cols[0],y,392,y); stub(cols[2],y,628,y); });
+  // atoms on top
+  cols.forEach(function(x){ rows.forEach(function(y){ C(ab,x,y,18,'var(--color-background-secondary)','var(--color-border-secondary)',0.8); T(ab,x,y+4,'Si','at'); }); });
+})();
+</script>

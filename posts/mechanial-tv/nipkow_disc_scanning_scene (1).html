@@ -1,0 +1,220 @@
+<h2 class="sr-only">Interactive diagram of a Nipkow disc scanning a scene: a spinning disc with a single-turn spiral of holes sweeps across a small pie-slice-shaped image near the rim. A toggle switches the disc between see-through (diagram view) and solid, where the scene is only visible through the holes. Readouts show the current scan line and the running signal over many lines.</h2>
+<style>
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+#nipctl,#nipctl2{display:flex;align-items:center;gap:16px;font-size:13px;color:var(--color-text-secondary)}
+#nipctl{margin-top:14px}
+#nipctl2{margin-top:10px}
+#nipctl button{min-width:84px}
+#opbtn{min-width:172px}
+</style>
+<svg id="nip" width="100%" viewBox="0 0 680 470" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Nipkow disc scanning a wedge-shaped scene</title>
+  <desc>A rotating disc carrying a single-turn spiral of holes sweeps a bright sampling spot across a small pie-slice-shaped image near the rim. A toggle sets the disc to see-through (diagram view) or solid, where the scene shows only through the holes. Readouts show the current line and the running signal over many consecutive lines.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <mask id="dmask" maskUnits="userSpaceOnUse" x="20" y="55" width="400" height="400">
+      <circle cx="215" cy="250" r="185" fill="#fff"/>
+      <g id="maskholes"></g>
+    </mask>
+  </defs>
+
+  <text class="th" x="215" y="30" text-anchor="middle">Nipkow disc</text>
+  <text class="ts" x="215" y="56" text-anchor="middle">the scene being scanned</text>
+  <text class="ts" x="215" y="452" text-anchor="middle">single-turn spiral of holes · one curved line per hole</text>
+
+  <g id="pic"></g>
+  <circle id="discfill" cx="215" cy="250" r="185" fill="#8a8881" opacity="0.12" mask="url(#dmask)" style="transition:opacity .3s ease"/>
+  <polygon id="picframe" points="" fill="none" stroke="#EF9F27" stroke-width="1.5"/>
+
+  <g id="disc">
+    <circle cx="215" cy="250" r="185" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+    <circle cx="215" cy="250" r="6" fill="var(--color-border-secondary)"/>
+    <path id="spiral" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.55"/>
+    <g id="holes"></g>
+  </g>
+
+  <polygon id="rowhi" points="" fill="#F2A623" opacity="0"/>
+  <circle id="glow" r="13" fill="#FCDE5A" opacity="0"/>
+  <circle id="spot" r="5" fill="#FCDE5A" opacity="0" stroke="#F2A623" stroke-width="0.6"/>
+
+  <line id="beam" x1="215" y1="120" x2="476" y2="132" stroke="#F2A623" stroke-width="1.5" opacity="0"/>
+
+  <text class="ts" x="510" y="100" text-anchor="middle">photocell</text>
+  <rect x="476" y="110" width="68" height="44" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <polygon points="476,122 466,132 476,142" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <rect id="cell" x="486" y="120" width="48" height="24" rx="3" fill="#241f12"/>
+
+  <line x1="510" y1="154" x2="510" y2="222" class="arr" marker-end="url(#arrow)"/>
+
+  <rect x="430" y="224" width="210" height="200" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text class="ts" x="438" y="242" text-anchor="start">current line</text>
+  <line x1="444" y1="292" x2="626" y2="292" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <polyline id="sigA" fill="none" stroke="#EF9F27" stroke-width="1.5" points=""/>
+  <circle id="dotA" r="3.5" fill="#FCDE5A" opacity="0"/>
+  <line x1="438" y1="308" x2="632" y2="308" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+  <text class="ts" x="438" y="328" text-anchor="start">signal · many lines</text>
+  <path id="ticks" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5" opacity="0.5"/>
+  <line x1="444" y1="410" x2="626" y2="410" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <polyline id="sigB" fill="none" stroke="#EF9F27" stroke-width="1.5" points=""/>
+  <circle id="dotB" r="3" fill="#FCDE5A" opacity="0"/>
+
+  <text id="caption" class="th" x="215" y="434" text-anchor="middle">Line 1 of 12</text>
+</svg>
+<div id="nipctl">
+  <button id="pp"><i class="ti ti-player-pause" aria-hidden="true"></i> Pause</button>
+  <span>Disc speed</span>
+  <input id="spd" type="range" min="0.3" max="3" step="0.1" value="1" style="flex:1">
+  <span id="spdv" style="min-width:34px;text-align:right">1.0×</span>
+</div>
+<div id="nipctl2">
+  <button id="opbtn"><i class="ti ti-eye" aria-hidden="true"></i> Disc: see-through</button>
+</div>
+<script>
+(function(){
+  var SVGNS="http://www.w3.org/2000/svg";
+  var n=12,C=10,cx=215,cy=250;
+  var Rout=176,Rin=98,Theta=15*Math.PI/180;
+  var FACE=[
+   [ 5,12,28,55,68,68,55,28,12, 5],
+   [12,42,80,88,90,90,88,80,42,12],
+   [28,82,90,92,92,92,92,90,82,28],
+   [55,88,92,92,92,92,92,92,88,55],
+   [68,90,15,15,92,92,15,15,90,68],
+   [68,90,18,18,92,92,18,18,90,68],
+   [55,90,92,92,88,88,92,92,90,55],
+   [55,88,92,90,72,72,90,92,88,55],
+   [55,88,92,92,90,90,92,92,88,55],
+   [42,85,90,26,22,22,26,90,85,42],
+   [22,60,86,80,80,80,80,86,60,22],
+   [ 5,18,42,55,60,60,55,42,18, 5]
+  ];
+  function gcol(v){var t=v/100;return 'rgb('+Math.round(26+220*t)+','+Math.round(23+203*t)+','+Math.round(18+150*t)+')';}
+  function rb(k){return Rout-(Rout-Rin)*k/n;}
+  function bb(m){return -Theta+(2*Theta)*m/C;}
+  function sp(ro,ri,b1,b2,steps){
+    var s='',m,b;
+    for(m=0;m<=steps;m++){b=b1+(b2-b1)*m/steps;s+=(cx+ro*Math.sin(b)).toFixed(1)+','+(cy-ro*Math.cos(b)).toFixed(1)+' ';}
+    for(m=steps;m>=0;m--){b=b1+(b2-b1)*m/steps;s+=(cx+ri*Math.sin(b)).toFixed(1)+','+(cy-ri*Math.cos(b)).toFixed(1)+' ';}
+    return s.trim();
+  }
+  function fbright(row,tt){
+    var cc=tt*(C-1),i0=Math.max(0,Math.min(C-1,Math.floor(cc))),i1=Math.min(C-1,i0+1),f=Math.max(0,Math.min(1,cc-Math.floor(cc)));
+    return (FACE[row][i0]*(1-f)+FACE[row][i1]*f)/100;
+  }
+
+  var picG=document.getElementById('pic');
+  for(var i=0;i<n;i++){for(var j=0;j<C;j++){
+    var poly=document.createElementNS(SVGNS,'polygon');
+    poly.setAttribute('points',sp(rb(i),rb(i+1),bb(j),bb(j+1),1));
+    var col=gcol(FACE[i][j]);
+    poly.setAttribute('fill',col);poly.setAttribute('stroke',col);poly.setAttribute('stroke-width','0.6');
+    picG.appendChild(poly);
+  }}
+  document.getElementById('picframe').setAttribute('points',sp(Rout,Rin,-Theta,Theta,16));
+
+  var holesG=document.getElementById('holes'),maskG=document.getElementById('maskholes');
+  var holes=[],spath='M';
+  for(var hh=0;hh<n;hh++){
+    var rad=(rb(hh)+rb(hh+1))/2,base=hh*2*Math.PI/n;
+    var hx=cx+rad*Math.sin(base),hy=cy-rad*Math.cos(base);
+    spath+=(hh?' L':' ')+hx.toFixed(1)+' '+hy.toFixed(1);
+    var hc=document.createElementNS(SVGNS,'circle');
+    hc.setAttribute('cx',hx);hc.setAttribute('cy',hy);hc.setAttribute('r','4.5');
+    hc.setAttribute('fill','none');hc.setAttribute('stroke','rgba(190,188,178,0.75)');hc.setAttribute('stroke-width','0.8');
+    holesG.appendChild(hc);
+    var mc=document.createElementNS(SVGNS,'circle');
+    mc.setAttribute('cx',hx);mc.setAttribute('cy',hy);mc.setAttribute('r','6');mc.setAttribute('fill','#000');
+    maskG.appendChild(mc);
+    holes.push({i:hh,r:rad,base:base});
+  }
+  document.getElementById('spiral').setAttribute('d',spath);
+
+  var disc=document.getElementById('disc'),discfill=document.getElementById('discfill'),spot=document.getElementById('spot'),glow=document.getElementById('glow');
+  var rowhi=document.getElementById('rowhi'),beam=document.getElementById('beam'),cell=document.getElementById('cell');
+  var sigA=document.getElementById('sigA'),dotA=document.getElementById('dotA');
+  var sigB=document.getElementById('sigB'),dotB=document.getElementById('dotB'),ticks=document.getElementById('ticks');
+  var caption=document.getElementById('caption');
+
+  var sW=182,scopeCx=535,aBase=292,aH=42,r0=(rb(0)+rb(1))/2;
+  var bX0=444,bW=182,bBase=410,bH=56,bTop=356,L=6;
+  function syA(b){return aBase-b*aH;}
+  function syB(b){return bBase-b*bH;}
+
+  var phase=0,playing=true,speed=1,last=null;
+  var pp=document.getElementById('pp'),spd=document.getElementById('spd'),spdv=document.getElementById('spdv');
+  var opbtn=document.getElementById('opbtn'),solid=false;
+  pp.addEventListener('click',function(){
+    playing=!playing;
+    pp.innerHTML=playing?'<i class="ti ti-player-pause"></i> Pause':'<i class="ti ti-player-play"></i> Play';
+    if(playing){last=null;requestAnimationFrame(frame);}
+  });
+  spd.addEventListener('input',function(){speed=parseFloat(spd.value);spdv.textContent=speed.toFixed(1)+'×';});
+  opbtn.addEventListener('click',function(){
+    solid=!solid;
+    discfill.setAttribute('opacity',solid?0.92:0.12);
+    opbtn.innerHTML=solid?'<i class="ti ti-eye-off"></i> Disc: solid':'<i class="ti ti-eye"></i> Disc: see-through';
+  });
+
+  function frame(t){
+    if(last===null)last=t;
+    var dt=(t-last)/1000;last=t;
+    if(playing)phase+=dt*0.2*speed;
+    var ph=phase-Math.floor(phase);
+    var rot='rotate('+(-ph*360)+' '+cx+' '+cy+')';
+    disc.setAttribute('transform',rot);
+    maskG.setAttribute('transform',rot);
+
+    var active=-1,ax=0,ay=0,bestd=1e9,bAct=0,rAct=0;
+    for(var k=0;k<holes.length;k++){
+      var h=holes[k];
+      var a=h.base-ph*2*Math.PI;
+      while(a>Math.PI)a-=2*Math.PI;
+      while(a<-Math.PI)a+=2*Math.PI;
+      if(Math.abs(a)<=Theta){var d=Math.abs(a);if(d<bestd){bestd=d;active=h.i;bAct=a;rAct=h.r;ax=cx+h.r*Math.sin(a);ay=cy-h.r*Math.cos(a);}}
+    }
+
+    if(active>=0){
+      var tt=(bAct+Theta)/(2*Theta);
+      var col=Math.max(0,Math.min(C-1,Math.floor(tt*C)));
+      var b=FACE[active][col]/100;
+      var scale=rAct/r0,W=sW*scale;
+
+      var pa='';
+      for(var c=0;c<C;c++){var xx=scopeCx+(c/(C-1)-0.5)*W;pa+=xx.toFixed(1)+','+syA(FACE[active][c]/100).toFixed(1)+' ';}
+      sigA.setAttribute('points',pa.trim());
+      var bd=fbright(active,tt),dx=scopeCx+(tt-0.5)*W;
+      dotA.setAttribute('cx',dx.toFixed(1));dotA.setAttribute('cy',syA(bd).toFixed(1));dotA.setAttribute('opacity','1');
+
+      rowhi.setAttribute('points',sp(rb(active),rb(active+1),-Theta,Theta,14));rowhi.setAttribute('opacity','0.18');
+      spot.setAttribute('cx',ax);spot.setAttribute('cy',ay);spot.setAttribute('opacity','1');spot.setAttribute('fill',gcol(FACE[active][col]));
+      glow.setAttribute('cx',ax);glow.setAttribute('cy',ay);glow.setAttribute('opacity',(0.2+0.4*b).toFixed(2));
+      beam.setAttribute('x1',ax);beam.setAttribute('y1',ay);beam.setAttribute('opacity',(0.2+0.6*b).toFixed(2));
+      cell.setAttribute('fill',gcol(20+FACE[active][col]*0.8));
+      caption.textContent='Line '+(active+1)+' of '+n;
+    }else{
+      spot.setAttribute('opacity','0');glow.setAttribute('opacity','0');rowhi.setAttribute('opacity','0');beam.setAttribute('opacity','0');dotA.setAttribute('opacity','0');
+    }
+
+    var sNow=phase*n,u0=sNow-L,pb='',px,u,kk,fr,ttb;
+    for(px=0;px<=bW;px+=2){
+      u=u0+L*(px/bW);kk=Math.round(u);
+      if(kk<0)continue;
+      fr=u-kk;ttb=Math.max(0,Math.min(1,0.5-fr));
+      pb+=(bX0+px).toFixed(1)+','+syB(fbright(((kk%n)+n)%n,ttb)).toFixed(1)+' ';
+    }
+    sigB.setAttribute('points',pb.trim());
+    var td='',mb;
+    for(mb=Math.ceil(u0-0.5);mb<=Math.floor(sNow);mb++){
+      var ub=mb+0.5;if(ub<u0||ub>sNow)continue;
+      var tx=bX0+(ub-u0)/L*bW;td+='M'+tx.toFixed(1)+' '+bTop+'L'+tx.toFixed(1)+' '+bBase+' ';
+    }
+    ticks.setAttribute('d',td);
+    if(sNow>0){var bdn=fbright(((Math.round(sNow)%n)+n)%n,Math.max(0,Math.min(1,0.5-(sNow-Math.round(sNow)))));dotB.setAttribute('cx',bX0+bW);dotB.setAttribute('cy',syB(bdn).toFixed(1));dotB.setAttribute('opacity','1');}
+
+    if(playing)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>

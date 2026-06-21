@@ -1,0 +1,593 @@
+<!--
+  CONTENT CUT FROM index.html — to be reintegrated later.
+  Includes: steps 9–32, panel-sync, panel-chopper, panel-derivative,
+  and the JS animation blocks for those three panels,
+  plus the makeObs observer calls for steps 9, 12, 18, 23.
+-->
+
+<!-- ═══════════════════════════════════════
+     STEPS 9–32  (go inside <article> after step 8b)
+═══════════════════════════════════════ -->
+
+      <div class='step' data-step='9'>
+        <p>Watch the two dials spin in lockstep. The picture exists because both discs agree &mdash; moment by moment &mdash; on exactly which pixel is being transmitted. There is no frame buffer, no stored image. The picture is a real-time agreement between two spinning wheels.</p>
+      </div>
+
+      <div class='step' data-step='10'>
+        <p>Slip the receiver's disc even a few degrees behind the camera's and every row shifts sideways; slip it further and the image begins to roll. Early systems sent a brief synchronising pulse baked into the signal itself &mdash; a marker that told the receiver's motor when each new frame began.</p>
+      </div>
+
+      <div class='step' data-step='11'>
+        <p>Baird's earliest systems used the 50&nbsp;Hz mains frequency as a synchronisation reference, locking both motors to the electricity supply. It was brittle: if either motor loaded differently under heat, the picture would drift and roll. Use the offset slider to see it happen.</p>
+      </div>
+
+      <div class='step' data-step='12'>
+        <p>The selenium photocell had a problem no amount of clever design could fully remove. Selenium's resistance does not change instantaneously in response to light &mdash; it adjusts with a small chemical delay, somewhere between five and fifty milliseconds depending on temperature and history.</p>
+      </div>
+
+      <div class='step' data-step='13'>
+        <p>That delay smears every sharp brightness transition into a gradual ramp. A hard edge between a bright wall and a dark shadow &mdash; a single pixel's worth of contrast &mdash; arrives at the amplifier as a soft slope, trailing the true brightness by a few milliseconds.</p>
+      </div>
+
+      <div class='step' data-step='14'>
+        <p>Baird's engineers countered this with a passive two-branch network. Alongside the main resistor path carrying the cell's lagging current, they wired a capacitor. A capacitor passes only changing signals &mdash; it produces a voltage proportional to the rate of change of the input, the derivative &mdash; and that derivative is added back onto the slow selenium response.</p>
+      </div>
+
+      <div class='step' data-step='15'>
+        <p>The derivative of a gradual ramp is a spike &mdash; a brief, sharp pulse at the moment of transition, exactly where the original edge was. Summing the spike with the lagging ramp restores the sharp step. Drag the capacitor-branch slider up and watch the leading edges snap back into definition on the total output.</p>
+      </div>
+
+      <div class='step' data-step='16'>
+        <p>Too much correction and the network overshoots. The bright side of each edge gets a brief flare that was never in the original picture. The optimum sits where edges are crisp but the overshoot stays just below the threshold of visibility &mdash; around 0.85 on the slider here.</p>
+      </div>
+
+      <div class='step' data-step='17'>
+        <p>The principle underlying this circuit is still in use. FM radio broadcasting pre-emphasises the high-frequency content of the audio signal before transmission, then uses a complementary de-emphasis filter at the receiver. The mathematics are identical; only the application has changed.</p>
+      </div>
+
+      <div class='step' data-step='18'>
+        <p>Set aside the image and watch what the system actually does. At any given instant there is only one illuminated point in the window &mdash; one hole aligned with the aperture, one lamp at full brightness, one pixel being scanned and reconstructed simultaneously.</p>
+      </div>
+
+      <div class='step' data-step='19'>
+        <p>At low disc speed you can follow that single dot moving through the window: bright where the scene is bright, dim where it is dark, tracing the face from left to right, top to bottom, one slow step at a time. The picture does not exist as a picture. It exists only as a sequence of moments.</p>
+      </div>
+
+      <div class='step' data-step='20'>
+        <p>Spin the disc faster. At around ten frames per second, the dot completes its journey faster than the eye can register each individual step. The afterimage of each flash lingers just long enough for the next one to overlap it. Your visual system, tricked by persistence of vision, fuses the sequence into a stable image.</p>
+      </div>
+
+      <div class='step' data-step='21'>
+        <p>Baird's 1926 demonstrations ran thirty lines at twelve and a half frames per second. Thirty lines is roughly what you can resolve in a face-sized picture from a metre away. The image was grainy, dim, and confined to a window smaller than a playing card &mdash; but it was unmistakably a face, and it moved.</p>
+      </div>
+
+      <div class='step' data-step='22'>
+        <p>The fundamental ceiling of mechanical television was light. More lines meant more holes and a faster motor, but smaller holes meant less light through each aperture, which meant a weaker signal, which meant more amplification, which meant more noise. The available lamp power, the photocell sensitivity, and the motor speed formed a triangle of constraints the spinning disc could never escape.</p>
+      </div>
+
+      <div class='step' data-step='23'>
+        <p>Mechanical television brought a fresh engineering problem that had nothing to do with optics or mechanics. The amplifiers of the 1920s were AC-coupled: they could faithfully carry a vibrating signal but had no ability to hold a steady voltage. Leave a signal at a constant level for more than a few milliseconds and it would droop toward zero.</p>
+      </div>
+
+      <div class='step' data-step='24'>
+        <p>This is not a flaw in the amplifier design &mdash; it is inherent to transformer coupling or capacitor coupling between stages, which was the standard approach because it isolated each stage's DC bias from the next. The amplifier was designed to be AC-coupled. The problem was that television needed DC.</p>
+      </div>
+
+      <div class='step' data-step='25'>
+        <p>A flat white patch in the picture produces exactly the steady voltage level that an AC amplifier refuses to carry. Detail &mdash; rapid variation between adjacent bright and dark pixels &mdash; came through fine, because variation is AC. But uniform brightness, the level that distinguishes white from grey from black across a large area, drowned in the droop.</p>
+      </div>
+
+      <div class='step' data-step='26'>
+        <p>The solution was a chopper: a slotted wheel mounted on the same shaft as the Nipkow disc, placed in the light beam before the photocell. The wheel interrupts the beam at a fixed rate &mdash; a few dozen to a few hundred times per second &mdash; converting every brightness level, including a steady white, into a rapid pulse train.</p>
+      </div>
+
+      <div class='step' data-step='27'>
+        <p>An AC amplifier happily carries a pulse train. The information about absolute brightness is encoded in the average height of the pulses. A detector at the far end reads that height back out and lights the lamp accordingly. Nothing is lost, and the amplifier's DC blindness stops mattering.</p>
+      </div>
+
+      <div class='step' data-step='28'>
+        <p>Toggle the chopper on and watch the uniform white patch. Without it the amplifier output droops to the baseline and the reconstructed strip loses all brightness information &mdash; white, grey, and black all flatten to the same ambiguous level. With the chopper running, the white patch becomes a steady tall pulse train and the receiver gets the right answer.</p>
+      </div>
+
+      <div class='step' data-step='29'>
+        <p>The chopper speed controls the carrier frequency. Slower chopping puts the carrier at lower frequency where amplifiers work cleanly, but gives fewer samples per pixel, limiting how fast brightness can change within a line. Faster chopping risks the amplifier starting to roll off the pulse tops. The slider trades one against the other.</p>
+      </div>
+
+      <div class='step' data-step='30'>
+        <p>By the mid-1930s, fully electronic camera tubes &mdash; the iconoscope, the emitron &mdash; were capturing far more detail, storing a whole frame's worth of charge on a photosensitive plate and reading it out electronically. No moving parts. No chopper. No motor to keep in step. And far more lines.</p>
+      </div>
+
+      <div class='step' data-step='31'>
+        <p>Broadcasters in Britain ran both mechanical and electronic systems in parallel through 1936 so audiences could compare directly. By February 1937 the BBC had shut down the mechanical transmissions entirely, settling on the 405-line fully electronic standard. The spinning disc had lasted eleven years as a broadcast technology.</p>
+      </div>
+
+      <div class='step' data-step='32'>
+        <p>Every principle the Nipkow disc introduced passed directly into electronic television and then into digital imaging. Line-by-line raster scanning, brightness-to-voltage conversion, sync pulses, AC pre-emphasis, persistence-of-vision frame rates &mdash; each one survives in the systems we use today, decades after the last broadcast disc stopped spinning.</p>
+      </div>
+
+
+<!-- ═══════════════════════════════════════
+     PANEL-SYNC  (goes inside .fig-stack, after panel-contacts)
+═══════════════════════════════════════ -->
+
+    <div class="fig-panel" id="panel-sync">
+<div style="padding: 0.5rem 0;">
+<h2 class="sr-only">Interactive diagram showing brightness at the camera converted to a voltage signal and back into lamp brightness at the receiver, with a synchronization control that rolls the image when the two machines fall out of step.</h2>
+<svg id="sig" width="100%" viewBox="0 0 680 430" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Signal translation and synchronization between camera and receiver</title>
+  <desc>The scanning spot's brightness is read by a photocell into a voltage trace, sent to the receiver, and turned back into lamp brightness. Two dials show the camera and receiver turning in step; an offset makes the picture roll.</desc>
+  <defs>
+    <marker id="sg-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text class="th" x="100" y="66" text-anchor="middle">at the camera</text>
+  <rect x="29" y="83" width="142" height="114" rx="4" fill="#111" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <g id="sg-scene"></g>
+  <circle id="sg-spotTX" cx="0" cy="0" r="8" fill="none" stroke="#FCDE5A" stroke-width="2" opacity="0"/>
+  <text class="ts" x="100" y="212" text-anchor="middle">scene, scanned point by point</text>
+
+  <line x1="172" y1="140" x2="190" y2="146" stroke="#FCDE5A" stroke-width="1.5" opacity="0.8"/>
+  <circle cx="201" cy="148" r="11" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <circle cx="201" cy="148" r="4" fill="var(--color-text-secondary)"/>
+  <text class="ts" x="201" y="124" text-anchor="middle">photocell</text>
+
+  <text class="th" x="320" y="66" text-anchor="middle">the signal</text>
+  <rect x="232" y="83" width="178" height="92" rx="6" fill="#15140f" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <line x1="240" y1="129" x2="402" y2="129" stroke="#555" stroke-width="0.5"/>
+  <polyline id="sg-trace" points="" fill="none" stroke="#F2A623" stroke-width="1.5"/>
+  <text class="ts" x="320" y="193" text-anchor="middle">brightness becomes a voltage</text>
+
+  <line x1="213" y1="148" x2="231" y2="140" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <line x1="410" y1="130" x2="468" y2="140" class="arr" marker-end="url(#sg-arrow)"/>
+  <text class="ts" x="440" y="120" text-anchor="middle">video</text>
+
+  <text class="th" x="545" y="66" text-anchor="middle">at the receiver</text>
+  <rect x="474" y="83" width="142" height="114" rx="4" fill="#15140f" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <g id="sg-lamps"></g>
+  <circle id="sg-spotRX" cx="0" cy="0" r="8" fill="none" stroke="#FCDE5A" stroke-width="2" opacity="0"/>
+  <text class="ts" x="545" y="212" text-anchor="middle">lamps glow to match</text>
+
+  <text class="th" x="340" y="256" text-anchor="middle">keeping them in step</text>
+
+  <circle cx="165" cy="332" r="40" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <circle cx="165" cy="332" r="4" fill="var(--color-border-secondary)"/>
+  <g id="sg-dialTX"><line x1="165" y1="332" x2="165" y2="296" stroke="var(--color-text-primary)" stroke-width="2.5" stroke-linecap="round"/></g>
+  <text class="ts" x="165" y="392" text-anchor="middle">camera disc</text>
+
+  <circle cx="515" cy="332" r="40" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <circle cx="515" cy="332" r="4" fill="var(--color-border-secondary)"/>
+  <g id="sg-dialRX"><line x1="515" y1="332" x2="515" y2="296" stroke="var(--color-text-primary)" stroke-width="2.5" stroke-linecap="round"/></g>
+  <text class="ts" x="515" y="392" text-anchor="middle">receiver brush</text>
+
+  <line x1="207" y1="332" x2="473" y2="332" stroke="var(--color-border-secondary)" stroke-width="0.5" stroke-dasharray="4 4"/>
+  <text class="ts" x="340" y="326" text-anchor="middle">driven in common</text>
+  <text id="sg-status" class="th" x="340" y="356" text-anchor="middle">locked — picture holds steady</text>
+</svg>
+
+<div style="display:flex; flex-wrap:wrap; align-items:center; gap:12px 16px; margin-top:14px; font-size:13px; color:var(--color-text-secondary);">
+  <button id="sg-pp" class="fig-btn" style="min-width:84px;">&#10074;&#10074; Pause</button>
+  <span>Speed</span>
+  <input id="sg-spd" type="range" min="0.3" max="3" step="0.1" value="1" style="width:90px;">
+  <span style="flex-basis:100%; height:0;"></span>
+  <span>Receiver timing</span>
+  <input id="sg-off" type="range" min="-18" max="18" step="1" value="0" style="flex:1; min-width:140px;">
+  <span id="sg-offv" style="min-width:64px; text-align:right;">in sync</span>
+  <button id="sg-resync" class="fig-btn">&#8635; Re-sync</button>
+</div>
+</div>
+    </div>
+
+
+<!-- ═══════════════════════════════════════
+     PANEL-CHOPPER  (goes inside .fig-stack)
+═══════════════════════════════════════ -->
+
+    <div class="fig-panel" id="panel-chopper">
+<div style="padding: 0.5rem 0;">
+<h2 class="sr-only">Interactive: the chopper punches regular dark bands into the scanned light; the brightness survives as the lit bands' intensity, shown as pulses the AC-coupled amplifier can carry, where a steady tone would otherwise droop away.</h2>
+<svg id="cb" width="100%" viewBox="0 0 680 292" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>The chopper as dark bands across the scanned line</title>
+  <desc>The scanned line, then the same light with the chopper's dark bands cut into it, then the resulting signal (pulses on, droop off), then the reconstruction.</desc>
+
+  <path d="M119 32 L119 28 L331 28 L331 32" fill="none" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <text class="ts" x="225" y="21" text-anchor="middle">uniform area — steady tone (DC)</text>
+  <path d="M355 32 L355 28 L438 28 L438 32" fill="none" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <text class="ts" x="396" y="21" text-anchor="middle">detail (AC)</text>
+
+  <text class="ts" x="22" y="46" text-anchor="middle" transform="rotate(-90 22 46)">scanned line</text>
+  <g id="ch-topStrip"></g>
+  <rect x="59" y="31" width="592" height="28" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+
+  <text class="ts" x="22" y="90" text-anchor="middle" transform="rotate(-90 22 90)">after chopper</text>
+  <g id="ch-chopStrip"></g>
+  <rect x="59" y="75" width="592" height="28" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+
+  <text class="ts" x="22" y="170" text-anchor="middle" transform="rotate(-90 22 170)">amplifier output</text>
+  <rect x="59" y="120" width="592" height="100" rx="3" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <polyline id="ch-guideU" points="" fill="none" stroke="var(--color-text-tertiary)" stroke-width="1" stroke-dasharray="4 4" opacity="0"/>
+  <polyline id="ch-sig" points="" fill="none" stroke="#EF9F27" stroke-width="1.6"/>
+  <circle id="ch-dot" r="4" fill="#FCDE5A" opacity="0"/>
+
+  <text class="ts" x="22" y="250" text-anchor="middle" transform="rotate(-90 22 250)">reconstructed</text>
+  <g id="ch-botStrip"></g>
+  <rect x="59" y="235" width="592" height="28" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+
+  <line id="ch-scan" x1="60" y1="31" x2="60" y2="263" stroke="#FCDE5A" stroke-width="1.3" opacity="0.8"/>
+</svg>
+
+<div style="margin-top:14px; display:flex; align-items:center; gap:14px; font-size:13px; color:var(--color-text-secondary); flex-wrap:wrap;">
+  <button id="ch-tog" style="min-width:150px;">Chopper: off</button>
+  <span>Chopper speed</span>
+  <input id="ch-spd" type="range" min="12" max="48" step="1" value="24" style="flex:1; min-width:130px;">
+</div>
+<div id="ch-cap" style="margin-top:10px; font-size:14px; font-weight:500; color:var(--color-text-primary);">Chopper off: steady light, no dark bands — but the flat tone droops away in the amplifier.</div>
+</div>
+    </div>
+
+
+<!-- ═══════════════════════════════════════
+     PANEL-DERIVATIVE  (goes inside .fig-stack)
+═══════════════════════════════════════ -->
+
+    <div class="fig-panel" id="panel-derivative">
+<div style="padding: 0.5rem 0;">
+<h2 class="sr-only">A passive two-branch network — a straight-through resistor path and a capacitor derivative path summing into a load resistor — drawn beside the four waveforms it produces, colour-matched branch to panel.</h2>
+<svg id="nw" width="100%" viewBox="0 0 680 440" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Passive derivative-adding network and its four waveforms</title>
+  <desc>The selenium cell drives two parallel branches: a resistor carrying the straight current and a capacitor carrying the derivative; they sum across a load resistor to give the corrected total, shown against the four colour-matched panels.</desc>
+  <defs>
+    <marker id="nw-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- light -->
+  <circle cx="44" cy="60" r="7" fill="none" stroke="var(--color-text-secondary)" stroke-width="1.3"/>
+  <line x1="44" y1="46" x2="44" y2="40" stroke="var(--color-text-secondary)" stroke-width="1.3"/>
+  <line x1="31" y1="60" x2="25" y2="60" stroke="var(--color-text-secondary)" stroke-width="1.3"/>
+  <line x1="34" y1="50" x2="30" y2="46" stroke="var(--color-text-secondary)" stroke-width="1.3"/>
+  <text class="ts" x="44" y="30" text-anchor="middle">light</text>
+  <line x1="58" y1="74" x2="92" y2="108" stroke="var(--color-text-secondary)" stroke-width="1.3" marker-end="url(#nw-ah)"/>
+  <line x1="46" y1="86" x2="80" y2="118" stroke="var(--color-text-secondary)" stroke-width="1.3" marker-end="url(#nw-ah)"/>
+
+  <!-- selenium cell -->
+  <rect x="92" y="110" width="54" height="40" rx="2" fill="var(--color-background-secondary)" stroke="#5B8DEF" stroke-width="1.4"/>
+  <path d="M101 130 l6 -6 l6 12 l6 -12 l6 12 l6 -6" fill="none" stroke="#5B8DEF" stroke-width="1.3"/>
+  <text class="ts" x="119" y="166" text-anchor="middle">selenium cell</text>
+
+  <line x1="146" y1="130" x2="182" y2="130" stroke="#5B8DEF" stroke-width="1.6"/>
+  <line x1="182" y1="100" x2="182" y2="164" stroke="var(--color-text-primary)" stroke-width="1.4"/>
+
+  <!-- top branch: resistor R1 (straight, current) -->
+  <line x1="182" y1="100" x2="200" y2="100" stroke="#5B8DEF" stroke-width="1.6"/>
+  <path d="M200 100 l5 -7 l6 14 l6 -14 l6 14 l6 -14 l5 7" fill="none" stroke="#5B8DEF" stroke-width="1.6"/>
+  <line x1="234" y1="100" x2="258" y2="100" stroke="#5B8DEF" stroke-width="1.6"/>
+  <text class="ts" x="217" y="88" text-anchor="middle" fill="#5B8DEF">R&#x2081; &middot; straight</text>
+
+  <!-- bottom branch: capacitor (derivative) -->
+  <g id="nw-capBranch">
+    <line x1="182" y1="164" x2="212" y2="164" stroke="#C06AC0" stroke-width="1.6"/>
+    <line x1="212" y1="153" x2="212" y2="175" stroke="#C06AC0" stroke-width="1.8"/>
+    <line x1="222" y1="153" x2="222" y2="175" stroke="#C06AC0" stroke-width="1.8"/>
+    <line x1="222" y1="164" x2="258" y2="164" stroke="#C06AC0" stroke-width="1.6"/>
+    <text class="ts" x="217" y="190" text-anchor="middle" fill="#C06AC0">C &middot; derivative</text>
+  </g>
+
+  <!-- sum node + output + load R2 -->
+  <line x1="258" y1="100" x2="258" y2="164" stroke="var(--color-text-primary)" stroke-width="1.4"/>
+  <line x1="258" y1="130" x2="320" y2="130" stroke="#EF9F27" stroke-width="1.8"/>
+  <line x1="320" y1="130" x2="340" y2="130" stroke="#EF9F27" stroke-width="1.8" marker-end="url(#nw-ah)"/>
+  <text class="ts" x="318" y="120" text-anchor="middle" fill="#EF9F27">to amp</text>
+  <line x1="258" y1="164" x2="258" y2="182" stroke="#EF9F27" stroke-width="1.6"/>
+  <path d="M258 182 l-7 5 l14 6 l-14 6 l14 6 l-7 5" fill="none" stroke="#EF9F27" stroke-width="1.6"/>
+  <line x1="258" y1="210" x2="258" y2="220" stroke="#EF9F27" stroke-width="1.6"/>
+  <line x1="246" y1="220" x2="270" y2="220" stroke="var(--color-text-secondary)" stroke-width="1.4"/>
+  <line x1="250" y1="225" x2="266" y2="225" stroke="var(--color-text-secondary)" stroke-width="1.4"/>
+  <line x1="254" y1="230" x2="262" y2="230" stroke="var(--color-text-secondary)" stroke-width="1.4"/>
+  <text class="ts" x="276" y="200" text-anchor="start" fill="#EF9F27">R&#x2082;</text>
+  <text class="ts" x="222" y="252" text-anchor="middle">sum across R&#x2082; = I + k&middot;dV/dt</text>
+
+  <!-- leaders -->
+  <line x1="240" y1="100" x2="358" y2="146" stroke="#5B8DEF" stroke-width="1" stroke-dasharray="3 4" opacity="0.7"/>
+  <line x1="222" y1="172" x2="358" y2="246" stroke="#C06AC0" stroke-width="1" stroke-dasharray="3 4" opacity="0.7"/>
+  <line x1="332" y1="130" x2="358" y2="352" stroke="#EF9F27" stroke-width="1" stroke-dasharray="3 4" opacity="0.7"/>
+
+  <!-- panels -->
+  <text class="ts" x="346" y="64" text-anchor="middle" transform="rotate(-90 346 64)">light</text>
+  <line x1="360" y1="44" x2="360" y2="84" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <line x1="360" y1="84" x2="660" y2="84" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <polyline id="nw-pL" points="" fill="none" stroke="var(--color-text-secondary)" stroke-width="1.8"/>
+
+  <text class="ts" x="346" y="148" text-anchor="middle" transform="rotate(-90 346 148)" fill="#5B8DEF">cell current</text>
+  <line x1="360" y1="128" x2="360" y2="168" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <line x1="360" y1="168" x2="660" y2="168" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <polyline id="nw-pI" points="" fill="none" stroke="#5B8DEF" stroke-width="1.8"/>
+
+  <text class="ts" x="346" y="246" text-anchor="middle" transform="rotate(-90 346 246)" fill="#C06AC0">derivative</text>
+  <line x1="360" y1="222" x2="360" y2="270" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <line x1="360" y1="246" x2="660" y2="246" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <polyline id="nw-pD" points="" fill="none" stroke="#C06AC0" stroke-width="1.8"/>
+
+  <text class="ts" x="346" y="352" text-anchor="middle" transform="rotate(-90 346 352)" fill="#EF9F27">total</text>
+  <line x1="360" y1="332" x2="360" y2="372" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <line x1="360" y1="372" x2="660" y2="372" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <polyline id="nw-pLo" points="" fill="none" stroke="var(--color-text-tertiary)" stroke-width="1.1" stroke-dasharray="4 4"/>
+  <polyline id="nw-pT" points="" fill="none" stroke="#EF9F27" stroke-width="2"/>
+</svg>
+
+<div style="margin-top:14px; display:flex; align-items:center; gap:14px; font-size:13px; color:var(--color-text-secondary);">
+  <span style="min-width:150px;">Capacitor branch strength</span>
+  <input id="nw-k" type="range" min="0" max="1.1" step="0.01" value="0.88" style="flex:1;">
+  <span id="nw-kv" style="min-width:42px; text-align:right;">0.88</span>
+</div>
+<div style="margin-top:8px; font-size:13px; color:var(--color-text-secondary);">Dashed grey on the total = the original light, for comparison. Turn the capacitor branch to zero and the total falls back onto the laggy current.</div>
+</div>
+    </div>
+
+
+<!-- ═══════════════════════════════════════
+     JS — panel-sync animation
+     (goes after the scroll observer <script> block)
+═══════════════════════════════════════ -->
+<script>
+(function(){
+  var SVGNS="http://www.w3.org/2000/svg";
+  var Cc=10, Rr=8, total=Cc*Rr;
+  var SCENE=["3333333333","3399999933","3990990993","3999999993","3990000993","3999999993","3399999933","3333333333"];
+
+  var sceneG=document.getElementById('sg-scene');
+  var lampsG=document.getElementById('sg-lamps');
+  var trace=document.getElementById('sg-trace');
+  var spotTX=document.getElementById('sg-spotTX');
+  var spotRX=document.getElementById('sg-spotRX');
+  var dialTX=document.getElementById('sg-dialTX');
+  var dialRX=document.getElementById('sg-dialRX');
+  var statusEl=document.getElementById('sg-status');
+
+  var sox=29, soy=83, scw=14.2, sch=14.25;
+  var lox=474, loy=83, lcw=14.2, lch=14.25;
+
+  function bright(i){ var r=Math.floor(i/Cc), c=i%Cc; return parseInt(SCENE[r].charAt(c),10)/9; }
+  function sceneCenter(i){ var r=Math.floor(i/Cc), c=i%Cc; return [sox+c*scw+scw/2, soy+r*sch+sch/2]; }
+  function lampCenter(i){ var r=Math.floor(i/Cc), c=i%Cc; return [lox+c*lcw+lcw/2, loy+r*lch+lch/2]; }
+  function gray(b){ var v=Math.round(20+b*225); return 'rgb('+v+','+v+','+v+')'; }
+  function amber(b){ return 'rgb('+Math.round(28+214*b)+','+Math.round(26+140*b)+','+Math.round(22+13*b)+')'; }
+
+  var lampEls=[];
+  for(var i=0;i<total;i++){
+    var r=Math.floor(i/Cc), c=i%Cc;
+    var rc=document.createElementNS(SVGNS,"rect");
+    rc.setAttribute("x",(sox+c*scw).toFixed(2)); rc.setAttribute("y",(soy+r*sch).toFixed(2));
+    rc.setAttribute("width",scw.toFixed(2)); rc.setAttribute("height",sch.toFixed(2));
+    rc.setAttribute("fill",gray(bright(i)));
+    sceneG.appendChild(rc);
+
+    var lc=lampCenter(i);
+    var l=document.createElementNS(SVGNS,"circle");
+    l.setAttribute("cx",lc[0].toFixed(2)); l.setAttribute("cy",lc[1].toFixed(2)); l.setAttribute("r","5");
+    l.setAttribute("fill",amber(0));
+    lampsG.appendChild(l);
+    lampEls.push(l);
+  }
+
+  var pos=0, processed=0, playing=true, speed=1, offsetCells=0, last=null;
+  var traceBuf=[];
+  var pp=document.getElementById('sg-pp');
+  var spd=document.getElementById('sg-spd');
+  var off=document.getElementById('sg-off');
+  var offv=document.getElementById('sg-offv');
+  var resync=document.getElementById('sg-resync');
+
+  pp.addEventListener('click',function(){
+    playing=!playing;
+    pp.innerHTML = playing ? '&#10074;&#10074; Pause' : '&#9654; Play';
+    if(playing){ last=null; requestAnimationFrame(frame); }
+  });
+  spd.addEventListener('input',function(){ speed=parseFloat(spd.value); });
+  off.addEventListener('input',function(){ offsetCells=parseInt(off.value,10); updateStatus(); });
+  resync.addEventListener('click',function(){ offsetCells=0; off.value=0; updateStatus(); });
+
+  function updateStatus(){
+    if(offsetCells===0){ offv.textContent='in sync'; statusEl.textContent='locked — picture holds steady'; statusEl.setAttribute('fill','var(--color-text-primary)'); }
+    else { offv.textContent=(offsetCells>0?'+':'')+offsetCells+' cells'; statusEl.textContent='out of step — the picture rolls'; statusEl.setAttribute('fill','#BA7517'); }
+  }
+  updateStatus();
+
+  function frame(t){
+    if(last===null) last=t;
+    var dt=(t-last)/1000; last=t;
+    if(playing) pos += dt*0.18*speed*total;
+
+    var target=Math.floor(pos);
+    var lastTxi=0, lastRxi=0, any=false;
+    while(processed < target){
+      processed++;
+      var txi=(processed-1)%total;
+      var b=bright(txi);
+      var rxi=((txi-offsetCells)%total+total)%total;
+      lampEls[rxi].setAttribute('fill',amber(b));
+      traceBuf.push(b); if(traceBuf.length>90) traceBuf.shift();
+      lastTxi=txi; lastRxi=rxi; any=true;
+    }
+
+    var ph=(pos/total);
+    var deg=(ph*360)%360;
+    dialTX.setAttribute('transform','rotate('+deg+' 165 332)');
+    var degRx=deg - (offsetCells/total)*360;
+    dialRX.setAttribute('transform','rotate('+degRx+' 515 332)');
+
+    if(traceBuf.length>1){
+      var pts="";
+      for(var j=0;j<traceBuf.length;j++){
+        var x=240 + j*(162/89);
+        var y=170 - traceBuf[j]*40;
+        pts += x.toFixed(1)+","+y.toFixed(1)+" ";
+      }
+      trace.setAttribute('points',pts);
+    }
+
+    if(any){
+      var sc=sceneCenter(lastTxi);
+      spotTX.setAttribute('cx',sc[0].toFixed(1)); spotTX.setAttribute('cy',sc[1].toFixed(1)); spotTX.setAttribute('opacity','1');
+      var lc=lampCenter(lastRxi);
+      spotRX.setAttribute('cx',lc[0].toFixed(1)); spotRX.setAttribute('cy',lc[1].toFixed(1)); spotRX.setAttribute('opacity','1');
+    }
+
+    if(playing) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+
+<!-- ═══════════════════════════════════════
+     JS — panel-derivative animation
+═══════════════════════════════════════ -->
+<script>
+(function(){
+  var N=500, tau=0.022, dt=1/(N-1);
+  var pulses=[[0.10,0.27,0.55],[0.40,0.50,0.32],[0.62,0.84,0.80]];
+  function Lf(tf){ var v=0; for(var p=0;p<pulses.length;p++){ if(tf>=pulses[p][0]&&tf<pulses[p][1]) v=pulses[p][2]; } return v; }
+  var L=[],I=[],D=[],Iv=0;
+  for(var i=0;i<N;i++){ var tf=i/(N-1), Lv=Lf(tf); var d=(Lv-Iv)/tau; L.push(Lv); D.push(d); I.push(Iv); Iv+=d*dt; }
+  var Dmax=0; for(var j=0;j<N;j++){ if(Math.abs(D[j])>Dmax) Dmax=Math.abs(D[j]); }
+  function mx(i){ return 360+(i/(N-1))*300; }
+  function build(fy){ var s=""; for(var i=0;i<N;i++){ s+=mx(i).toFixed(1)+","+fy(i).toFixed(1)+" "; } return s; }
+
+  document.getElementById('nw-pL').setAttribute('points', build(function(i){return 84-L[i]*40;}));
+  document.getElementById('nw-pI').setAttribute('points', build(function(i){return 168-I[i]*40;}));
+  document.getElementById('nw-pD').setAttribute('points', build(function(i){return 246-(D[i]/Dmax)*24;}));
+  document.getElementById('nw-pLo').setAttribute('points', build(function(i){return 372-L[i]*40;}));
+
+  var kEl=document.getElementById('nw-k'), kvEl=document.getElementById('nw-kv');
+  var pT=document.getElementById('nw-pT'), cap=document.getElementById('nw-capBranch');
+  function redraw(){
+    var k=parseFloat(kEl.value); kvEl.textContent=k.toFixed(2);
+    pT.setAttribute('points', build(function(i){ var tot=I[i]+k*(L[i]-I[i]); return 372-tot*40; }));
+    cap.setAttribute('opacity', (0.22+0.78*Math.min(k/1.0,1)).toFixed(2));
+  }
+  kEl.addEventListener('input',redraw);
+  redraw();
+})();
+</script>
+
+
+<!-- ═══════════════════════════════════════
+     JS — panel-chopper animation
+═══════════════════════════════════════ -->
+<script>
+(function(){
+  var NS="http://www.w3.org/2000/svg", N=170, NC=384, M=720, T=0.10;
+  function bf(x){
+    if(x<0.06) return 0.12;
+    if(x<0.10) return 0.12+(x-0.06)/0.04*0.73;
+    if(x<0.46) return 0.85;
+    if(x<0.50) return 0.12;
+    if(x<0.535) return 0.85;
+    if(x<0.57) return 0.12;
+    if(x<0.605) return 0.85;
+    if(x<0.64) return 0.12;
+    if(x<0.88) return 0.48;
+    return 0.12;
+  }
+  var b=[], out=[], reconOff=[], v=0, dx=1/(N-1);
+  for(var i=0;i<N;i++){ var x=i/(N-1), bi=bf(x); v+=(bi-v)*(dx/T); var o=bi-v; b.push(bi); out.push(o); reconOff.push(Math.max(0,Math.min(1,0.5+o))); }
+  function gray(val){ var c=Math.round(18+Math.max(0,Math.min(1,val))*222); return 'rgb('+c+','+c+','+c+')'; }
+  function xp(i){ return 60+(i/(N-1))*590; }
+  function outAt(x){ var f=x*(N-1), i0=Math.floor(f), fr=f-i0; if(i0>=N-1) return out[N-1]; return out[i0]*(1-fr)+out[i0+1]*fr; }
+  var bw=590/(N-1)+1.2, cw=590/NC+1.0;
+
+  var topG=document.getElementById('ch-topStrip'), chopG=document.getElementById('ch-chopStrip'), botG=document.getElementById('ch-botStrip');
+  var botRects=[], chopRects=[];
+  for(var k=0;k<N;k++){
+    var rt=document.createElementNS(NS,"rect");
+    rt.setAttribute("x",xp(k).toFixed(2));rt.setAttribute("y","32");rt.setAttribute("width",bw.toFixed(2));rt.setAttribute("height","26");rt.setAttribute("fill",gray(b[k]));
+    topG.appendChild(rt);
+    var rb=document.createElementNS(NS,"rect");
+    rb.setAttribute("x",xp(k).toFixed(2));rb.setAttribute("y","236");rb.setAttribute("width",bw.toFixed(2));rb.setAttribute("height","26");rb.setAttribute("fill",gray(reconOff[k]));
+    botG.appendChild(rb); botRects.push(rb);
+  }
+  for(var c=0;c<NC;c++){
+    var rc=document.createElementNS(NS,"rect");
+    rc.setAttribute("x",(60+(c/NC)*590).toFixed(2));rc.setAttribute("y","76");rc.setAttribute("width",cw.toFixed(2));rc.setAttribute("height","26");
+    chopG.appendChild(rc); chopRects.push(rc);
+  }
+
+  var guideU=document.getElementById('ch-guideU'), sig=document.getElementById('ch-sig'), dot=document.getElementById('ch-dot'), scan=document.getElementById('ch-scan'), cap=document.getElementById('ch-cap');
+  var yB=214, ampOn=84, midOff=170, ampOff=44;
+  var on=false, freq=24, last=null, scanX=0;
+  var tog=document.getElementById('ch-tog'), spd=document.getElementById('ch-spd');
+
+  function setChop(){
+    for(var c=0;c<NC;c++){
+      var xc=(c+0.5)/NC, base=gray(bf(xc));
+      if(on){ var cyc=freq*xc, lit=(cyc-Math.floor(cyc))<0.5; chopRects[c].setAttribute('fill', lit? base : '#0d0c0b'); }
+      else { chopRects[c].setAttribute('fill', base); }
+    }
+  }
+  function drawCarrier(){
+    var s="";
+    for(var j=0;j<=M;j++){ var x=j/M, cyc=freq*x, lit=(cyc-Math.floor(cyc))<0.5, y=lit?(yB-bf(x)*ampOn):yB; s+=(60+x*590).toFixed(1)+","+y.toFixed(1)+" "; }
+    sig.setAttribute('points',s);
+    var u=""; for(var i=0;i<N;i++){ u+=xp(i).toFixed(1)+","+(yB-b[i]*ampOn).toFixed(1)+" "; } guideU.setAttribute('points',u);
+  }
+  function drawDroop(){ var s=""; for(var i=0;i<N;i++){ s+=xp(i).toFixed(1)+","+(midOff-out[i]*ampOff).toFixed(1)+" "; } sig.setAttribute('points',s); }
+
+  function applyMode(){
+    setChop();
+    if(on){
+      guideU.setAttribute('opacity','0.8'); drawCarrier(); dot.setAttribute('opacity','1');
+      for(var k=0;k<N;k++){ botRects[k].setAttribute('fill',gray(b[k])); }
+      cap.textContent='Chopper on: the disc cuts regular dark bands into the light; the tone now lives in how bright each lit band is, which the amplifier carries as pulses — and the patch is restored.';
+    } else {
+      guideU.setAttribute('opacity','0'); drawDroop(); dot.setAttribute('opacity','1');
+      for(var k2=0;k2<N;k2++){ botRects[k2].setAttribute('fill',gray(reconOff[k2])); }
+      cap.textContent='Chopper off: steady light, no dark bands — but the flat tone droops away in the amplifier.';
+    }
+  }
+  tog.addEventListener('click',function(){ on=!on; tog.textContent='Chopper: '+(on?'on':'off'); applyMode(); });
+  spd.addEventListener('input',function(){ freq=parseFloat(spd.value); setChop(); if(on) drawCarrier(); });
+  applyMode();
+
+  function fr(t){
+    if(last===null)last=t; var dt=Math.min((t-last)/1000,0.05); last=t;
+    scanX=(scanX+dt*0.11)%1;
+    var mx=60+scanX*590; scan.setAttribute('x1',mx.toFixed(1)); scan.setAttribute('x2',mx.toFixed(1));
+    if(on){ var cyc=freq*scanX, lit=(cyc-Math.floor(cyc))<0.5; dot.setAttribute('cx',mx.toFixed(1)); dot.setAttribute('cy',(lit?(yB-bf(scanX)*ampOn):yB).toFixed(1)); }
+    else { dot.setAttribute('cx',mx.toFixed(1)); dot.setAttribute('cy',(midOff-outAt(scanX)*ampOff).toFixed(1)); }
+    requestAnimationFrame(fr);
+  }
+  requestAnimationFrame(fr);
+})();
+</script>
+
+
+<!-- ═══════════════════════════════════════
+     makeObs CALLS to restore in the scroll observer
+     (add back into the (function(){ ... })() scroll observer block)
+═══════════════════════════════════════ -->
+<!--
+  makeObs(9,
+    function(){ swap(panels[5]); },
+    function(){ swap(panels[4]); }
+  );
+  makeObs(12,
+    function(){ swap(panels[6]); },
+    function(){ swap(panels[5]); }
+  );
+  makeObs(18,
+    function(){ swap(panels[7]); },
+    function(){ swap(panels[6]); }
+  );
+  makeObs(23,
+    function(){ swap(panels[8]); },
+    function(){ swap(panels[7]); }
+  );
+
+  Also restore in panels array:
+    document.getElementById('panel-sync'),        // 5
+    document.getElementById('panel-derivative'),   // 6
+    document.getElementById('panel-chopper'),      // 8
+-->

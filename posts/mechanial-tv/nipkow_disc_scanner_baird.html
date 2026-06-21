@@ -1,0 +1,144 @@
+<div style="padding: 0.5rem 0;">
+<h2 class="sr-only">Interactive diagram of a Nipkow disc scanner: a spinning disc with a spiral of holes scans a picture one line at a time, and a mosaic of lamps rebuilds the image.</h2>
+<svg id="nip" width="100%" viewBox="0 0 680 448" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Nipkow disc scanning into a lamp mosaic</title>
+  <desc>A rotating disc with a single-turn spiral of apertures samples a framed picture one spot at a time; the signal lights a 10 by 12 grid of lamps that reproduces the image.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text class="th" x="185" y="32" text-anchor="middle">Nipkow disc</text>
+  <text class="ts" x="185" y="100" text-anchor="middle">picture aperture</text>
+
+  <g id="disc">
+    <circle cx="185" cy="250" r="152" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+    <circle cx="185" cy="250" r="6" fill="var(--color-border-secondary)"/>
+    <path id="spiral" fill="none" stroke="var(--color-border-secondary)" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.7"/>
+    <g id="holes"></g>
+  </g>
+
+  <rect x="153" y="108" width="64" height="62" rx="4" fill="none" stroke="#EF9F27" stroke-width="1.5"/>
+  <circle id="glow" cx="185" cy="139" r="14" fill="#EF9F27" opacity="0"/>
+  <circle id="spot" cx="185" cy="139" r="5" fill="#FCDE5A" opacity="0"/>
+
+  <line x1="120" y1="320" x2="92" y2="356" class="leader"/>
+  <circle cx="120" cy="320" r="2" fill="var(--color-text-secondary)"/>
+  <text class="ts" x="86" y="372" text-anchor="middle">single-turn spiral of holes</text>
+
+  <line x1="340" y1="250" x2="416" y2="240" class="arr" marker-end="url(#arrow)"/>
+  <path d="M348 268 q6 -10 12 0 t12 0 t12 0" fill="none" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <text class="ts" x="378" y="232" text-anchor="middle">signal</text>
+
+  <text class="ts" x="520" y="108" text-anchor="middle">reproduced image</text>
+  <rect x="419" y="119" width="202" height="242" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <g id="lamps"></g>
+  <text class="ts" x="520" y="384" text-anchor="middle">mosaic of lamps · persistence of vision</text>
+
+  <text id="caption" class="th" x="340" y="424" text-anchor="middle">Line 1 of 12</text>
+</svg>
+
+<div style="display:flex; align-items:center; gap:16px; margin-top:14px; font-size:13px; color:var(--color-text-secondary);">
+  <button id="pp" style="min-width:84px;"><i class="ti ti-player-pause" aria-hidden="true"></i> Pause</button>
+  <span>Disc speed</span>
+  <input id="spd" type="range" min="0.3" max="3" step="0.1" value="1" style="flex:1;">
+  <span id="spdv" style="min-width:34px; text-align:right;">1.0×</span>
+</div>
+</div>
+
+<script>
+(function(){
+  var SVGNS="http://www.w3.org/2000/svg";
+  var n=12, C=10, cx=185, cy=250, Rout=140, Rin=86;
+  var winX=153, winW=64, winYtop=108, winYbot=170;
+  var FACE=["0011111100","0111111110","1111111111","1111111111","1100110011","1100110011","1111111111","1111111111","1100000011","1110000111","0111111110","0011111100"];
+
+  var holesG=document.getElementById('holes');
+  var lampsG=document.getElementById('lamps');
+  var spiral=document.getElementById('spiral');
+  var disc=document.getElementById('disc');
+  var spot=document.getElementById('spot');
+  var glow=document.getElementById('glow');
+  var caption=document.getElementById('caption');
+
+  var holes=[], lampEls=[], litArr=[];
+  var spath="M";
+  for(var i=0;i<n;i++){
+    var r=Rout - i*(Rout-Rin)/(n-1);
+    var base=i*2*Math.PI/n;
+    var hx=cx + r*Math.sin(base);
+    var hy=cy - r*Math.cos(base);
+    spath += (i?" L":" ") + hx.toFixed(1) + " " + hy.toFixed(1);
+    var c=document.createElementNS(SVGNS,"circle");
+    c.setAttribute("cx",hx); c.setAttribute("cy",hy); c.setAttribute("r","4");
+    c.setAttribute("fill","var(--color-background-primary)");
+    c.setAttribute("stroke","var(--color-border-secondary)");
+    c.setAttribute("stroke-width","0.5");
+    holesG.appendChild(c);
+    holes.push({i:i,r:r,base:base});
+  }
+  spiral.setAttribute("d",spath);
+
+  for(var row=0;row<n;row++){
+    lampEls.push([]); litArr.push([]);
+    for(var col=0;col<C;col++){
+      var lx=429+col*19.2+9.6, ly=129+row*19.2+9.6;
+      var l=document.createElementNS(SVGNS,"circle");
+      l.setAttribute("cx",lx); l.setAttribute("cy",ly); l.setAttribute("r","5.5");
+      l.setAttribute("fill","var(--color-background-tertiary)");
+      l.setAttribute("stroke","var(--color-border-tertiary)");
+      l.setAttribute("stroke-width","0.5");
+      lampsG.appendChild(l);
+      lampEls[row].push(l); litArr[row].push(false);
+    }
+  }
+
+  var phase=0, playing=true, speed=1, last=null;
+  var pp=document.getElementById('pp');
+  var spd=document.getElementById('spd');
+  var spdv=document.getElementById('spdv');
+  pp.addEventListener('click',function(){
+    playing=!playing;
+    pp.innerHTML = playing ? '<i class="ti ti-player-pause"></i> Pause' : '<i class="ti ti-player-play"></i> Play';
+    if(playing){ last=null; requestAnimationFrame(frame); }
+  });
+  spd.addEventListener('input',function(){ speed=parseFloat(spd.value); spdv.textContent=speed.toFixed(1)+'×'; });
+
+  function frame(t){
+    if(last===null) last=t;
+    var dt=(t-last)/1000; last=t;
+    if(playing) phase += dt*0.2*speed;
+    var ph=phase - Math.floor(phase);
+    disc.setAttribute('transform','rotate('+(-ph*360)+' '+cx+' '+cy+')');
+
+    var active=-1, ax=0, ay=0, bestd=1e9;
+    for(var k=0;k<holes.length;k++){
+      var h=holes[k];
+      var a=h.base - ph*2*Math.PI;
+      var x=cx + h.r*Math.sin(a);
+      var y=cy - h.r*Math.cos(a);
+      if(x>=winX && x<=winX+winW && y>=winYtop && y<=winYbot){
+        var d=Math.abs(x-(winX+winW/2));
+        if(d<bestd){ bestd=d; active=h.i; ax=x; ay=y; }
+      }
+    }
+
+    if(active>=0){
+      var col=Math.max(0,Math.min(C-1,Math.round((ax-winX)/winW*(C-1))));
+      var on = FACE[active].charAt(col)==='1';
+      if(on && !litArr[active][col]){ litArr[active][col]=true; lampEls[active][col].setAttribute('fill','#F2A623'); }
+      spot.setAttribute('cx',ax); spot.setAttribute('cy',ay);
+      spot.setAttribute('fill', on?'#FCDE5A':'#9c9a92');
+      spot.setAttribute('opacity','1');
+      glow.setAttribute('cx',ax); glow.setAttribute('cy',ay);
+      glow.setAttribute('opacity', on?'0.5':'0.16');
+      caption.textContent='Line '+(active+1)+' of '+n;
+    } else {
+      spot.setAttribute('opacity','0'); glow.setAttribute('opacity','0');
+    }
+    if(playing) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
