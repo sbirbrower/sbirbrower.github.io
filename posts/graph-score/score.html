@@ -1,0 +1,731 @@
+
+
+<meta charset='utf-8' />
+<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/5.15.0/d3.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.5/d3.layout.cloud.min.js'></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/scrollama/2.2.0/scrollama.js'></script>
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css'
+        integrity='sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq' crossorigin='anonymous'>
+          <script defer src='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js'
+        integrity='sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz'
+        crossorigin='anonymous'></script>
+          <script defer src='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js'
+        integrity='sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI' crossorigin='anonymous'
+        onload='renderMathInElement(document.body);'></script>
+          <meta name='viewport' content='width=device-width, initial-scale=1' />
+          
+
+<main>
+
+  <section id='scrolly'>
+    <article>
+    <div class='step' data-step='1'>
+    <p style="font-size: 0.9rem; line-height: 130%; text-align: center;">
+      The score, or degree sequence of a graph is an unordered list of integers, 
+      each one corresponding to the degree of a particular vertex on a graph.
+    <br>
+    <br>
+      For example, the graph on the right corresponds to the degree <br> sequence:
+      <br>
+      <br>
+      {2, 2, 2, 2, 1, 1} 
+      <br>
+      <br>
+      or, alternatively: 
+      <br>
+      <br>
+      {1, 1, 2, 2, 2, 2}
+    <br>
+    <br>
+    <br>
+    <br>
+    </p>
+</div>
+
+
+
+<div class='step' data-step='2'>
+<p style="font-size: 0.9rem; line-height: 130%; text-align: center;">
+  All graphs have a unique degree sequence, but not all degree sequences have a unique
+      graph.
+      <br>
+      <br>
+  For example, the graphical sequence from above-- {1, 1, 2, 2, 2, 2} can also correspond to the graph on 
+  the right.
+</p>
+</div>
+
+
+
+<div class='step' data-step='3'>
+<p style="font-size: 0.9rem; line-height: 130%; text-align: center;">
+  Now try creating a graph out of the sequence {6, 3, 3, 1}. It can't be done.
+  Not all sequences can be made into a corresponding graph. 
+  <br>
+  <br>
+  Some cases are easy, of course. You can't make a graph from the sequence <br> {5, 5}.
+  Where are the five endpoints to connect an edge to? The graph only has two vertices,
+  and you can't have two edges with the same endpoints. 
+<br>
+<br>
+  We can also immediately rule out sequences such as {3, 3, 3, 0}. This is because 
+  for all graphs, the sum of the odd vertices must be even. To prove this, we can take
+  the defintion of an edge. It needs two endpoints. 
+  The degree of a vertex counts both start and endpoints. In other words, it double
+  counts everything. The sum of all the degrees is twice the number of edges m.
+  $$ \sum_{i = 0}^n \text{deg } v_i = 2m $$
+  
+  Splitting the sum into the set of odd vertices and the set of even vertices:
+
+  $$ \sum_{i \in \text{ odd}} \text{deg } v + \sum_{i \in \text{ even}} \text{deg } v = 2m $$
+
+  The sum of any amount of even numbers is even, and we know 2m is even. Thus, the sum of
+  the odd vertices must be even as well. 
+
+  <br>
+  <br>
+  Thus, {3, 3, 3, 0} is not a valid graphical sequence. 
+</p>
+</div>
+
+
+
+<div class='step' data-step='4'>
+  <p style="font-size: 0.9rem; line-height: 130%; text-align: center;">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+  But what about, say {5, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1}? 
+  <br>It's not so easy to draw it out,
+  and it doesn't immediately give itself away as wrong.
+<br>
+<br>
+  Is there an easy algorithm to find out if an arbitrary sequence is graphical?
+<br>
+<br>
+Turns out, there is:
+<br>
+<!-- <script src="https://gist.github.com/sbirbrower/acef5730841d383d9329853b3870609e.js"></script> -->
+
+  </p>
+
+</div>
+
+
+<div class='step' data-step='5'>
+  <p style="font-size: 0.9rem; line-height: 130%; text-align: center;">
+  The simple solution would be to use induction. Remove the highest vertex degree, and
+  the edges connected to it. Make a gradually smaller graph until we end up with either 
+  an obviously invalid one (such as {1, 1, 1}) or an obviously valid one (such as 
+  {1, 1, 0}).
+  </p>
+</div>
+
+
+<div class='step' data-step='6'>
+
+</div>
+
+
+
+
+<div class='step' data-step='7'>
+
+</div>
+
+
+
+
+
+</article>
+
+<figure></figure>
+
+</section>
+
+<section id='outro'>
+  </section>
+
+</main>
+
+<style>
+  table, caption, tbody, tfoot, thead, tr, th, td {
+    padding: 3px;
+    border: 0;
+    outline: 0;
+    font-size: 6px;
+    background: transparent;
+    color: black;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+
+.node circle {
+  stroke: black;
+  stroke-width: 2px;
+  color: black;
+}
+
+.node text {
+  font-family: sans-serif;
+  text-anchor: middle;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.link {
+  stroke-width: 4px;
+}
+
+
+text {
+  font: 18px sans-serif;
+  pointer-events: none;
+}
+
+#end-arrow {
+fill: #88A;
+  }
+
+#scrolly {
+position: relative;
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex;
+padding: 1rem;
+}
+
+#scrolly>* {
+-webkit-box-flex: 1;
+-ms-flex: 1;
+flex: 1;
+}
+
+.article-style {
+overflow-x: visible;
+}
+
+.article-container {
+max-width: 1260px;
+}
+
+figure {
+position: -webkit-sticky;
+position: sticky;
+width: 100%;
+margin: 0;
+-webkit-transform: translate3d(0, 0, 0);
+-moz-transform: translate3d(0, 0, 0);
+transform: translate3d(0, 0, 0);
+z-index: 0;
+}
+
+figure p {
+text-align: center;
+padding: 1rem;
+position: absolute;
+top: 50%;
+left: 50%;
+-moz-transform: translate(-50%, -50%);
+-webkit-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+font-size: 8rem;
+font-weight: 900;
+}
+
+.step {
+margin: 0 auto 2rem auto;
+color: #C0C0C0;
+}
+
+.step:last-child {
+margin-bottom: 0;
+}
+
+.step.is-active {
+color: #3b3b3b;
+}
+
+.step p {
+text-align: center;
+padding: 1rem;
+font-size: 1.5rem;
+line-height: 90%;
+}
+
+body {
+font-size: 10px;
+font-family: 'Open Sans', sans-serif;
+font-weight: 400;
+text-align: center;
+}
+
+h1 {
+font-size: 50px;
+}
+
+table>thead>tr>th, 
+table>tbody>tr>th, 
+table>tfoot>tr>th, 
+table>thead>tr>td, 
+table>tbody>tr>td, 
+table>tfoot>tr>td { 
+background-color: transparent;
+border-top: transparent;
+color: black;
+padding: 3px;
+}
+
+table>tbody>tr:nth-child(odd)>td, table>tbody>tr:nth-child(odd)>th {
+background-color: transparent;
+color: black;
+}
+
+th {
+color: black;
+padding: 3px;
+}
+
+td {
+color: black;
+padding: 3px;
+}
+
+.author-card .avatar {
+  visibility: hidden;
+}
+
+</style>
+
+
+
+<script>
+  // I figured this could be a good way to organize the data 
+  // when reponse.index < 4 use all_links[0] otherwise use all_links[1]
+
+  // use color + response.index to color the links
+
+  // using d3 for convenience
+  var main = d3.select('main');
+  var scrolly = main.select('#scrolly');
+var figure = scrolly.select('figure');
+var article = scrolly.select('article');
+var step = article.selectAll('.step');
+
+margin = {
+top: 30,
+right: 80,
+bottom: 30,
+left: 30
+}
+
+width = 590
+height = 340
+
+var simulation = d3.forceSimulation()
+.force('link', d3.forceLink().id(function (d) { return d.id; }))
+//.force('charge', d3.forceManyBody().strength(-200))
+.force('charge', d3.forceManyBody()
+     .strength(-1000)
+     .distanceMax(200)
+)
+.force('center', d3.forceCenter(width / 2, height / 2));
+
+var svg = figure.append('svg').attr('height', 600).attr('width', 600)
+
+
+const dataset = {
+nodes: [
+  // graph 1 and 2
+  { name: "2", id: 0, color0: 'white', color1: 'white', color2: 'white', color3: 'white' },
+  { name: "2", id: 1, color0: 'white', color1: 'white', color2: 'white', color3: 'white'},
+  { name: "2", id: 2, color0: 'white', color1: 'white', color2: 'white', color3: 'white'},
+  { name: "2", id: 3, color0: 'white', color1: 'white', color2: 'white', color3: 'white'},
+  { name: "1", id: 4, color0: 'white', color1: 'white', color2: 'white', color3: 'white'},
+  { name: "1", id: 5, color0: 'white', color1: 'white', color2: 'white', color3: 'white'},
+  
+  { name: "4", id: 6, color4: 'white', color5: 'white', color6: 'white', color3: 'white', color4: 'white', color5: 'white', color6: 'white', color7: 'white', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: '#EE5A63', color14: 'white' },
+  { name: "4", id: 7, color4: 'white', color5: 'white', color6: 'white', color3: 'white', color4: 'white', color5: 'white', color6: 'white', color7: '#EE5A63', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: 'white', color14: '#5ba860' },
+  { name: "4", id: 8, color4: 'white', color5: 'white', color6: 'white', color3: 'white', color4: 'white', color5: 'white', color6: 'white', color7: '#5ba860', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: '#EE5A63', color14: 'white' },
+  { name: "2", id: 9, color4: 'white', color5: 'white', color6: 'white', color3: 'white', color4: 'white', color5: 'white', color6: 'white', color7: '#EE5A63', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: '#EE5A63', color14: 'white' },
+  { name: "2", id: 10, color4: 'white', color5: 'white', color6: 'white', color3: 'white', color4: 'white', color5: 'white', color6: 'white', color7: '#EE5A63', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: '#EE5A63', color14: 'white' },
+  { name: "1", id: 11, color4: 'white', color5: 'white', color6: 'white', color3: 'white', color4: 'white', color5: 'white', color6: 'white', color7: 'white', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: 'white', color14: '#5ba860' },
+  { name: "1", id: 12, color4: 'white', color5: 'white', color6: 'white', color3: 'white', color4: 'white', color5: 'white', color6: 'white', color7: 'white', color8: 'white', color9: 'white', color10: 'white', color11: 'white', color12: 'white', color13: 'white', color14: '#5ba860' }
+  
+
+],
+links: [
+  // graph 1
+  { id: 1, source: 0, target: 1, color0: 'black', type: ''},
+  { id: 2, source: 1, target: 2, color0: 'black', type: '' },
+  { id: 3, source: 2, target: 3, color0: 'black', type: '' },
+  { id: 4, source: 3, target: 0, color0: 'black', type: '' },
+  { id: 5, source: 5, target: 4, color0: 'black', type: '' },
+  { id: 6, source: 1, target: 5, color0: 'rgba(255, 0, 0, 0.0)', type: '' },
+  { id: 7, source: 2, target: 4, color0: 'rgba(255, 0, 0, 0.0)', type: '' },
+  
+
+  { id: 8, source: 2, target: 4, color0: 'rgba(255, 0, 0, 0.0)', type: '' },
+  { id: 9, source: 2, target: 5, color0: 'rgba(255, 0, 0, 0.0)', type: '' },
+  // duplicate side
+  { id: 10, source: 3, target: 2, color0: 'black', type: '' },
+
+  // graph 2
+
+  { id: 11, source: 0, target: 1, color1: 'black', color2: 'black', color3: 'black', color7: 'black', type: '' },
+  { id: 12, source: 1, target: 2, color1: 'black', color2: 'black', color3: 'black', color7: 'black', type: '' },
+  { id: 13, source: 2, target: 0, color1: 'black', color2: 'black', color3: 'black', color7: 'black', type: '' },
+  { id: 14, source: 3, target: 4, color1: 'black', color2: 'black', color3: 'black', color7: 'black', type: '' },
+  { id: 15, source: 3, target: 5, color1: 'black', color2: 'black', color3: 'black', color7: 'black', type: '' },
+  { id: 16, source: 4, target: 3, color1: 'black', color2: 'black', color3: 'black', color7: 'black', type: '' },
+  { id: 17, source: 0, target: 4, color1: 'rgba(255, 0, 0, 0.0)', color2: 'rgba(255, 0, 0, 0.0)', color3: 'rgba(255, 0, 0, 0.0)', color7: 'black', type: '' },
+
+
+  // graph 3-8
+  // { id: 17, source: 0, target: 1, color8: 'black', color10: 'black', type: ''},
+  { id: 18, source: 0, target: 2, color8: 'black', color10: 'black', type: ''},
+  { id: 19, source: 0, target: 4, color8: 'black', color10: 'black', type: ''},
+  { id: 20, source: 0, target: 5, color8: 'black', color10: 'black', type: ''},
+  { id: 21, source: 1, target: 2, color8: 'black', color10: 'black', type: ''},
+  { id: 22, source: 2, target: 5, color8: 'black', color10: 'black', type: ''},
+  { id: 23, source: 4, target: 5, color8: 'black', color10: 'black', type: ''},
+  { id: 24, source: 4, target: 3, color8: 'black', color10: 'black', type: ''},
+  { id: 25, source: 4, target: 6, color8: 'black', color10: 'black', type: ''},
+  
+  // graph 3-9
+  { id: 26, source: 0, target: 1, color9: 'black', type: '1'},
+  { id: 27, source: 0, target: 2, color9: 'black', type: '2'},
+  { id: 28, source: 0, target: 4, color9: 'black', type: '3'},
+  { id: 29, source: 0, target: 5, color9: 'black', type: '4'},
+  { id: 30, source: 1, target: 2, color9: 'black', type: '5'},
+  { id: 31, source: 2, target: 5, color9: 'black', type: '6'},
+  { id: 32, source: 4, target: 5, color9: 'black', type: '7'},
+  { id: 33, source: 4, target: 3, color9: 'black', type: '8'},
+  { id: 34, source: 4, target: 6, color9: 'black', type: '9'},
+  
+  // graph 3-10
+  { id: 53, source: 0, target: 1, color10: 'black', type: ''},
+  { id: 54, source: 0, target: 2, color10: 'black', type: ''},
+  { id: 55, source: 0, target: 4, color10: 'black', type: ''},
+  { id: 56, source: 0, target: 5, color10: 'black', type: ''},
+  { id: 57, source: 1, target: 2, color10: 'black', type: ''},
+  { id: 58, source: 2, target: 5, color10: 'black', type: ''},
+  { id: 59, source: 4, target: 5, color10: 'black', type: ''},
+  { id: 60, source: 4, target: 3, color10: 'black', type: ''},
+  { id: 61, source: 4, target: 6, color10: 'black', type: ''},
+  
+  // graph 3-11
+  { id: 35, source: 0, target: 1, color11: '#EE5A63',  type: '1'},
+  { id: 36, source: 0, target: 2, color11: '#EE5A63',  type: '1'},
+  { id: 37, source: 0, target: 4, color11: '#EE5A63',  type: '1'},
+  { id: 38, source: 0, target: 5, color11: '#EE5A63',  type: '1'},
+  { id: 39, source: 1, target: 2, color11: 'black', type: ''},
+  { id: 40, source: 2, target: 5, color11: 'black', type: ''},
+  { id: 41, source: 4, target: 5, color11: 'black', type: ''},
+  { id: 42, source: 4, target: 3, color11: '#5ba860', type: '2'},
+  { id: 43, source: 4, target: 6, color11: '#5ba860', type: '2'},
+  
+  // graph 3-11
+  { id: 44, source: 0, target: 1, color12: '#EE5A63', color13: 'black', color14: 'black', type: ''},
+  { id: 45, source: 0, target: 2, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  { id: 46, source: 0, target: 4, color12: '#EE5A63', color13: 'black', color14: 'black', type: ''},
+  { id: 47, source: 0, target: 5, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  { id: 48, source: 1, target: 2, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  { id: 49, source: 2, target: 5, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  { id: 50, source: 4, target: 5, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  { id: 51, source: 4, target: 3, color12: '#EE5A63', color13: 'black', color14: 'black', type: ''},
+  { id: 52, source: 4, target: 6, color12: 'black', color13: 'black', color14: 'black', type: ''},
+  ]
+};
+
+
+console.log('dataset is ...', dataset);
+
+// Initialize the links
+let link = svg.append('g')
+.attr('class', 'links')
+.selectAll('line');
+
+// Initialize the nodes
+let node = svg.append('g')
+.attr('class', 'nodes')
+.selectAll('circle');
+// .enter().append('circle')
+
+// Text to nodes
+let text = svg.append('g')
+.attr('class', 'text')
+.selectAll('text')
+
+// Edge paths for the labels
+let edgepaths = svg.append("g")
+.selectAll(".links-path");
+
+// Labels for edges
+let edgelabels = svg.append("g")
+.selectAll(".links-text");
+
+//Listen for tick events to render the nodes as they update in your Canvas or SVG.
+simulation
+.nodes(dataset.nodes)//sets the simulation’s nodes to the specified array of objects, initializing their positions and velocities, and then re-initializes any bound forces;
+.on('tick', ticked);//use simulation.on to listen for tick events as the simulation runs.
+// After this, Each node must be an object. The following properties are assigned by the simulation:
+// index - the node’s zero-based index into nodes
+// x - the node’s current x-position
+// y - the node’s current y-position
+// vx - the node’s current x-velocity
+// vy - the node’s current y-velocity
+
+simulation.force('link')
+.links(dataset.links);//sets the array of links associated with this force, recomputes the distance and strength parameters for each link, and returns this force.
+// After this, Each link is an object with the following properties:
+// source - the link’s source node; 
+// target - the link’s target node; 
+// index - the zero-based index into links, assigned by this method
+
+
+// This function is run at each iteration of the force algorithm, updating the nodes position (the nodes data array is directly manipulated).
+function ticked() {
+link.attr('x1', d => d.source.x)
+.attr('y1', d => d.source.y)
+.attr('x2', d => d.target.x)
+.attr('y2', d => d.target.y);
+
+node.attr('cx', d => d.x)
+.attr('cy', d => d.y);
+
+text.attr('x', d => d.x - 5) //position of the lower left point of the text
+.attr('y', d => d.y + 5); //position of the lower left point of the text
+
+edgepaths.attr('d', function (d) {
+  var path = 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
+  //console.log(d)
+  return path
+});
+
+edgelabels.attr('transform', function (d, i) {
+  if (d.target.x < d.source.x) {
+    let bbox = this.getBBox();
+    let rx = bbox.x + bbox.width / 2;
+    let ry = bbox.y + bbox.height / 2;
+    return 'rotate(180 ' + rx + ' ' + ry + ')';
+  }
+  else {
+    return 'rotate(0)';
+  }
+});
+}
+
+//When the drag gesture starts, the targeted node is fixed to the pointer
+//The simulation is temporarily “heated” during interaction by setting the target alpha to a non-zero value.
+function dragstarted(d) {
+if (!d3.event.active) simulation.alphaTarget(0.3).restart();//sets the current target alpha to the specified number in the range [0,1].
+d.fy = d.y; //fx - the node’s fixed x-position. Original is null.
+d.fx = d.x; //fy - the node’s fixed y-position. Original is null.
+}
+
+//When the drag gesture starts, the targeted node is fixed to the pointer
+function dragged(d) {
+d.fx = d3.event.x;
+d.fy = d3.event.y;
+}
+
+//the targeted node is released when the gesture ends
+function dragended(d) {
+if (!d3.event.active) simulation.alphaTarget(0);
+d.fx = null;
+d.fy = null;
+
+console.log('dataset after dragged is ...', dataset);
+}
+
+
+//////////////////////////////////////////////////////////////
+/// Scrollytelling: Update node color and links
+//////////////////////////////////////////////////////////////
+
+
+// initialize the scrollama
+var scroller = scrollama();
+
+// generic window resize listener event
+function handleResize() {
+// 1. update height of step elements
+var stepH = Math.floor(window.innerHeight * 0.75);
+step.style('height', stepH + 'px');
+
+var figureHeight = window.innerHeight / 2;
+var figureMarginTop = (window.innerHeight - figureHeight) / 2;
+
+figure
+.style('height', figureHeight + 'px')
+.style('top', figureMarginTop + 'px')
+
+// 3. tell scrollama to update new element dimensions
+scroller.resize();
+}
+
+// scrollama event handlers
+function handleStepEnter(response) {
+
+// response = { element, direction, index }
+// add color to current step only
+step.classed('is-active', function (d, i) {
+  return i === response.index;
+});
+
+console.log(response.index)
+
+colors = 'd.color' + response.index
+edge_text = 'd.type' + response.index
+
+// if you're at the first graph, don't use the last node [A-F]
+// and only use the first 8 edges [this works]
+if (response.index < 1) {
+    nodes = dataset.nodes.filter(function (d) { return d.id < 6 })
+    links = dataset.links.filter(function (d) { return d.id < 11 });
+    restart()
+  // if you're at graph 2 
+      // use nodes A-F and links 8-16
+    } else if (response.index >= 1 && response.index < 5) {
+      nodes = dataset.nodes.filter(function (d) { return d.id < 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });
+      restart()
+    } else if (response.index >= 5) {
+      // if you're at graph 3 with labels (9)
+      nodes = dataset.nodes.filter(function (d) { return d.id > 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });
+      restart();
+    } else if (response.index === 9) {
+  // if you're at graph 3 with labels (9)
+      nodes = dataset.nodes.filter(function (d) { return d.id < 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });      
+      restart();
+    } else if (response.index === 10) {
+      // if you're at graph 3 with labels (9)
+      nodes = dataset.nodes.filter(function (d) { return d.id < 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });      
+      restart();
+    } else if (response.index === 11) {
+  // if you're at graph 3 with labels (10)
+      nodes = dataset.nodes.filter(function (d) { return d.id < 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });      
+      restart();
+    } else {
+      // if you're at graph 3 use node G and the last edges
+      nodes = dataset.nodes.filter(function (d) { return d.id < 6 });
+      links = dataset.links.filter(function (d) { return d.id >= 8 & d.id <= 18 });
+      restart();
+}
+
+node.attr('fill', function (d) { return eval(colors) })
+link.style('stroke', function (d) { return eval(colors) })
+
+
+}
+
+function setupStickyfill() {
+d3.selectAll('.sticky').each(function () {
+  Stickyfill.add(this);
+});
+}
+
+function init() {
+setupStickyfill();
+
+// 1. force a resize on load to ensure proper dimensions are sent to scrollama
+handleResize();
+
+// 2. setup the scroller passing options
+// 	   this will also initialize trigger observations
+// 3. bind scrollama event handlers (this can be chained like below)
+scroller
+.setup({
+  step: '#scrolly article .step',
+  offset: 0.5,
+  debug: false
+})
+.onStepEnter(handleStepEnter);
+
+// setup resize event
+window.addEventListener('resize', handleResize);
+}
+
+// kick things off
+init();
+
+function restart() {
+if (simulation) simulation.stop();
+
+// Apply the general update pattern to the nodes.
+node = node.data(nodes);
+node.exit().remove();
+
+node = node.enter().append('circle')
+.attr('r', 15)
+.style('stroke', '#777')
+.style('stroke-width', 2)
+.merge(node)
+.call(d3.drag()  //sets the event listener for the specified typenames and returns the drag behavior.
+      .on('start', dragstarted) //start - after a new pointer becomes active (on mousedown or touchstart).
+      .on('drag', dragged)      //drag - after an active pointer moves (on mousemove or touchmove).
+      .on('end', dragended)     //end - after an active pointer becomes inactive (on mouseup, touchend or touchcancel).
+)
+
+// Apply the general update pattern to the links.
+link = link.data(links, d => d.id);
+link.exit().remove();
+link = link.enter().append('line')
+.style('stroke-width', 4)
+.merge(link);
+
+text = text.data(nodes)
+text.exit().remove();
+text = text.enter().append('text').text(function (d) { return d.name; }).merge(text)
+
+edgepaths = edgepaths.data(links, d => d.source + "-" + d.target);
+edgepaths.exit().remove();
+edgepaths = edgepaths.enter().append('path')
+.attr('class', 'links-path')
+.attr('fill-opacity', 0)
+.attr('stroke-opacity', 0)
+.attr('d', function (d) { return 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y })
+.attr('id', function (d, i) { return 'edgepath' + d.source.id + "-" + d.target.id })
+.merge(edgepaths);
+
+// if I rewrite this as
+// edgelabels = edgelabels.data(links)
+// and put the svg.selectAll portion as a let statement outside of this function
+// it doesn't work at all? 
+    edgelabels = edgelabels.data(links, d => d.id);
+    edgelabels.exit().remove();
+    edgelabels = edgelabels.enter().append('text')
+      .attr('class', 'links-text')
+      .attr('dx', 40)
+      .attr('dy', 5)
+      .attr('font-size', 3)
+      .attr('fill', 'black')
+      .merge(edgelabels);
+
+    edgelabels.append('textPath')
+      .attr('xlink:href', d => {
+        return "#edgepath" + d.source.id + "-" + d.target.id;
+      })
+      .text(function (d) { return d.type }).merge(edgelabels);
+
+    // Update and restart the simulation.
+    simulation.nodes(nodes);
+    simulation.force("link").links(links);
+    simulation.alphaTarget(.1); // "Reheat the simulation"
+    simulation.restart();
+  }
+
+</script>
