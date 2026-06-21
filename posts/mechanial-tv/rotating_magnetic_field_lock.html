@@ -1,0 +1,130 @@
+<div style="padding:0.5rem 0;">
+<h2 class="sr-only">Interactive demonstration: two coil sets fed alternating currents a quarter-cycle apart add up to a magnetic field that rotates, and a magnet rotor locks onto and is dragged by that rotating field at the current's frequency.</h2>
+<style>
+  .lbl{font:12px var(--font-sans,sans-serif);fill:var(--color-text-secondary)}
+</style>
+<svg id="rm" width="100%" viewBox="0 0 680 380" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Rotating magnetic field locking a rotor</title>
+  <desc>A ring of four coil poles fed by two alternating currents, their pulls summing to a rotating field arrow, with a magnet rotor dragged around in step.</desc>
+
+  <circle cx="210" cy="195" r="150" fill="none" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+  <circle cx="210" cy="195" r="118" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+
+  <rect id="pL" x="46"  y="179" width="46" height="32" rx="5"/>
+  <rect id="pR" x="328" y="179" width="46" height="32" rx="5"/>
+  <rect id="pT" x="194" y="31"  width="32" height="46" rx="5"/>
+  <rect id="pB" x="194" y="313" width="32" height="46" rx="5"/>
+
+  <line id="cH" stroke="var(--color-text-tertiary)" stroke-width="1" stroke-dasharray="3 3"/>
+  <line id="cV" stroke="var(--color-text-tertiary)" stroke-width="1" stroke-dasharray="3 3"/>
+  <line id="cHb" stroke="var(--color-text-tertiary)" stroke-width="0.8" stroke-dasharray="2 3"/>
+  <line id="cVb" stroke="var(--color-text-tertiary)" stroke-width="0.8" stroke-dasharray="2 3"/>
+
+  <g id="rotor">
+    <rect x="4" y="-8" width="74" height="16" rx="6" fill="#E24B4A"/>
+    <rect x="-78" y="-8" width="74" height="16" rx="6" fill="#378ADD"/>
+    <circle cx="0" cy="0" r="9" fill="var(--color-background-primary)" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  </g>
+
+  <line id="fieldLine" stroke="#EF9F27" stroke-width="3" stroke-linecap="round"/>
+  <polygon id="fieldHead" fill="#EF9F27"/>
+
+  <text class="lbl" x="503" y="84" text-anchor="middle">phase A — left &amp; right coils</text>
+  <rect x="372" y="92" width="262" height="62" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+  <line x1="372" y1="123" x2="634" y2="123" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <polyline id="waveA" points="" fill="none" stroke="#378ADD" stroke-width="1.6"/>
+
+  <text class="lbl" x="503" y="178" text-anchor="middle">phase B — top &amp; bottom coils</text>
+  <rect x="372" y="186" width="262" height="62" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+  <line x1="372" y1="217" x2="634" y2="217" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <polyline id="waveB" points="" fill="none" stroke="#378ADD" stroke-width="1.6"/>
+
+  <line id="curA" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <circle id="dotA" r="3.5" fill="#EF9F27"/>
+  <line id="curB" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <circle id="dotB" r="3.5" fill="#EF9F27"/>
+
+  <text class="lbl" x="503" y="286" text-anchor="middle">peaks a quarter-cycle apart → the sum sweeps round</text>
+</svg>
+
+<div style="margin-top:14px;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--color-text-secondary);flex-wrap:wrap;">
+  <span>AC frequency</span>
+  <input id="freq" type="range" min="1" max="10" step="1" value="4" style="flex:1;min-width:120px;">
+  <span>Load on rotor</span>
+  <input id="load" type="range" min="0" max="100" step="1" value="25" style="flex:1;min-width:120px;">
+</div>
+<div style="margin-top:10px;font-size:13px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;color:var(--color-text-secondary);">
+  <span><span style="display:inline-block;width:11px;height:11px;background:#E24B4A;border-radius:2px;vertical-align:-1px;"></span> N pole</span>
+  <span><span style="display:inline-block;width:11px;height:11px;background:#378ADD;border-radius:2px;vertical-align:-1px;"></span> S pole</span>
+  <span><span style="display:inline-block;width:16px;height:3px;background:#EF9F27;vertical-align:3px;"></span> resultant field</span>
+  <span><span style="display:inline-block;width:16px;height:8px;background:linear-gradient(90deg,#378ADD 50%,#E24B4A 50%);vertical-align:0;border-radius:2px;"></span> rotor magnet</span>
+</div>
+<div id="cap" style="margin-top:8px;font-size:14px;font-weight:500;color:var(--color-text-primary);">The field arrow sweeps round once per AC cycle; the rotor's red pole chases it, locked to the same rate.</div>
+</div>
+
+<script>
+(function(){
+  var PI=Math.PI, CX=210, CY=195, K=92;
+  var RED="#E24B4A", BLUE="#378ADD";
+  var pL=document.getElementById('pL'),pR=document.getElementById('pR'),pT=document.getElementById('pT'),pB=document.getElementById('pB');
+  var cH=document.getElementById('cH'),cV=document.getElementById('cV'),cHb=document.getElementById('cHb'),cVb=document.getElementById('cVb');
+  var rotor=document.getElementById('rotor'),fLine=document.getElementById('fieldLine'),fHead=document.getElementById('fieldHead');
+  var waveA=document.getElementById('waveA'),waveB=document.getElementById('waveB');
+  var curA=document.getElementById('curA'),curB=document.getElementById('curB'),dotA=document.getElementById('dotA'),dotB=document.getElementById('dotB');
+  var freq=document.getElementById('freq'),load=document.getElementById('load'),cap=document.getElementById('cap');
+
+  var AX=372,AW=262,AY=123,AAMP=26, BY=217,BAMP=26;
+  (function(){
+    var a="",b="";
+    for(var i=0;i<=90;i++){ var p=2*PI*i/90, x=AX+AW*i/90;
+      a+=x.toFixed(1)+","+(AY-AAMP*Math.cos(p)).toFixed(1)+" ";
+      b+=x.toFixed(1)+","+(BY-BAMP*Math.sin(p)).toFixed(1)+" ";
+    }
+    waveA.setAttribute('points',a); waveB.setAttribute('points',b);
+  })();
+
+  var theta=0, rotorA=0, last=null;
+  function w(){ return parseFloat(freq.value)*0.5; }
+
+  function frame(t){
+    if(last===null)last=t; var dt=Math.min((t-last)/1000,0.05); last=t;
+    var om=w(); theta+=om*dt;
+    var Ia=Math.cos(theta), Ib=Math.sin(theta);
+    var ld=parseFloat(load.value)/100, pulled=ld>0.94, delta=ld*0.92*(PI/2);
+    if(!pulled){ rotorA = theta - delta; }
+    else { rotorA += om*0.12*dt; }
+    var rotShow = pulled ? rotorA + 0.4*Math.sin(theta-rotorA) : rotorA;
+
+    pL.setAttribute('fill', Ia>=0?RED:BLUE); pL.setAttribute('fill-opacity',(0.12+0.88*Math.abs(Ia)).toFixed(2));
+    pR.setAttribute('fill', Ia>=0?BLUE:RED); pR.setAttribute('fill-opacity',(0.12+0.88*Math.abs(Ia)).toFixed(2));
+    pB.setAttribute('fill', Ib>=0?RED:BLUE); pB.setAttribute('fill-opacity',(0.12+0.88*Math.abs(Ib)).toFixed(2));
+    pT.setAttribute('fill', Ib>=0?BLUE:RED); pT.setAttribute('fill-opacity',(0.12+0.88*Math.abs(Ib)).toFixed(2));
+
+    var hx=CX+K*Ia, vy=CY-K*Ib, fx=CX+K*Ia, fy=CY-K*Ib;
+    cH.setAttribute('x1',CX);cH.setAttribute('y1',CY);cH.setAttribute('x2',hx);cH.setAttribute('y2',CY);
+    cV.setAttribute('x1',CX);cV.setAttribute('y1',CY);cV.setAttribute('x2',CX);cV.setAttribute('y2',vy);
+    cHb.setAttribute('x1',hx);cHb.setAttribute('y1',CY);cHb.setAttribute('x2',fx);cHb.setAttribute('y2',fy);
+    cVb.setAttribute('x1',CX);cVb.setAttribute('y1',vy);cVb.setAttribute('x2',fx);cVb.setAttribute('y2',fy);
+
+    var ux=Math.cos(theta), uy=-Math.sin(theta);
+    var tipx=CX+K*ux, tipy=CY+K*uy, bx=tipx-13*ux, by=tipy-13*uy, px=-uy, py=ux;
+    fLine.setAttribute('x1',CX);fLine.setAttribute('y1',CY);fLine.setAttribute('x2',bx);fLine.setAttribute('y2',by);
+    fHead.setAttribute('points',tipx+','+tipy+' '+(bx+6*px)+','+(by+6*py)+' '+(bx-6*px)+','+(by-6*py));
+
+    rotor.setAttribute('transform','translate('+CX+','+CY+') rotate('+(-rotShow*180/PI)+')');
+
+    var phi=((theta%(2*PI))+2*PI)%(2*PI), cx=AX+AW*phi/(2*PI);
+    curA.setAttribute('x1',cx);curA.setAttribute('y1',92);curA.setAttribute('x2',cx);curA.setAttribute('y2',154);
+    curB.setAttribute('x1',cx);curB.setAttribute('y1',186);curB.setAttribute('x2',cx);curB.setAttribute('y2',248);
+    dotA.setAttribute('cx',cx);dotA.setAttribute('cy',AY-AAMP*Ia);
+    dotB.setAttribute('cx',cx);dotB.setAttribute('cy',BY-BAMP*Ib);
+
+    cap.textContent = pulled
+      ? "Overloaded: the rotor can't hold on, the field sweeps past it, and it slips out of step — the lock has a limit."
+      : "The field arrow sweeps round once per AC cycle; the rotor's red pole chases it, lagging slightly under load but turning at exactly the same rate.";
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>

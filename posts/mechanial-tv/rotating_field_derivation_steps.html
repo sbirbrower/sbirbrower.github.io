@@ -1,0 +1,130 @@
+<div style="padding:0.5rem 0;">
+<h2 class="sr-only">Step-by-step visual derivation: two alternating currents a quarter-cycle apart become two fields on perpendicular axes, whose vector sum has constant length and an angle equal to omega-t, so the field vector traces a circle once per cycle.</h2>
+<style>
+  .lbl{font:12px var(--font-sans,sans-serif);fill:var(--color-text-secondary)}
+  .eq{padding:6px 11px;border-left:3px solid transparent;font-size:15px;color:var(--color-text-secondary);transition:opacity .2s,background .2s;line-height:1.5}
+  .eq.cur{border-left-color:#EF9F27;background:var(--color-background-secondary);color:var(--color-text-primary)}
+  .eq.future{opacity:.32}
+  .navb{min-width:84px}
+</style>
+<svg id="dv" width="100%" viewBox="0 0 680 360" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Visual derivation of the rotating field</title>
+  <desc>Left: an x-y plane with two perpendicular component arrows summing to a resultant that traces a circle. Right: the two current waveforms.</desc>
+
+  <line x1="60" y1="200" x2="345" y2="200" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <line x1="200" y1="58" x2="200" y2="342" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <text class="lbl" x="340" y="215">x̂</text>
+  <text class="lbl" x="208" y="68">ŷ</text>
+
+  <circle id="uc" cx="200" cy="200" r="130" fill="none" stroke="var(--color-text-tertiary)" stroke-width="1" stroke-dasharray="3 4" style="opacity:0"/>
+  <g id="trail"></g>
+
+  <line id="cAl" stroke="#378ADD" stroke-width="3" stroke-linecap="round" style="opacity:0"/>
+  <polygon id="cAh" fill="#378ADD" style="opacity:0"/>
+  <line id="cBl" stroke="#1D9E75" stroke-width="3" stroke-linecap="round" style="opacity:0"/>
+  <polygon id="cBh" fill="#1D9E75" style="opacity:0"/>
+
+  <line id="pp1" stroke="var(--color-text-tertiary)" stroke-width="0.8" stroke-dasharray="2 3" style="opacity:0"/>
+  <line id="pp2" stroke="var(--color-text-tertiary)" stroke-width="0.8" stroke-dasharray="2 3" style="opacity:0"/>
+  <line id="rl" stroke="#EF9F27" stroke-width="3.5" stroke-linecap="round" style="opacity:0"/>
+  <polygon id="rh" fill="#EF9F27" style="opacity:0"/>
+  <circle id="tip" r="5" fill="#EF9F27" style="opacity:0"/>
+  <circle cx="200" cy="200" r="3.5" fill="var(--color-text-secondary)"/>
+
+  <text class="lbl" x="380" y="64">phase A current  iₐ = cos ωt</text>
+  <rect x="380" y="72" width="252" height="58" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+  <line x1="380" y1="101" x2="632" y2="101" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <polyline id="wA" points="" fill="none" stroke="#378ADD" stroke-width="1.6"/>
+
+  <text class="lbl" x="380" y="156">phase B current  i_B = sin ωt</text>
+  <rect x="380" y="164" width="252" height="58" rx="6" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+  <line x1="380" y1="193" x2="632" y2="193" stroke="var(--color-border-secondary)" stroke-width="0.5"/>
+  <polyline id="wB" points="" fill="none" stroke="#1D9E75" stroke-width="1.6"/>
+
+  <line id="curL" stroke="var(--color-text-secondary)" stroke-width="1"/>
+  <circle id="dA" r="3.5" fill="#EF9F27"/>
+  <circle id="dB" r="3.5" fill="#EF9F27"/>
+
+  <text class="lbl" x="380" y="250">the cursor reads both currents at the same instant</text>
+  <text class="lbl" x="380" y="268">— they feed the two arrows on the left.</text>
+</svg>
+
+<div style="margin-top:12px;display:flex;align-items:center;gap:12px;">
+  <button class="navb" id="prev">‹ Back</button>
+  <span id="steplab" style="font-size:14px;font-weight:500;color:var(--color-text-primary);flex:1;text-align:center;">Step 1 of 5 — two currents, a quarter-cycle apart</span>
+  <button class="navb" id="next">Next ›</button>
+</div>
+
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:4px;">
+  <div class="eq" id="eq1">i<sub>A</sub> = <span style="color:#378ADD">cos ωt</span>,&nbsp;&nbsp; i<sub>B</sub> = <span style="color:#1D9E75">sin ωt</span> &nbsp;<span style="color:var(--color-text-tertiary)">(ω = 2πf)</span></div>
+  <div class="eq" id="eq2"><b>B</b><sub>A</sub> = <span style="color:#378ADD">B<sub>0</sub> cos ωt</span> · x̂ &nbsp;&nbsp; <b>B</b><sub>B</sub> = <span style="color:#1D9E75">B<sub>0</sub> sin ωt</span> · ŷ</div>
+  <div class="eq" id="eq3"><b>B</b> = <span style="color:#BA7517">B<sub>0</sub>(cos ωt · x̂ + sin ωt · ŷ)</span></div>
+  <div class="eq" id="eq4">|<b>B</b>| = B<sub>0</sub>√(cos<sup>2</sup>ωt + sin<sup>2</sup>ωt) = <b>B<sub>0</sub></b> &nbsp;<span style="color:var(--color-text-tertiary)">(constant length)</span></div>
+  <div class="eq" id="eq5">θ = ωt &nbsp;⇒&nbsp; tip = (B<sub>0</sub>cos ωt, B<sub>0</sub>sin ωt) — <b>one full turn per cycle</b></div>
+</div>
+<div id="cap" style="margin-top:10px;font-size:14px;font-weight:500;color:var(--color-text-primary);">Two currents that just rise and fall, offset by a quarter cycle. Nothing rotates yet.</div>
+</div>
+
+<script>
+(function(){
+  var O={x:200,y:200}, R=130, W=2*Math.PI/5.5;
+  var ids=['uc','trail','cAl','cAh','cBl','cBh','pp1','pp2','rl','rh','tip','wA','wB','curL','dA','dB','prev','next','steplab','cap'];
+  var E={}; ids.forEach(function(k){E[k]=document.getElementById(k);});
+  for(var i=1;i<=5;i++){ E['eq'+i]=document.getElementById('eq'+i); }
+
+  var AX=380,AW=252,AYmid=101,AYamp=24, BYmid=193,BYamp=24;
+  (function(){var a="",b="";for(var i=0;i<=90;i++){var p=2*Math.PI*i/90,x=AX+AW*i/90;a+=x.toFixed(1)+","+(AYmid-AYamp*Math.cos(p)).toFixed(1)+" ";b+=x.toFixed(1)+","+(BYmid-BYamp*Math.sin(p)).toFixed(1)+" ";}E.wA.setAttribute('points',a);E.wB.setAttribute('points',b);})();
+
+  for(var t=0;t<6;t++){ var c=document.createElementNS('http://www.w3.org/2000/svg','circle'); c.setAttribute('r','3'); c.setAttribute('fill','#EF9F27'); c.setAttribute('class','tdot'); c.style.opacity='0'; E.trail.appendChild(c); }
+  var tdots=E.trail.querySelectorAll('.tdot');
+
+  function arrow(l,h,x0,y0,x1,y1,sz){
+    var dx=x1-x0,dy=y1-y0,len=Math.hypot(dx,dy);
+    l.setAttribute('x1',x0);l.setAttribute('y1',y0);l.setAttribute('x2',x1);l.setAttribute('y2',y1);
+    if(len<sz+2){h.setAttribute('points','');return;}
+    var ux=dx/len,uy=dy/len,bx=x1-sz*ux,by=y1-sz*uy,px=-uy,py=ux,hw=sz*0.55;
+    h.setAttribute('points',x1+','+y1+' '+(bx+hw*px)+','+(by+hw*py)+' '+(bx-hw*px)+','+(by-hw*py));
+  }
+
+  var step=1;
+  function vis(el,on){ el.style.opacity = on?'1':'0'; }
+  function updateView(){
+    E.steplab.textContent='Step '+step+' of 5 — '+['','two currents, a quarter-cycle apart','each current → a field on its own axis','add the two fields','its length never changes','its direction is ωt → it rotates'][step];
+    for(var i=1;i<=5;i++){ var el=E['eq'+i]; el.classList.toggle('cur',i===step); el.classList.toggle('future',i>step); }
+    var showComp=step>=2, showRes=step>=3, showCirc=step>=4, showTip=step>=4, showTrail=step>=5;
+    [E.cAl,E.cAh,E.cBl,E.cBh].forEach(function(e){vis(e,showComp);});
+    [E.rl,E.rh,E.pp1,E.pp2].forEach(function(e){vis(e,showRes);});
+    vis(E.uc,showCirc); vis(E.tip,showTip);
+    tdots.forEach(function(d){ if(!showTrail) d.style.opacity='0'; });
+    E.cap.textContent=['',
+      'Two currents that just rise and fall, offset by a quarter cycle. Nothing rotates yet.',
+      'Each current pulls along one axis: blue left–right, green up–down. On their own, each just grows, fades and reverses.',
+      'Add the two pulls tip-to-tail. The amber arrow is their sum — watch its tip.',
+      'The blue and green pieces trade off so the sum’s length stays fixed: the tip never leaves the dashed circle.',
+      'And its angle is exactly ωt — so the arrow sweeps round the circle once every current cycle. A rotating field, from two currents that only wobbled.'][step];
+  }
+  E.prev.addEventListener('click',function(){ if(step>1){step--;updateView();} });
+  E.next.addEventListener('click',function(){ if(step<5){step++;updateView();} });
+  updateView();
+
+  var theta=0,last=null;
+  function frame(ts){
+    if(last===null)last=ts; var dt=Math.min((ts-last)/1000,0.05); last=ts; theta+=W*dt;
+    var Ia=Math.cos(theta), Ib=Math.sin(theta);
+    var ax=O.x+R*Ia, ay=O.y, bx=O.x, by=O.y-R*Ib, rx=O.x+R*Ia, ry=O.y-R*Ib;
+    arrow(E.cAl,E.cAh,O.x,O.y,ax,ay,9);
+    arrow(E.cBl,E.cBh,O.x,O.y,bx,by,9);
+    arrow(E.rl,E.rh,O.x,O.y,rx,ry,11);
+    E.pp1.setAttribute('x1',ax);E.pp1.setAttribute('y1',ay);E.pp1.setAttribute('x2',rx);E.pp1.setAttribute('y2',ry);
+    E.pp2.setAttribute('x1',bx);E.pp2.setAttribute('y1',by);E.pp2.setAttribute('x2',rx);E.pp2.setAttribute('y2',ry);
+    E.tip.setAttribute('cx',rx);E.tip.setAttribute('cy',ry);
+    if(step>=5){ for(var i=0;i<tdots.length;i++){ var a=theta-0.12*(i+1); tdots[i].setAttribute('cx',O.x+R*Math.cos(a)); tdots[i].setAttribute('cy',O.y-R*Math.sin(a)); tdots[i].style.opacity=(0.4*(1-i/tdots.length)).toFixed(2); } }
+    var phi=((theta%(2*Math.PI))+2*Math.PI)%(2*Math.PI), cx=AX+AW*phi/(2*Math.PI);
+    E.curL.setAttribute('x1',cx);E.curL.setAttribute('y1',72);E.curL.setAttribute('x2',cx);E.curL.setAttribute('y2',222);
+    E.dA.setAttribute('cx',cx);E.dA.setAttribute('cy',AYmid-AYamp*Ia);
+    E.dB.setAttribute('cx',cx);E.dB.setAttribute('cy',BYmid-BYamp*Ib);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
