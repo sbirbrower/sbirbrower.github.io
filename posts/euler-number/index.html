@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset='utf-8' />
+<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+<title>The Euler Number of a Binary Image &mdash; Sydney Birbrower</title>
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css'
+  integrity='sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq' crossorigin='anonymous'>
+<script defer src='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js'
+  integrity='sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz'
+  crossorigin='anonymous'></script>
+<script defer src='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js'
+  integrity='sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI' crossorigin='anonymous'
+  onload='renderMathInElement(document.body);'></script>
+<meta name='viewport' content='width=device-width, initial-scale=1' />
+<style>
+  .post-content {
+    max-width: 660px;
+    margin: 2rem auto 4rem;
+    padding: 0 1.5rem;
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+  .post-content h2 {
+    font-size: 1.35rem;
+    margin: 2.5rem 0 0.75rem;
+  }
+  .post-content p {
+    margin: 0 0 1.1rem;
+  }
+  .post-content figure {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  .post-content figcaption {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+  .post-content img {
+    max-width: 100%;
+  }
+  .post-content .katex-display {
+    margin: 0.5rem 0;
+    overflow-x: auto;
+  }
+  .post-content .image-placeholder {
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    padding: 2rem 1rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .post-content .formula-text {
+    font-size: 1.6rem;
+    letter-spacing: 0.25em;
+    color: var(--text);
+  }
+  .post-content .references {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+  .post-content .references p { margin: 0.35rem 0; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-title" href="../../index.html">Sydney Birbrower</a>
+    <nav class="nav-links">
+      <a href="../../index.html">Home</a>
+      <a href="../../blog.html">Blog</a>
+    </nav>
+  </div>
+</header>
+
+<div class="post-title-header">
+  <h1>The Euler Number of a Binary Image</h1>
+  <div class="post-meta">June 23, 2020 &middot; Computer Vision</div>
+</div>
+
+<main>
+<article class="post-content">
+
+<p>Let&rsquo;s start with the basics: what is an Euler number? You may have seen this formula before, perhaps in a discrete mathematics class:</p>
+
+<figure>
+  $$\Large V - E + F = 2$$
+  <figcaption>Euler&rsquo;s formula. You know it&rsquo;s important with a name like that.</figcaption>
+</figure>
+
+<p>V stands for the number of vertexes, E the number of edges, and F the number of faces. In graph theory, if you have a planar, connected graph then its number of vertices, minus its number of edges, plus its number of faces (including the outside one) will always equal two. Always. There&rsquo;s a great <a href="https://www.youtube.com/watch?v=-9OUyo8NFZg" target="_blank" rel="noopener">3Blue1Brown video</a> if you are curious for a proof.</p>
+
+<p>This is also a topological property of shapes. For any convex polyhedron (like a square or pyramid), V-E+F=2. But two isn&rsquo;t particular special in the grand scheme of things. An Euler number can be anything, even negative numbers.</p>
+
+<p>A cube&rsquo;s Euler number is two. To transform a cube to get a different Euler number requires a bit of work. Stretching the shape won&rsquo;t help because Euler numbers are topological invariants, and a stretched shape is basically the same shape in topology. But adding a hole or a convex side? That&rsquo;ll do it.</p>
+
+<figure>
+  <img src="mug.png" alt="a mug" />
+  <figcaption><br>(insert joke about how topologist can&rsquo;t tell the difference between a coffee mug and a doughnut here)</figcaption>
+</figure>
+
+<p>So if this V-E+F formula works for 2D graphs and 3D shapes, could it work for images? After all, a binary image is basically just an array of ones and zeros. Pretty similar to a graph.</p>
+
+<p>The Euler number of an image comes from the formula</p>
+
+<figure>
+  $$E = C - H$$
+</figure>
+
+<p>Where C is the number of connected components and H is the number of holes. Let&rsquo;s say white denotes an object and black is the absence of that object. The letter &lsquo;B&rsquo; therefore has three connected components, or three white spots (two enclosed in the letter and one that borders the image). There is also a &lsquo;B&rsquo;-shaped hole where the letter is. Therefore, the Euler number is 3&ndash;1=2.</p>
+
+<figure>
+  <img src="B.png" alt="The letter B as a binary image" />
+  <figcaption>You think I&rsquo;d be better at drawing the letter &lsquo;B&rsquo; by this point in my life.</figcaption>
+</figure>
+
+<p>So, how would a computer count the number of white spots? A human eye can do it with a simple look, but a computer would need to do a lot of iterating. This can be especially costly over large images and would be a bitch to parallelize. We need a method of calculating the Euler number locally.</p>
+
+<figure>
+  <img src="components.png" alt="4 connected components, 2 holes" />
+  <figcaption>4 (white) connected components, 2 holes</figcaption>
+</figure>
+
+<p>The question is can we split the image up into parts where an operator computes over a fraction of the image and these results are later combined? It turns out the answer is yes. This result might seem a little weird&ndash;after all the Euler number is dependent on the number of holes and objects, and neither of those can be computed locally. But the combination of the two can! Geometry is weird like that.</p>
+
+<p>We just need to count the number instances of these matrices:</p>
+
+<figure>
+  $$\begin{bmatrix} 0 & 0 \\ 0 & 1 \end{bmatrix}, \quad \begin{bmatrix} 0 & 1 \\ 1 & 1 \end{bmatrix}, \quad \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$$
+  <figcaption>1 represents the foreground, 0 the background</figcaption>
+</figure>
+
+<p>We add the first and third and subtract the middle one. The formula is:</p>
+
+<figure>
+  $$\Large M_1 - M_2 + M_3$$
+</figure>
+
+<p>To make sense of this, let&rsquo;s take a shape and mark all the points where the first matrix occurs. I am taking white as the foreground color here.</p>
+
+<figure>
+  <img src="marked_shape.png" alt="Shape with M1 instances marked" />
+  <figcaption>Euler number is one</figcaption>
+</figure>
+
+<p>Notice that they are all on one side? It has to do with the difference between number of upstream-facing convexities and upstream-facing concavities. The first matrix will always occur on &lsquo;convex&rsquo; edges where the shape is getting taller as seen reading from left to right.</p>
+
+<p>The trick is to use one of these boxes as representation for the entire shape. Every object, no matter the shape, will have an M1 ◲ matrix. Try drawing it. You&rsquo;ll quickly find that every object has an upper left hand side, and that upper left side is always M1 ◲.</p>
+
+<p>Okay, but what about the other red boxes in the picture? We don&rsquo;t want to double count our object (or in our case, count it 8 times). That&rsquo;s where the second matrix comes in. Let&rsquo;s label all the instances of M2 ◰ matrix.</p>
+
+<figure>
+  <img src="marked_shape2.png" alt="Shape with M2 instances marked" />
+  <figcaption>I should have used a different color.</figcaption>
+</figure>
+
+<p>Other than the upper left corner, they exactly cancel out! Subtracting the instances of these pixels is equivalent to counting connected components! Other than the top left corner, the only way to run across M1 ◲ is when the shape goes up and to the left. And all M1 ◲ obtained this way must have an M2 ◰ directly next to it.</p>
+
+<p>What about holes? Like connected components can be represented by their top left corner, holes can be represented by their bottom right corner. M1 and M2 will mostly cancel again, and the result will be the Euler number.</p>
+
+<figure>
+  <img src="marked_shape3.png" alt="Shape with M1 and M2 instances marked, showing Euler number zero" />
+  <figcaption>Euler number is zero</figcaption>
+</figure>
+
+<p>What about that last matrix? M3. That one is to distinguish diagonals, because we are defining them as separate shapes.</p>
+
+<figure>
+  <img src="image.png" alt="5 objects or 1 depending on diagonal counting" />
+  <figcaption>5 objects or 1? Notice we need M3 to count the red pixels.</figcaption>
+</figure>
+
+<p>Combining the counts of these three matrices, it gives an incredibly easy method to find an Euler number: loop through and count.</p>
+
+<p>There is another subtlety here: are corner-adjacent cells considered neighbors, even when they are only connected by the diagonal? It depends on how we define the problem. There is the difference between the von Neumann neighborhood and the Moore neighborhood, or four-connectedness and eight.</p>
+
+<figure>
+  <img src="image2.png" alt="von Neumann neighborhood (4-connected) vs Moore neighborhood (8-connected)" />
+</figure>
+
+<p>The above formula only works for 4-connectedness, although eight-connectedness isn&rsquo;t much harder to implement.</p>
+
+<p>Going back to our original formula for Euler&rsquo;s number, V-E+F. We can actually translate this more directly into our image definition. Counting the number of foreground pixels &#9632; as vertices, edges as &#9603; and &#9615; and faces as groups of four pixels in a square &#9609; we get a more visual equivalent of Euler&rsquo;s number. This, it turns out, is exactly equivalent to our connected component definition above.</p>
+
+<p>The Euler number doesn&rsquo;t have a lot of practical applications, but it does occasionally show up in computer vision, especially medical image processing.</p>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    &copy; 2026 Sydney Birbrower
+  </div>
+</footer>
+
+</body>
+</html>
