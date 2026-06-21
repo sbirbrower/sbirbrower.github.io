@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset='utf-8' />
+<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+<title>How to Prove the Infinity of Primes &mdash; Sydney Birbrower</title>
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css'
+  integrity='sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq' crossorigin='anonymous'>
+<script defer src='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js'
+  integrity='sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz'
+  crossorigin='anonymous'></script>
+<script defer src='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js'
+  integrity='sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI' crossorigin='anonymous'
+  onload='renderMathInElement(document.body);'></script>
+<meta name='viewport' content='width=device-width, initial-scale=1' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+<style>
+  .post-content {
+    max-width: 660px;
+    margin: 2rem auto 4rem;
+    padding: 0 1.5rem;
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+  .post-content h2 {
+    font-size: 1.35rem;
+    margin: 2.5rem 0 0.75rem;
+  }
+  .post-content p {
+    margin: 0 0 1.1rem;
+  }
+  .post-content figure {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  .post-content figcaption {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+  .post-content .katex-display {
+    margin: 0.5rem 0;
+    overflow-x: auto;
+  }
+  .post-content .image-placeholder {
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    padding: 2rem 1rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .post-content .try-table {
+    display: inline-block;
+    text-align: left;
+    font-size: 0.97rem;
+    line-height: 2;
+    color: var(--muted);
+  }
+  .post-content .references {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+  .post-content .references p { margin: 0.35rem 0; }
+  .post-subtitle {
+    color: var(--muted);
+    font-size: 1.1rem;
+    margin-bottom: 1.75rem !important;
+  }
+  .post-content pre {
+    border-radius: 6px;
+    margin: 1.25rem 0;
+    font-size: 0.9rem;
+  }
+  .post-content pre code.hljs {
+    border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-title" href="../../index.html">Sydney Birbrower</a>
+    <nav class="nav-links">
+      <a href="../../index.html">Home</a>
+      <a href="../../blog.html">Blog</a>
+    </nav>
+  </div>
+</header>
+
+<div class="post-title-header">
+  <h1>How to Prove the Infinity of Primes</h1>
+  <div class="post-meta">April 25, 2020 &middot; Number Theory</div>
+</div>
+
+<main>
+<article class="post-content">
+
+<p class="post-subtitle">Two simple proofs of the infinity of primes</p>
+
+<p>Prime numbers are whole numbers that are only divisible by 1 and themselves. Students first learn about them in middle school, around the time when teachers are first introducing pesky equations with weird not-numbers like x and y. Remember these factor trees? All you need to know is division to construct one.</p>
+
+<figure>
+  <img src="factor_tree.png" alt="Factor tree" style="max-width:100%;" />
+  <figcaption>The leaves of the tree are prime. It turns out that any number can be factored into primes in a unique way, with primes being factored into one and themselves.</figcaption>
+</figure>
+
+<p>But this simple rule of division turns out to be the basis the most pure of the pure of mathematics. Well, pure in the sense it routinely steals from other, seemingly unrelated math disciplines and constructs and beautiful Frankenstein-like whole called number theory.</p>
+
+<p>Primes start with 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, etc. Then next is 31. Then 37. It keeps going. Currently the largest known prime is very big &mdash; 24,862,048 digits long. If you typed it out, it would be two and a half times the length of the Game of Thrones series.</p>
+
+<p>But how far can we go? Are primes infinite?</p>
+
+<p style="text-align:center; color:var(--muted); letter-spacing:0.4em; margin:2rem 0;">&#8226;&#8226;&#8226;</p>
+
+<h2>Euclid&rsquo;s Proof on the Infinity of Primes</h2>
+
+<p>The infinity of primes has been known for thousands of years, first appearing in Euclid&rsquo;s Elements in 300 BCE. It&rsquo;s usually used as an example of a classically elegant proof.</p>
+
+<p>It goes something like this:</p>
+
+<p>To prove that there are an infinite number of primes, we need to first assume the opposite: there is a finite amount of primes. Without pesky infinity in our way, let&rsquo;s just list them.</p>
+
+<figure>
+  $$p_1,\ p_2,\ \ldots,\ p_n$$
+  <figcaption>p<sub>1</sub> is our first prime (aka 2). p<sub>n</sub> is our nth prime, the largest one</figcaption>
+</figure>
+
+<p>If we multiply all of these p&rsquo;s together, we&rsquo;ll get another number, the product of primes. Let&rsquo;s add one to this and call this number <i>q</i>.</p>
+
+<figure>
+  $$q = \left(\prod_{i=1}^{n} p_i\right) + 1$$
+  <figcaption>our theoretical <i>q</i> will be very, very large</figcaption>
+</figure>
+
+<p>What is <i>q</i>? We have two options here: <i>q</i> is prime, or <i>q</i> is not prime (aka <i>q</i> is composite).</p>
+
+<p>Looking at the first option, we already have a contradiction. We know <i>q</i> is not prime because we said so. Remember we just listed all the primes and <i>q</i> was not on the list. If it was a prime, it would be on the list and not on the list at the same time, which doesn&rsquo;t make a whole lot of sense. So it must not be prime.</p>
+
+<p>We have one option left: we are forced to assume q is composite. That is, it has prime factors &mdash; two of the primes on our list! But which ones? Let&rsquo;s try p<sub>1</sub>. But we run into a problem here. Dividing <i>q</i> by p<sub>1</sub> gives us</p>
+
+<figure>
+  $$\begin{aligned}
+  \frac{q}{p_1} &= \frac{\prod\nolimits p_1 p_2 \cdots p_n + 1}{p_1} \\[1em]
+  \frac{q}{p_1} &= \frac{\prod\nolimits \cancel{p_1} p_2 \cdots p_n}{\cancel{p_1}} + \frac{1}{p_1} \\[1em]
+  \frac{q}{p_1} &= \prod\nolimits p_2 p_3 \cdots p_n + \frac{1}{p_1}
+  \end{aligned}$$
+</figure>
+
+<p>The left side of the equation we know is an integer because any number divided by one of its factors is another factor (which is an integer). The product is an integer because all primes are integers. But 1/p<sub>1</sub> cannot be an integer except when p<sub>1</sub> is equal to one. And we know it is not because 1 is not on our list (remember: one is not considered a prime). No matter how hard we try, a decimal plus an integer will not equal to an integer. Because of this contradiction, <i>q</i> cannot be composite.</p>
+
+<p>We have no options left for our poor <i>q</i>, so it must not exist. We cannot create a list of all the primes, they must go on forever.</p>
+
+<p>A fun historical fact is that when Euclid proved the infinity of primes he did not do basic algebra like I did, although his argument was the same. Algebra did not exist yet. In fact, his very idea of numbers itself was very different from our own. The ancient Greeks made a distinction between numbers, ratios, and measures. Euclid considered prime numbers &ldquo;that which is measured by unit alone.&rdquo; To him, prime numbers were not numbers but an uncuttable unit of length. In other words, he proved the infinity of primes with nothing but some geometric intuition.</p>
+
+<p>Now for the more complicated (and clever) proof discovered by Christian Goldbach in 1730.</p>
+
+<p style="text-align:center; color:var(--muted); letter-spacing:0.4em; margin:2rem 0;">&#8226;&#8226;&#8226;</p>
+
+<h2>Goldbach&rsquo;s Proof on the Infinity of Primes</h2>
+
+<p>The problem with primes is that there is no easy formula to find the next prime other than going through and doing some division, although there have been many attempts. It&rsquo;s one of the reasons primes are so important in cryptography today.</p>
+
+<p>So early mathematicians tried to solve the next-best thing: if they couldn&rsquo;t find a function that spit out all primes, could a function be found that spit out only primes? Pierre de Fermat thought yes. A Fermat number is a number in the form</p>
+
+<figure>
+  $$F_n = 2^{2^n} + 1$$
+  <figcaption>where n is a nonnegative integer</figcaption>
+</figure>
+
+<p>Plug in n = 1, we get 3. Then 5, 17, 257, 65537, 4294967297. All prime! Well, not quite. Turns out Fermat made a math error, 641 is a factor of 4294967297. In fact, there don&rsquo;t seem to be any more primes in the sequence after the first five.</p>
+
+<p>But Fermat numbers still have a few tricks up their sleeves. It turns out any two Fermat numbers are relatively prime.</p>
+
+<p>Relatively prime is a bit of a misleading terms &mdash; two numbers are relatively prime when their greatest common divisor is one. For example, the factors of 35 are 1, 5, 7, and 35. The factors of 6 are 1, 2, 3, and 6. Because their greatest common factor is one, 35 and 6 are relatively prime. If you draw a prime tree for each number, the trees shouldn&rsquo;t have any common numbers between them. Alternatively, their least common multiple is found by multiplying the numbers together.</p>
+
+<p>If all numbers in a set are relatively prime, none of their factors are shared. Think about what this set might look like: it can have at most one even number because all even numbers are divisible by two. We can only have one number that ends in 5.</p>
+
+<p>The next question we might ask is: can we have an infinite set of relatively prime numbers? Since every number in this set could be broken up into &ldquo;buckets&rdquo; of its unique primes, this would also prove the infinity of primes. After all, you&rsquo;d need an infinite amount of primes to populate an infinite list of relative primes. Each relative prime would hog at least one prime exclusively.</p>
+
+<p>Let&rsquo;s get back to Fermat numbers. Goldbach proved Fermat numbers satisfy the recurrence relation:</p>
+
+<figure>
+  $$F_0 \cdot F_1 \cdots F_{n-1} = F_n - 2$$
+</figure>
+
+<p>You can obtain the nth Fermat number from using all the previous Fermat numbers! You don&rsquo;t even need the exponential formula. Try it out:</p>
+
+<figure>
+  <div class="try-table">
+    F<sub>1</sub> &minus; 2 &nbsp;=&nbsp; 3 &nbsp;=&nbsp; F<sub>0</sub> &nbsp;&nbsp;&#10003;<br>
+    F<sub>2</sub> &minus; 2 &nbsp;=&nbsp; 15 &nbsp;=&nbsp; 3 &times; 5 &nbsp;=&nbsp; F<sub>0</sub> &middot; F<sub>1</sub> &nbsp;&nbsp;&#10003;<br>
+    F<sub>3</sub> &minus; 2 &nbsp;=&nbsp; 255 &nbsp;=&nbsp; 3 &times; 5 &times; 17 &nbsp;=&nbsp; F<sub>0</sub> &middot; F<sub>1</sub> &middot; F<sub>2</sub> &nbsp;&nbsp;&#10003;
+  </div>
+</figure>
+
+<pre><code class="language-python">def nth_fermat_number(n):
+    if n == 0:
+        return 3
+    else:
+        val = 1
+        for i in range(n):
+            val *= nth_fermat_number(i)
+    return val + 2</code></pre>
+
+<p>To prove this recursion mathematically, we use a proof by induction. Our first step will be to show this formula is true for the first and second Fermat number. Then we are going to prove that if it is true for the nth case, it must be true for the nth+1 case. All the cases will then cascade like dominos. The first case proves the second which proves the third which proves the fourth and on and on and on.</p>
+
+<p><strong>Step 1.</strong> It is true for first case</p>
+
+<figure>
+  $$F_0 = 2^{2^0} + 1 = 3 \qquad F_1 = 2^{2^1} + 1 = 5 \qquad F_1 - 2 = 3 = F_0\ \checkmark$$
+  <figcaption>Plugging into the formula 2<sup>(2<sup>n</sup>)</sup> + 1, the first Fermat number is 3. The second is 5.</figcaption>
+</figure>
+
+<p><strong>Step 2.</strong> Show that if the nth is true then nth + 1 is also true. We start by assuming it is true, then work backwards</p>
+
+<figure>
+$$\begin{aligned}
+F_0 \cdot F_1 \cdots F_{n-1} \cdot F_n &= F_0 \cdot F_1 \cdots F_{n-1} \cdot F_n & (1) \\[0.4em]
+&= (F_0 \cdot F_1 \cdots F_{n-1}) \cdot F_n & (2) \\[0.4em]
+&= (F_n - 2) \cdot F_n & (3) \\[0.4em]
+&= (2^{2^n} + 1 - 2) \cdot F_n & (4) \\[0.4em]
+&= (2^{2^n} - 1) \cdot F_n & (5) \\[0.4em]
+&= (2^{2^n} - 1)(2^{2^n} + 1) & (6) \\[0.4em]
+&= 2^{2^{n+1}} - 1 & (7) \\[0.4em]
+&= F_{n+1} - 2 & (8) \\[0.4em]
+&= F_0 \cdots F_{n-1} F_n + 2 & (9)
+\end{aligned}$$
+</figure>
+
+<p>We start with the product of sequence of Fermat primes, which is equal to itself (1). Now we suspect that each Fermat is equal to product of the previous ones minus two. So we single out the product of the previous with the parenthesis (2). Assuming our recurrence is true, it should equal two less than the nth Fermat number (3). Plug in the definition of Fermat numbers (4 and 5) and do some basic algebra with the difference of squares (6). We are left with an exponent and a subtraction which can be easily converted back into the Fermat number formula. What we are left with is the recursion.</p>
+
+<p>From here, it is easy to prove Fermat numbers are pairwise relatively prime. We&rsquo;ll use the same trick as before in Euclid&rsquo;s proof.</p>
+
+<figure>
+  $$F_n = F_0 \cdot F_1 \cdots F_{n-1} + 2$$
+</figure>
+
+<p>Let&rsquo;s say some factor f divides the nth Fermat number F<sub>n</sub> as well as some other, smaller Fermat number. Therefore, we know the entire right side of the equation is an integer because all Fermat numbers smaller than F<sub>n</sub> are contained in that product, and we said at least one of these is divisible by f.</p>
+
+<figure>
+  $$\frac{F_n}{f} = \frac{F_0 \cdot F_1 \cdots F_{n-1}}{f} + \frac{2}{f}$$
+  <figcaption>All terms should always be integers.</figcaption>
+</figure>
+
+<p>Well since the entire right side of the equation is an integer, the entire left side must be too. We know the term F<sub>n</sub>/f is an integer because dividing by one of your own factors is an integer. So 2/f should be too. The problem is 2/f is always a fraction unless f = 1 or f = 2. One is not a prime, so it can&rsquo;t be f. And look closely at the sequence of Fermat numbers &mdash; two to any power is always even and subtracting one from an even will always be odd. All Fermat numbers are odd. We are left with no factors that work for f. Therefore, no factors can evenly divide both F<sub>n</sub> and some smaller Fermat number.</p>
+
+<p>All Fermat numbers must then have a unique factorization. Each Fermat number can then be thought of as a set of disjoint primes. Since the Fermat sequence goes to infinity, we have an infinite set of unique prime numbers. Tada! Primes are infinite.</p>
+
+<p style="text-align:center; color:var(--muted); letter-spacing:0.4em; margin:2rem 0;">&#8226;&#8226;&#8226;</p>
+
+<p>Of course, now we can do better. In 2013, a collaborative effort started by Yitang Zhang and worked on by Terrance Tao proved that not only are there an infinite number of primes, but there are infinite sets of primes certain distances apart. The lowest current bound is 246.</p>
+
+<div class="references">
+  <p><strong><em>References:</em></strong></p>
+  <p><em>&ldquo;Proofs from THE BOOK&rdquo; by Martin Aigner and G&uuml;nter M. Ziegler. Springer.</em></p>
+</div>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    &copy; 2026 Sydney Birbrower
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</body>
+</html>
