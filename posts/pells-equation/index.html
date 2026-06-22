@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset='utf-8' />
+<meta http-equiv='X-UA-Compatible' content='IE=edge' />
+<title>Pell&rsquo;s Equation and the Chakravala Method &mdash; Sydney Birbrower</title>
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css'
+  integrity='sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq' crossorigin='anonymous'>
+<script defer src='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js'
+  integrity='sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz'
+  crossorigin='anonymous'></script>
+<script defer src='https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js'
+  integrity='sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI' crossorigin='anonymous'
+  onload='renderMathInElement(document.body);'></script>
+<meta name='viewport' content='width=device-width, initial-scale=1' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<style>
+  .post-content {
+    max-width: 660px;
+    margin: 2rem auto 4rem;
+    padding: 0 1.5rem;
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+  .post-content h2 {
+    font-size: 1.35rem;
+    margin: 2.5rem 0 0.75rem;
+  }
+  .post-content p {
+    margin: 0 0 1.1rem;
+  }
+  .post-content figure {
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  .post-content figcaption {
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-top: 0.4rem;
+    font-style: italic;
+  }
+  .post-content img {
+    max-width: 100%;
+  }
+  .post-content .katex-display {
+    margin: 0.5rem 0;
+    overflow-x: auto;
+  }
+  .post-content .image-placeholder {
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    padding: 2rem 1rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .post-content blockquote {
+    border-left: 3px solid var(--border);
+    margin: 1.5rem 0;
+    padding: 0.25rem 1.25rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .post-content blockquote p { margin: 0; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-title" href="../../index.html">Sydney Birbrower</a>
+    <nav class="nav-links">
+      <a href="../../index.html">Home</a>
+      <a href="../../blog.html">Blog</a>
+    </nav>
+  </div>
+</header>
+
+<div class="post-title-header">
+  <h1>Pell&rsquo;s Equation and the Chakravala Method</h1>
+  <div class="post-meta">May 27, 2021 &middot; Number Theory</div>
+</div>
+
+<main>
+<article class="post-content">
+
+<p>Etymology is funny sometimes. Sometimes it tells you a lot, sometimes nothing at all. For example, the word parabola comes from the ancient Greek word for &ldquo;applied.&rdquo; Hyperbola comes from &upsilon;&pi;&epsilon;&rho;&beta;&omicron;&lambda;&#942; or &ldquo;excessive&rdquo; and ellipse is derived from &ldquo;a deficient.&rdquo; From their words, you&rsquo;d almost think the Greeks weren&rsquo;t fond of conic sections.</p>
+
+<p>Don&rsquo;t let it fool you. They loved them.</p>
+
+<p>A large part of ancient Greek contributions to mathematics are based on the simplicity of taking slices of a cone. Euclid apparently wrote four books on conics (which history somehow managed to lose).</p>
+
+<figure>
+  <img src="shapes.png" alt="Conic sections: parabola, circle, ellipse, hyperbola" />
+</figure>
+
+<p>And just as the ancient Greeks loved conics, the medieval Indians loved algebra. We&rsquo;re going to be focusing on one particular algebraic equation in this article, one that intersects both world. Integer solutions of a hyperbola.</p>
+
+<p>The equation of a hyperbola is pretty simple:</p>
+
+<figure>
+  $$\Large x^2 - Ny^2 = 1$$
+  <figcaption>Where N is a positive number</figcaption>
+</figure>
+
+<p>Let&rsquo;s draw a picture. Hyperbolas form an open curve with two sections that mirror each other. Both become straighter as they approach infinity along one of two asymptotes.</p>
+
+<figure>
+  <img src="graph1.png" alt="Hyperbola x² - 2y² = 1 with asymptotes" />
+  <figcaption>\(y^2/a^2 - x^2/b^2 = 1\), asymptotes \(y = -\frac{a}{b}x\), \(y = \frac{a}{b}x\)</figcaption>
+</figure>
+
+<p>In terms of conic sections, a hyperbola is the intersection of a plane through both halves of a double cone. Interestingly enough, the plane does not need to be vertical. The hyperbola will still be symmetric if its intersecting plane is at a slant to the cone.</p>
+
+<p>Let&rsquo;s explore the equation a little more algebraically.</p>
+
+<figure>
+  $$x^2 - Ny^2 = 1$$
+  <figcaption>This was called Varga Prakriti in Sanskrit &mdash; the equation of the multiplied square</figcaption>
+</figure>
+
+<p>What happens if you change N? The graph squishes.</p>
+
+<figure>
+  <img src="graph2.gif" alt="Hyperbola with varying N" />
+  <figcaption>Large N is more squished.</figcaption>
+</figure>
+
+<p>What about changing the 1 on the right side? Calling this k, the two sides of the graph get further apart as k increases (remember this).</p>
+
+<figure>
+  <img src="graph3.gif" alt="Hyperbola with varying k" />
+  <figcaption>Larger k gets further away</figcaption>
+</figure>
+
+<p>Now, let&rsquo;s add some restrictions to the equation. What about integer solutions of x, y, and k? Do all k&rsquo;s even have integer solutions? Obviously some do&ndash;in both gifs the graph crosses lattice points of the grid&ndash;but do all k&rsquo;s have them? Is there an easy way to find the smallest solution if it does?</p>
+
+<p>This is what medieval India was interested in. In modern terms, they were doing early Diophantine analysis on Pell&rsquo;s equation. Some solutions were not something European mathematicians would solve until 1657, when Fermat sent out n=61 as a challenge to his peers.</p>
+
+<p>Medieval India not only had already solved n=61, they had found a generalized algorithm for all n.</p>
+
+<blockquote>
+  <p>&ldquo;What would have been Fermat&rsquo;s astonishment if some missionary, just back from India, had told him that his problem had been successfully tackled there by native mathematicians almost six centuries earlier?&rdquo; &mdash; Andr&eacute; Weil</p>
+</blockquote>
+
+<p style="text-align:center; color:var(--muted); letter-spacing:0.4em; margin:2rem 0;">&#8226;&#8226;&#8226;</p>
+
+<h2>Brahmagupta&rsquo;s Identity</h2>
+
+<p>The first identity we need is this:</p>
+
+<p>If two positive integers are each sums of two squares, then their product is a sum of two squares in two different ways</p>
+
+<figure>
+  $$\begin{aligned}
+  (a^2 + b^2)(c^2 + d^2) &= (ad - bc)^2 + (ac + bd)^2 \\
+  (a^2 + b^2)(c^2 + d^2) &= (ad + bc)^2 + (ac - bd)^2
+  \end{aligned}$$
+</figure>
+
+<p>For example, 10 can be written as 3&sup2;+1&sup2; and 41 can be written as 5&sup2;+4&sup2;. Therefore, 10 &middot; 41 can be written as the sum of two squares, and in two different ways: 19&sup2;+7&sup2; or 11&sup2;+17&sup2;.</p>
+
+<figure>
+  <img src="geometric_proof.png" alt="Geometric proof of sum of squares" />
+  <figcaption>Geometric proof of sum of squares</figcaption>
+</figure>
+
+<p>Around the year 628, Brahmagupta generalized this identity into the following:</p>
+
+<p>Given a particular integer n, the set of all integers expressed as x&sup2; &mdash; ny&sup2; is closed under multiplication.</p>
+
+<figure>
+  $$\begin{aligned}
+  (a^2 - nb^2)(c^2 - nd^2) &= (ac + nbd)^2 - n(ad + bc)^2 \\
+  (a^2 - nb^2)(c^2 - nd^2) &= (ac - nbd)^2 - n(ad - bc)^2
+  \end{aligned}$$
+  <figcaption>A proof is given below.</figcaption>
+</figure>
+
+<figure>
+  $$\begin{aligned}
+  &(a^2 - nb^2)(c^2 - nd^2) \\[0.6em]
+  &= a^2c^2 - a^2nd^2 - nb^2c^2 + n^2d^2b^2 \\[0.6em]
+  &= a^2c^2 - a^2nd^2 - nb^2c^2 + n^2d^2b^2 + 2nabcd - 2nabcd \\[0.6em]
+  &= (a^2c^2 + 2nabcd + n^2d^2b^2) - (a^2nd^2 + 2nabcd + nb^2c^2) \\[0.6em]
+  &= (a^2c^2 + 2nabcd + n^2d^2b^2) - n(a^2d^2 + 2abcd + b^2c^2) \\[0.6em]
+  &= (ac + nbd)^2 - n(ad + bc)^2
+  \end{aligned}$$
+  <figcaption>Proof of Brahmagupta&rsquo;s identity</figcaption>
+</figure>
+
+<p>Using Brahmagupta&rsquo;s identity, we can use two triples (a, b, k) and create a composition law.</p>
+
+<p>It works like this. If (a, b, and k&#8321;) and (c, d, and k&#8322;) are solutions to x&sup2; &ndash; ny&sup2; = k, then a&sup2; &ndash; nb&sup2; = k&#8321; and c&sup2; &ndash; nd&sup2; = k&#8322;. Using the identity and multiplying them together, we get (a&sup2; &ndash; nb&sup2;)(c&sup2; &ndash; nd&sup2;) = (ac + nbd)&sup2; &ndash; n(ad + bc)&sup2; = k&#8321;k&#8322;.</p>
+
+<p>And just like that, we&rsquo;ve made another triple: (ac + nbd, ad + bc, k&#8321;k&#8322;).</p>
+
+<p>Freely changing k, we have an infinite number of integer solutions to the equation.</p>
+
+<p>Graphically, given two integer points on a hyperbola&ndash;say, (4, 1) and (7, 2) and an asymptote (in this case &plusmn;x/&radic;10x), we can find another hyperbola with a larger k (and the same asymptotes) that crosses an integer point.</p>
+
+<figure>
+  <img src="hyperbola.png" alt="Hyperbola composition graph showing integer points" />
+  <figcaption>Given these integer two points, we can find another hyperbola that crosses another integer point</figcaption>
+</figure>
+
+<p>This means we can generate integer points for an infinite number of hyperbolas, but we have a problem. The k&rsquo;s always increase. Remember from the gif that larger k&rsquo;s mean the hyperbola is shifted further from the origin. In Pell&rsquo;s equation the hyperbola crosses x = 1. We want the k&rsquo;s to decrease to one.</p>
+
+<p>Brahmagupta, using his composition law and simple division, could sometimes solve for n = 1, but not for all integers and not with a general method. For example, he uses the example x&sup2; &ndash; 92y&sup2; = 1. He starts with the triple (10, 1, 8) because 10&sup2; &mdash; 92(1)&sup2; = 8 (remember, you can freely change the k&rsquo;s) He composes it with itself to get the triple (192, 20, 64). Because 192&sup2; and 8&sup2; are both divisible by 64, he divides them. This gives the triple (24, 5/2, 1). Composing it with itself with give the triple (1151, 120, 1). Thus x = 1151, y = 120 is an integer solution of x&sup2; &ndash; 92y&sup2; = 1.</p>
+
+<p>Bhahmagupta developed a few more tricks and shortcuts. He solved Pell&rsquo;s equation for most low values of n and proved the if you could find a triple with k = -4, -2, -1, 2, or 4, then you could also find a triple for k = 1.</p>
+
+<p>However, a general method would not be found until five centuries later.</p>
+
+<p style="text-align:center; color:var(--muted); letter-spacing:0.4em; margin:2rem 0;">&#8226;&#8226;&#8226;</p>
+
+<h2>The Chakravala Algorithm</h2>
+
+<p>This brings us to Bhaskara&rsquo;s lemma, generalized in the verses of Bijaganita by Bhaskara II around 1150 (Bhaskara actually hints that he did not himself discover the method, but does not say who did).</p>
+
+<figure>
+  $$\left(\frac{ac + nb}{k},\ \frac{a + bc}{k},\ \frac{c^2 - n}{k}\right)$$
+  <figcaption>This creates a new triple, but not necessarily an integer triple</figcaption>
+</figure>
+
+<p>Assume we have a triple (a, b, k) that satisfies x&sup2; - ny&sup2; = k. We can make another trivial triple by setting y = 1. If x = c, then this triple is (c, 1, c&sup2; &ndash; n). Using the composition law, a new triple (ac + nb, a + bc, k(c&sup2; &ndash; n)) can be created.</p>
+
+<p>From the triple (ac + nb, a + bc, k(c&sup2; &ndash; n)), Bhaskara did something clever. He figured out that you can choose a &ldquo;c&rdquo; that makes each of the quantities in the triple divisible by k&sup2;, thus making the new triple smaller than the one that came before. Then you can repeat the process until k = 1.</p>
+
+<p>It works like this. Choose a &ldquo;c&rdquo; so that a + bc is divisible by k. We already know k(c&sup2; &ndash; n) is divisible by k. a + bc is divisible by k (because we choose it to be so). Assuming &ldquo;a&rdquo; and &ldquo;b&rdquo; are relatively prime, we also know that ac + nb is divisible by k.</p>
+
+<p>Why? Because in an equation a + b = c, if any two of a, b, and c are divisible by another number x, then the third one is also divisible by x because you can factor x out on one side of the equation.</p>
+
+<p>And since both equations on the left are squared, we can divide the entire thing by k&sup2;. This gives us</p>
+
+<figure>
+  $$\left(\frac{ac+nb}{k}\right)^2 - n\left(\frac{a+bc}{k}\right)^2 = \frac{c^2-n}{k}$$
+  <figcaption>An algebraic proof is below.</figcaption>
+</figure>
+
+<figure>
+  $$\begin{aligned}
+  \left(\frac{ma + nb}{k}\right)^2 - n\left(\frac{a + bm}{k}\right)^2 &= \frac{m^2a^2 + n^2b^2 + 2mnab - na^2 - nm^2b^2 - 2mnab}{k^2} \\[0.6em]
+  &= \frac{m^2a^2 + n^2b^2 - na^2 - nm^2b^2}{k^2} \\[0.6em]
+  &= \frac{(m^2 - n)(a^2 - nb^2)}{k^2} = \frac{m^2 - n}{k}
+  \end{aligned}$$
+  <figcaption>Setting c = m</figcaption>
+</figure>
+
+<p>The rest of the algorithm is pretty simple. Making sure to choose a &ldquo;c&rdquo; so that a + bc is divisible by k, we minimize c&sup2; &ndash; n. This ensures that the k our new triple has is as small as possible. Then just repeat.</p>
+
+<figure>
+  <pre style="text-align: center; font-family: serif; line-height: 1.8; margin: 1rem 0;">ह्रस्वज्येष्ठपदक्षेपान् भाज्यप्रक्षेपभाजकान् ।
+कृत्वा कल्प्यो गुणस्तत्र तथा प्रकृतितश्च्युते ॥
+
+गुणवर्गे प्रकृत्योनेऽथवाल्पं शेषकं यथा ।
+तत्तु क्षेपहृतं क्षेपो व्यस्तं प्रकृतितश्च्युते ॥
+
+गुणलब्धिः पदं ह्रस्वं ततो ज्येष्ठमतोऽसकृत् ।
+त्यक्त्वा पूर्वपदक्षेपांश्चक्रवालमिदं जगुः ॥
+
+चतुर्द्व्येकयुतावेवमभिन्ने भवतः पदे ।
+चतुर्द्विक्षेपमूलाभ्यां रूपक्षेपार्थभावना ॥</pre>
+  <figcaption>Bhaskara II's description of the Chakravala method in Sanskrit verse</figcaption>
+</figure>
+
+<p>Bhaskara named his method &lsquo;chakravala&rsquo; (somewhat more helpfully than those Greeks) because of its cyclic nature of the algorithm. &lsquo;Chakra&rsquo; means &lsquo;wheel.&rsquo;</p>
+
+<pre><code class="language-python">def new_triple(abk, m):
+    a_1 = int((m * abk[0] + n * abk[1]) / abs(abk[2]))
+    b_1 = int((abk[0] + m * abk[1]) / abs(abk[2]))
+    k_1 = int((m**2 - n) / abk[2])
+    return (a_1, b_1, k_1)
+
+def chakravala(abk, n):
+    possible_ms = []
+    first_m = 0
+
+    for i in range(abs(abk[2])):
+        if (abk[0] + abk[1] * i) % abk[2] == 0:
+            first_m = i
+
+    possible_ms = [first_m + abs(i * abk[2]) for i in range(10)]
+
+    least_m2 = possible_ms[0]
+    for m in possible_ms:
+        if abs(m**2 - n) < abs(least_m2**2 - n):
+            least_m2 = m
+
+    abk = new_triple(abk, least_m2)
+
+    if abk[2] == 1:
+        return abk
+    else:
+        return chakravala(abk, n)
+
+
+n = 61  # any number not a square
+c = 5  # arbitrary starting number
+abk = (c, 1, c**2 - n)
+
+chakravala(abk, n)</code></pre>
+
+<p style="font-size: 0.92rem; color: var(--muted); margin-top: 0.5rem;">Make sure gcd(a, b) = 1 and a, b, and k actually solve the equation if you want to change the tuple abk</p>
+
+<p>Try the code for n = 61. This was the example Bhaskara used. He calculated that the smallest solution is a = 1766319049, b = 226153980 !</p>
+
+<p>The algorithm is considered one of the most impressive discoveries in number theory until 18th century Europe. It is guaranteed to terminate with the smallest solution and usually does it very quickly with minimum calculation. It is also an early insight into the connection between repeating continued fractions and radicals, and is roughly equivalent to finding convergents of \(\sqrt{n}\).</p>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    &copy; 2026 Sydney Birbrower
+  </div>
+</footer>
+
+</body>
+</html>
