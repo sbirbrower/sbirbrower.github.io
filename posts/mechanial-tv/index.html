@@ -14,6 +14,154 @@
   integrity='sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI' crossorigin='anonymous'
   onload='renderMathInElement(document.body);'></script>
     <meta name='viewport' content='width=device-width, initial-scale=1' />
+<style>
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+#scrolly {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 6rem;
+}
+
+#scrolly > article {
+  flex: 0 1 420px;
+  min-width: 0;
+  padding-left: 3rem;
+}
+
+#scrolly > figure {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  position: sticky;
+  top: 2rem;
+}
+
+.step {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  padding: 4rem 0;
+}
+
+.step:first-child {
+  min-height: unset;
+}
+
+.step:last-child {
+  min-height: 60vh;
+}
+
+.step p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  text-align: left;
+  color: var(--muted);
+  margin: 0;
+  max-width: 360px;
+}
+
+@media (max-width: 880px) {
+  #scrolly {
+    flex-direction: column;
+  }
+  #scrolly > figure {
+    flex: none;
+    width: 100%;
+    position: static;
+    order: -1;
+    margin-bottom: 2rem;
+  }
+}
+
+/* --- Diagram cross-fade stack --- */
+.fig-stack {
+  position: relative;
+  width: 100%;
+  min-height: 600px;
+}
+
+.fig-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.fig-panel.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fig-panel svg {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* --- Diagram styling --- */
+figure {
+  --color-background-primary: var(--bg);
+  --color-background-secondary: #f5f5f5;
+  --color-background-tertiary: #fafafa;
+  --color-border-secondary: var(--border);
+  --color-border-tertiary: #ededed;
+  --color-text-secondary: var(--muted);
+  --color-text-primary: var(--text);
+  --color-text-tertiary: #c0c0c0;
+  --border-radius-md: 6px;
+}
+
+figure .th {
+  font: 600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  fill: var(--text);
+}
+
+figure .ts {
+  font: 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  fill: var(--muted);
+}
+
+figure .leader {
+  stroke: var(--muted);
+  stroke-width: 0.75;
+  stroke-dasharray: 2 2;
+}
+
+figure .arr {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.fig-btn {
+  font: inherit;
+  color: inherit;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.fig-btn:hover {
+  background: var(--color-background-secondary, #f5f5f5);
+}
+</style>
 </head>
 <body>
 
@@ -1447,155 +1595,6 @@
   </section>
 
 </main>
-
-<style>
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-#scrolly {
-  display: flex;
-  gap: 3rem;
-  align-items: flex-start;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 6rem;
-}
-
-#scrolly > article {
-  flex: 0 1 420px;
-  min-width: 0;
-  padding-left: 3rem;
-}
-
-#scrolly > figure {
-  flex: 1 1 0;
-  min-width: 0;
-  margin: 0;
-  position: sticky;
-  top: 2rem;
-}
-
-.step {
-  min-height: 90vh;
-  display: flex;
-  align-items: center;
-  padding: 4rem 0;
-}
-
-.step:first-child {
-  min-height: unset;
-}
-
-.step:last-child {
-  min-height: 60vh;
-}
-
-.step p {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  text-align: left;
-  color: var(--muted);
-  margin: 0;
-  max-width: 360px;
-}
-
-@media (max-width: 880px) {
-  #scrolly {
-    flex-direction: column;
-  }
-  #scrolly > figure {
-    flex: none;
-    width: 100%;
-    position: static;
-    order: -1;
-    margin-bottom: 2rem;
-  }
-}
-
-/* --- Diagram cross-fade stack --- */
-.fig-stack {
-  position: relative;
-  width: 100%;
-  min-height: 600px;
-}
-
-.fig-panel {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
-}
-
-.fig-panel.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.fig-panel svg {
-  flex: 1 1 auto;
-  min-height: 0;
-}
-
-/* --- Diagram styling --- */
-figure {
-  --color-background-primary: var(--bg);
-  --color-background-secondary: #f5f5f5;
-  --color-background-tertiary: #fafafa;
-  --color-border-secondary: var(--border);
-  --color-border-tertiary: #ededed;
-  --color-text-secondary: var(--muted);
-  --color-text-primary: var(--text);
-  --color-text-tertiary: #c0c0c0;
-  --border-radius-md: 6px;
-}
-
-figure .th {
-  font: 600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  fill: var(--text);
-}
-
-figure .ts {
-  font: 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  fill: var(--muted);
-}
-
-figure .leader {
-  stroke: var(--muted);
-  stroke-width: 0.75;
-  stroke-dasharray: 2 2;
-}
-
-figure .arr {
-  stroke: var(--muted);
-  stroke-width: 1;
-}
-
-.fig-btn {
-  font: inherit;
-  color: inherit;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 4px 10px;
-  cursor: pointer;
-}
-
-.fig-btn:hover {
-  background: var(--color-background-secondary, #f5f5f5);
-}
-</style>
 
 <script>
 (function(){
